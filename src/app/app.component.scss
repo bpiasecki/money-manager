@@ -1,0 +1,90 @@
+@import "style-variables";
+
+@media screen and (max-width: 1400px), screen and (max-height: 800px) {
+  .overview-panel-container {
+    border-radius: 0 !important;
+    height: 100% !important;
+    width: 100% !important;
+    transition: height 0.2s ease-in, width 0.2s ease-in;
+  }
+
+  .sidenav-container {
+    border-radius: 0 !important;
+    transition: all 0.5s;
+  }
+}
+
+.sidenav-container {
+  height: 100%;
+  width: 100%;
+  border-radius: 15px;
+  background: transparent;
+  transition: border-radius 0.5s;
+}
+
+.sidenav {
+  width: 200px;
+  border: none;
+}
+
+.sidenav .mat-toolbar {
+  background: inherit;
+}
+
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.sidenav-content {
+  background: mat-color($primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: x-large;
+  height: calc(100% - 55px);
+}
+
+.overview-toolbar {
+  height: 55px;
+  background: white;
+  text-align: center;
+}
+
+.bg-image {
+  background-image: url(../assets/images/bg-image-small.jpg);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+  filter: brightness(0.7);
+}
+
+.centered-content {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.overview-panel-container {
+  position: relative;
+  display: flex;
+  width: 1400px;
+  height: 800px;
+  box-shadow: 0 0 50px -15px black;
+  border-radius: 15px;
+  transition: height 0.2s ease-in, width 0.2s ease-in;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}

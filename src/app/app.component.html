@@ -1,6 +1,7 @@
 <div class="bg-image"></div>
 <div class="centered-content">
-  <div class="overview-panel-container">
+  <div class="overview-panel-container"
+    [ngClass]="{'full-screen-view': isFullScreenMode || (fullScreenBreakpoint$ | async)}">
     <mat-sidenav-container class="sidenav-container">
       <mat-sidenav #drawer class="sidenav" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
         [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
@@ -10,6 +11,9 @@
           <a mat-list-item routerLink="/cards" routerLinkActive="active">Link 2</a>
           <a mat-list-item href="#">Link 3</a>
         </mat-nav-list>
+        <mat-slide-toggle class="slide-toggle" [(ngModel)]="isFullScreenMode">
+          Tryb pełnoekranowy
+        </mat-slide-toggle>
       </mat-sidenav>
       <mat-sidenav-content>
         <mat-toolbar class="overview-toolbar">
@@ -17,14 +21,12 @@
             *ngIf="isHandset$ | async">
             <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
           </button>
-          <!-- <span>money-manager</span> -->
           <span class="spacer"></span>
           <button mat-icon-button>
             <mat-icon>add</mat-icon>
           </button>
         </mat-toolbar>
         <div class="sidenav-content">
-          <!-- Add Content Here -->
           <router-outlet></router-outlet>
         </div>
       </mat-sidenav-content>

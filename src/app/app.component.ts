@@ -10,10 +10,17 @@ import { map, shareReplay } from 'rxjs/operators';
 })
 export class AppComponent {
   title = 'money-manager';
+  isFullScreenMode = false;
 
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+  isHandset$: Observable<boolean> = this.breakpointObserver.observe([Breakpoints.Small, Breakpoints.XSmall])
     .pipe(
       map(result => result.matches),
+      shareReplay()
+    );
+
+  fullScreenBreakpoint$: Observable<boolean> = this.breakpointObserver.observe(['(max-width: 1400px)', '(max-height: 800px)'])
+    .pipe(
+      map(result => {console.log(result); return result.matches}),
       shareReplay()
     );
 

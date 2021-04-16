@@ -1,8 +1,9 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HomePageComponent } from './home-page.component';
-import { HomePageRoutingModule } from './home-page-routing.module';
+import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatCardModule } from '@angular/material/card';
+import { HomePageRoutingModule } from './home-page-routing.module';
+import { HomePageComponent } from './home-page.component';
 
 
 @NgModule({
@@ -12,7 +13,8 @@ import { MatCardModule } from '@angular/material/card';
   imports: [
     CommonModule,
     HomePageRoutingModule,
-    MatCardModule
+    MatCardModule,
+    FlexLayoutModule
   ],
   exports: [],
   providers: [],

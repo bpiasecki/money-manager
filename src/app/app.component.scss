@@ -1,7 +1,7 @@
 @import "style-variables";
 
-@media screen and (max-width: 1400px), screen and (max-height: 800px) {
-  .overview-panel-container {
+.full-screen-view {
+  &.overview-panel-container {
     border-radius: 0 !important;
     height: 100% !important;
     width: 100% !important;
@@ -12,6 +12,12 @@
     border-radius: 0 !important;
     transition: all 0.5s;
   }
+}
+
+.slide-toggle {
+  position: absolute;
+  bottom: 10px;
+  left: 12px;
 }
 
 .sidenav-container {
@@ -44,7 +50,8 @@
   align-items: center;
   color: white;
   font-size: x-large;
-  height: calc(100% - 55px);
+  height: calc(100% - 95px);
+  padding: 20px;
 }
 
 .overview-toolbar {

@@ -2,10 +2,13 @@
   "targets": {
     "money-manager-3ba34": {
       "hosting": {
-        "money-manager": [
-          "money-manager-3ba34"
+        "mm": [
+          "my-money-manager"
         ]
       }
     }
+  },
+  "projects": {
+    "money-manager": "money-manager-3ba34"
   }
 }

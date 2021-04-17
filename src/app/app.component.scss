@@ -44,7 +44,8 @@
 }
 
 .sidenav-content {
-  background: mat-color($primary);
+  background: darkgray;
+  // background: mat-color($primary);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -52,6 +53,11 @@
   font-size: x-large;
   height: calc(100% - 95px);
   padding: 20px;
+}
+
+.login-content {
+  background: white;
+  height: 100%;
 }
 
 .overview-toolbar {
@@ -90,6 +96,15 @@
   box-shadow: 0 0 50px -15px black;
   border-radius: 15px;
   transition: height 0.2s ease-in, width 0.2s ease-in;
+}
+
+.login-panel-container {
+  position: relative;
+  display: flex;
+  width: 500px;
+  height: 380px;
+  box-shadow: 0 0 50px -15px black;
+  border-radius: 15px;
 }
 
 .spacer {

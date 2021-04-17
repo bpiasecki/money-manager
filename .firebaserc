@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "money-manager-3ba34": {
+      "hosting": {
+        "money-manager": [
+          "money-manager-3ba34"
+        ]
+      }
+    }
+  }
+}

@@ -1,24 +1,26 @@
 <div class="bg-image"></div>
-<div class="centered-content">
-  <div class="overview-panel-container"
-    [ngClass]="{'full-screen-view': isFullScreenMode || (fullScreenBreakpoint$ | async)}">
+<div class="centered-content" *ngIf="dataLoaded">
+  <div
+    [ngClass]="{'full-screen-view': isFullScreenMode || (fullScreenBreakpoint$ | async), 'overview-panel-container': isUserLogged, 'login-panel-container':!isUserLogged}">
     <mat-sidenav-container class="sidenav-container">
-      <mat-sidenav #drawer class="sidenav" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-        [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
+      <mat-sidenav #drawer class="sidenav"
+        [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
+        [opened]="(isHandset$ | async) === false && isUserLogged">
         <mat-toolbar>Money Manager</mat-toolbar>
         <mat-nav-list>
           <a mat-list-item routerLink="/overview" routerLinkActive="active">Link 1</a>
           <a mat-list-item routerLink="/cards" routerLinkActive="active">Link 2</a>
           <a mat-list-item href="#">Link 3</a>
         </mat-nav-list>
+        <button mat-raised-button color="primary" type="button" (click)="logout()">Wyloguj</button>
         <mat-slide-toggle class="slide-toggle" [(ngModel)]="isFullScreenMode">
           Tryb pełnoekranowy
         </mat-slide-toggle>
       </mat-sidenav>
-      <mat-sidenav-content>
-        <mat-toolbar class="overview-toolbar">
+      <mat-sidenav-content [style.border-radius.px]="isUserLogged ? 0 : 15">
+        <mat-toolbar *ngIf="isUserLogged" class="overview-toolbar">
           <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
-            *ngIf="isHandset$ | async">
+            *ngIf="isUserLogged && drawer && isHandset$ | async">
             <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
           </button>
           <span class="spacer"></span>
@@ -26,7 +28,7 @@
             <mat-icon>add</mat-icon>
           </button>
         </mat-toolbar>
-        <div class="sidenav-content">
+        <div [ngClass]="isUserLogged ? 'sidenav-content' : 'login-content'">
           <router-outlet></router-outlet>
         </div>
       </mat-sidenav-content>

@@ -1,0 +1,23 @@
+<button mat-raised-button color="primary" type="button" (click)="addItem(1)">1</button>
+<button mat-raised-button color="primary" type="button" (click)="addItem(2)">2</button>
+<button mat-raised-button color="primary" type="button" (click)="addItem(3)">3</button>
+
+<div *ngIf="items$ | async; let items; else loading">
+    <ul>
+      <li *ngFor="let item of items">
+        {{ item.payload.val().text }}
+        <code>{{ item.payload.key }}</code>
+      </li>
+    </ul>
+    <div *ngIf="items.length === 0">No results, try clearing filters</div>
+  </div>
+  <ng-template #loading>Loading&hellip;</ng-template>
+  <div>
+    <h4>Filter by size</h4>
+    <button (click)="filterBy(1)">1</button>
+    <button (click)="filterBy(2)">2</button>
+    <button (click)="filterBy(3)">3</button>
+    <button (click)="filterBy(null)" *ngIf="this.value$.getValue()">
+      <em>clear filter</em>
+    </button>
+  </div>

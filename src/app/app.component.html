@@ -8,11 +8,18 @@
         [opened]="(isHandset$ | async) === false && isUserLogged">
         <mat-toolbar>Money Manager</mat-toolbar>
         <mat-nav-list>
-          <a mat-list-item routerLink="/overview" routerLinkActive="active">Link 1</a>
-          <a mat-list-item routerLink="/cards" routerLinkActive="active">Link 2</a>
-          <a mat-list-item href="#">Link 3</a>
+          <a mat-list-item routerLink="/overview" routerLinkActive="active">Podsumowanie</a>
+          <a mat-list-item routerLink="/cards" routerLinkActive="active">Konta</a>
+          <a mat-list-item routerLink="/transactions" routerLinkActive="active">Transakcje</a>
         </mat-nav-list>
         <button mat-raised-button color="primary" type="button" (click)="logout()">Wyloguj</button>
+        <button mat-raised-button color="primary" type="button" (click)="getData()">getCoffeeOrders</button>
+        <button mat-raised-button color="primary" type="button" (click)="addData()">Dodaj nowe dane</button>
+        <hr>
+        <div *ngFor="let item of items | async">
+          {{item.name }}
+          <button (click)="updateItem(item.key, 'halo')">Update</button>
+        </div>
         <mat-slide-toggle class="slide-toggle" [(ngModel)]="isFullScreenMode">
           Tryb pełnoekranowy
         </mat-slide-toggle>

@@ -1,0 +1,15 @@
+import { WalletItem } from "src/app/shared/models/cards/walletItem.model";
+import { TransactionType } from "./transactionType.model";
+
+export class TransactionItem {
+    key: string;
+    name: string;
+    value: number;
+    date: Date;
+    description: string;
+    type: TransactionType;
+    source: WalletItem;
+    target: WalletItem;
+    category: string;
+    
+}

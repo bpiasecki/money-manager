@@ -34,6 +34,7 @@
     "@angular/router": "~11.2.9",
     "express": "^4.17.1",
     "firebase": "^8.4.1",
+    "ngx-scrollbar": "^7.5.4",
     "path": "^0.12.7",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",

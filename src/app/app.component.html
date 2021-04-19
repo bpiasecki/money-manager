@@ -12,14 +12,7 @@
           <a mat-list-item routerLink="/cards" routerLinkActive="active">Konta</a>
           <a mat-list-item routerLink="/transactions" routerLinkActive="active">Transakcje</a>
         </mat-nav-list>
-        <button mat-raised-button color="primary" type="button" (click)="logout()">Wyloguj</button>
-        <button mat-raised-button color="primary" type="button" (click)="getData()">getCoffeeOrders</button>
-        <button mat-raised-button color="primary" type="button" (click)="addData()">Dodaj nowe dane</button>
-        <hr>
-        <div *ngFor="let item of items | async">
-          {{item.name }}
-          <button (click)="updateItem(item.key, 'halo')">Update</button>
-        </div>
+        <button mat-raised-button class="logout-button" color="primary" type="button" (click)="logout()">Wyloguj</button>
         <mat-slide-toggle class="slide-toggle" [(ngModel)]="isFullScreenMode">
           Tryb pełnoekranowy
         </mat-slide-toggle>
@@ -36,7 +29,9 @@
           </button>
         </mat-toolbar>
         <div [ngClass]="isUserLogged ? 'sidenav-content' : 'login-content'">
+          <ng-scrollbar>
           <router-outlet></router-outlet>
+        </ng-scrollbar>
         </div>
       </mat-sidenav-content>
     </mat-sidenav-container>

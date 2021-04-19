@@ -16,8 +16,19 @@
 
 .slide-toggle {
   position: absolute;
-  bottom: 10px;
+  bottom: 60px;
   left: 12px;
+}
+
+.logout-button {
+  position: absolute;
+  bottom: 10px;
+  left: 58px;
+}
+
+.active {
+  background-color: mat-color($primary)!important;
+  color: white;
 }
 
 .sidenav-container {
@@ -46,13 +57,14 @@
 .sidenav-content {
   background: darkgray;
   // background: mat-color($primary);
-  display: flex;
-  justify-content: center;
+  // display: flex;
+  // justify-content: center;
   align-items: center;
   color: white;
   font-size: x-large;
-  height: calc(100% - 95px);
-  padding: 20px;
+  height: calc(100% - 55px);
+  // padding: 20px;
+  overflow: auto;
 }
 
 .login-content {

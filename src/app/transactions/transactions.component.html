@@ -17,7 +17,7 @@
     <button (click)="filterBy(1)">1</button>
     <button (click)="filterBy(2)">2</button>
     <button (click)="filterBy(3)">3</button>
-    <button (click)="filterBy(null)" *ngIf="this.value$.getValue()">
+    <button (click)="filterBy(null)" *ngIf="value$?.getValue()">
       <em>clear filter</em>
     </button>
   </div>

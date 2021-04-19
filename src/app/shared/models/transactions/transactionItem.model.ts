@@ -1,4 +1,4 @@
-import { WalletItem } from "src/app/shared/models/cards/walletItem.model";
+import { WalletItem } from "../cards/walletItem.model";
 import { TransactionType } from "./transactionType.model";
 
 export class TransactionItem {

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material/core';
-import { AuthService, Credentials } from '../auth.service';
+import { FormControl, Validators } from '@angular/forms';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'mm-login',
@@ -19,7 +18,7 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    this.authService.login({ email: this.email.value, password: this.password.value }).then((result) => {
+    this.authService.login(this.email.value, this.password.value).then((result) => {
       console.log(result);
     })
   }

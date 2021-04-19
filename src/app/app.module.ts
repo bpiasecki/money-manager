@@ -13,12 +13,13 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CoreModule } from '@core/core.module';
+import { environment } from '@environment/environment';
+import { LoginComponent } from '@features/auth/login/login.component';
+import { RegisterComponent } from '@features/auth/register/register.component';
 import { NgScrollbarModule } from 'ngx-scrollbar';
-import { environment } from 'src/environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './auth/login/login.component';
-import { RegisterComponent } from './auth/register/register.component';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import { RegisterComponent } from './auth/register/register.component';
     RegisterComponent
   ],
   imports: [
+    CoreModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     BrowserModule,
     AppRoutingModule,

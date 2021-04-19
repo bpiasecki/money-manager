@@ -1,6 +1,5 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { MatDrawer } from '@angular/material/sidenav';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
@@ -32,7 +31,7 @@ export class AppComponent {
   constructor(private breakpointObserver: BreakpointObserver, private authService: AuthService, private router: Router) {
     this.authService.authState$.subscribe((user) => {
       console.log(user)
-      if(user) {
+      if (user) {
         this.isUserLogged = true;
         this.router.navigate(['/overview']);
       } else {

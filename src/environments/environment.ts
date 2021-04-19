@@ -11,7 +11,8 @@ export const environment = {
     storageBucket: "money-manager-3ba34.appspot.com",
     messagingSenderId: "452773564587",
     appId: "1:452773564587:web:e16682a71e108697b767ee",
-    measurementId: "G-EMQ2FF0PBT"
+    measurementId: "G-EMQ2FF0PBT",
+    databaseURL: "https://money-manager-3ba34-default-rtdb.europe-west1.firebasedatabase.app/"
   }
 };
 

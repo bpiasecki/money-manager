@@ -56,3 +56,13 @@ ng-scrollbar {
     margin: 15px !important;
   }
 }
+
+.modal-center-page {
+  margin-left: 200px;
+  transition: all 0.2s;
+}
+
+.modal-center-body {
+  margin-left: 0px;
+  transition: all 0.2s;
+}

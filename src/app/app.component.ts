@@ -1,6 +1,7 @@
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { BaseService } from '@core/services/base.service';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { AuthService } from './core/services/auth.service';
@@ -11,16 +12,13 @@ import { AuthService } from './core/services/auth.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+
   title = 'money-manager';
   isFullScreenMode = false;
   isUserLogged = false;
   dataLoaded = false;
 
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe([Breakpoints.Small, Breakpoints.XSmall])
-    .pipe(
-      map(result => result.matches),
-      shareReplay()
-    );
+  isHandset$ : Observable<boolean>;
 
   fullScreenBreakpoint$: Observable<boolean> = this.breakpointObserver.observe(['(max-width: 1400px)', '(max-height: 800px)'])
     .pipe(
@@ -28,7 +26,7 @@ export class AppComponent {
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver, private authService: AuthService, private router: Router) {
+  constructor(private breakpointObserver: BreakpointObserver, private authService: AuthService, private router: Router, private baseService: BaseService) {
     this.authService.authState$.subscribe((user) => {
       console.log(user)
       if (user) {
@@ -40,6 +38,12 @@ export class AppComponent {
       }
       this.dataLoaded = true;
     })
+
+    this.isHandset$ = this.baseService.$isHandset;
+  }
+
+  addNewItem() {
+    this.baseService.addNewItem();
   }
 
   logout() {

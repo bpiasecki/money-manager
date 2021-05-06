@@ -1,11 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatGridListModule } from '@angular/material/grid-list';
+import { MaterialModule } from '@shared/material.module';
 import { TransactionsComponent } from './components/transactions-page/transactions.component';
-import { TransactionsRoutingModule } from './transactions-routing.module';
 
 
 @NgModule({
@@ -14,11 +10,7 @@ import { TransactionsRoutingModule } from './transactions-routing.module';
   ],
   imports: [
     CommonModule,
-    TransactionsRoutingModule,
-    MatCardModule,
-    MatGridListModule,
-    MatButtonModule,
-    MatDialogModule
+    MaterialModule
   ],
   exports: [],
   providers: [],

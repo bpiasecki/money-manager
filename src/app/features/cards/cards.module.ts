@@ -1,8 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
-import { MatGridListModule } from '@angular/material/grid-list';
-import { CardsRoutingModule } from './cards-routing.module';
+import { MaterialModule } from '@shared/material.module';
 import { CardsComponent } from './components/cards-page/cards.component';
 
 
@@ -12,9 +10,7 @@ import { CardsComponent } from './components/cards-page/cards.component';
   ],
   imports: [
     CommonModule,
-    CardsRoutingModule,
-    MatCardModule,
-    MatGridListModule
+    MaterialModule
   ],
   exports: [],
   providers: [],

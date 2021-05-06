@@ -11,5 +11,4 @@ export class TransactionItem {
     source: WalletItem;
     target: WalletItem;
     category: string;
-    
 }

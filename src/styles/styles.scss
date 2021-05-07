@@ -57,12 +57,12 @@ ng-scrollbar {
   }
 }
 
-.modal-center-page {
-  margin-left: 200px;
-  transition: all 0.2s;
-}
+.mat-dialog-container {
+  .modal-center-page {
+    margin-left: 200px;
+  }
 
-.modal-center-body {
-  margin-left: 0px;
-  transition: all 0.2s;
+  .modal-center-body {
+    margin-left: 0px;
+  }
 }

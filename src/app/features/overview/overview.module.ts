@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatCardModule } from '@angular/material/card';
+import { MaterialModule } from '@shared/material.module';
 import { OverviewComponent } from './components/overview-page/overview.component';
-import { OverviewRoutingModule } from './overview-routing.module';
 
 
 @NgModule({
@@ -12,9 +11,8 @@ import { OverviewRoutingModule } from './overview-routing.module';
   ],
   imports: [
     CommonModule,
-    OverviewRoutingModule,
-    MatCardModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MaterialModule
   ],
   exports: [],
   providers: [],

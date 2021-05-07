@@ -6,8 +6,8 @@ import { BaseService } from './base.service';
 @Injectable({ providedIn: 'root' })
 export class DialogService<T> {
 
-    dialogRef: MatDialogRef<T>;
-    isPanelOpened: boolean;
+    private dialogRef: MatDialogRef<T>;
+    private isPanelOpened: boolean;
 
     constructor(private baseService: BaseService, private dialog: MatDialog) {
         this.baseService.$isHandset.subscribe((result) => {

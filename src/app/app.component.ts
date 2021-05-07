@@ -31,7 +31,7 @@ export class AppComponent {
       console.log(user)
       if (user) {
         this.isUserLogged = true;
-        this.router.navigate(['/overview']);
+        this.router.navigate(['/accounts']);
       } else {
         this.isUserLogged = false;
         this.router.navigate(['/login']);

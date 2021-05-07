@@ -6,7 +6,7 @@ import { TransactionItem } from '@core/models/transactions/transactionItem.model
 import { AuthService } from '@core/services/auth.service';
 import { BaseService } from '@core/services/base.service';
 import { DialogService } from '@core/services/dialog.service';
-import { CardsComponent } from '@features/cards/components/cards-page/cards.component';
+import { AccountsComponent } from '@features/accounts/components/accounts-page/accounts.component';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
@@ -21,14 +21,14 @@ export class TransactionsComponent implements OnInit, OnDestroy {
   value$: BehaviorSubject<number | null>;
   userId: string | undefined;
   subscriptions = new Subscription();
-  dialogRef: MatDialogRef<CardsComponent>;
+  dialogRef: MatDialogRef<AccountsComponent>;
   isPanelOpened: boolean = false;
 
-  constructor(private db: AngularFireDatabase, private authService: AuthService, private baseService: BaseService, private dialogService: DialogService<CardsComponent>) {
+  constructor(private db: AngularFireDatabase, private authService: AuthService, private baseService: BaseService, private dialogService: DialogService<AccountsComponent>) {
     this.authService.user.then((user) => this.userId = user?.uid);
 
     this.subscriptions.add(this.baseService.$addNewItem.subscribe(() => {
-      this.dialogRef = this.dialogService.open(CardsComponent)
+      this.dialogRef = this.dialogService.open(AccountsComponent)
     }));
   }
 

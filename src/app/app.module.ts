@@ -7,9 +7,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from '@core/core.module';
 import { environment } from '@environment/environment';
+import { AccountsModule } from '@features/accounts/accounts.module';
 import { LoginComponent } from '@features/auth/login/login.component';
 import { RegisterComponent } from '@features/auth/register/register.component';
-import { CardsModule } from '@features/cards/cards.module';
 import { OverviewModule } from '@features/overview/overview.module';
 import { TransactionsModule } from '@features/transactions/transactions.module';
 import { MaterialModule } from '@shared/material.module';
@@ -27,7 +27,7 @@ import { AppComponent } from './app.component';
   imports: [
     CoreModule,
     OverviewModule,
-    CardsModule,
+    AccountsModule,
     TransactionsModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     BrowserModule,

@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MaterialModule } from '@shared/material.module';
-import { CardsComponent } from './components/cards-page/cards.component';
+import { AccountsComponent } from './components/accounts-page/accounts.component';
 
 
 @NgModule({
   declarations: [
-    CardsComponent
+    AccountsComponent
   ],
   imports: [
     CommonModule,
@@ -15,4 +15,4 @@ import { CardsComponent } from './components/cards-page/cards.component';
   exports: [],
   providers: [],
 })
-export class CardsModule { }
+export class AccountsModule { }

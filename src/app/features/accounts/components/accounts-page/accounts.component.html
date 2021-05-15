@@ -1,1 +1,21 @@
-<mat-card>CARDS</mat-card>
+<!-- <mat-card>CARDS</mat-card> -->
+<div *ngIf="items$ | async; let items; else loading" style="height:100%;" gdAreas="header header | side content | footer footer" gdGap="16px" gdRows="auto auto auto"
+gdAreas.lt-md="header | side | content | footer" gdRows.lt-md="auto auto auto auto">
+    <mat-card *ngFor="let item of items">
+      <p >
+        {{ 'balance: ' + item.payload.val()?.balance }}
+      </p>
+      <p >
+        {{ 'name: ' + item.payload.val()?.name }}
+      </p>
+      <p >
+        {{ 'type: ' + item.payload.val()?.type }}
+      </p>
+      <p>
+        {{ 'key: ' + item.payload.key }}
+      </p>
+      <button mat-raised-button color="primary" type="button" (click)="removeAccount(item.payload.key)">Remove</button>
+    </mat-card>
+    <div *ngIf="items.length === 0">No results, try clearing filters</div>
+  </div>
+  <ng-template #loading>Loading&hellip;</ng-template>

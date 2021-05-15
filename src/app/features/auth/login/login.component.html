@@ -1,6 +1,6 @@
-<form class="example-form" (submit)="login()" #loginForm="ngForm">
+<form class="login-form" (submit)="login()" #loginForm="ngForm">
     <span class="header-text">Zaloguj się</span>
-    <mat-form-field class="example-full-width" appearance="outline">
+    <mat-form-field class="form-full-width" appearance="outline">
         <mat-label>Email</mat-label>
         <input [formControl]="email" matInput placeholder="Ex. pat@example.com" required>
         <mat-icon matSuffix style="margin-right: 4px;">email</mat-icon>
@@ -8,10 +8,10 @@
             {{getErrorMessage()}}
         </mat-error>
     </mat-form-field>
-    <mat-form-field class="example-full-width" appearance="outline">
+    <mat-form-field class="form-full-width" appearance="outline">
         <mat-label>Hasło</mat-label>
         <input [type]="hidePassword ? 'password' : 'text'" [formControl]="password" matInput required>
-        <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'"
+        <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" tabindex="-1" [attr.aria-label]="'Hide password'"
             [attr.aria-pressed]="hidePassword">
             <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>

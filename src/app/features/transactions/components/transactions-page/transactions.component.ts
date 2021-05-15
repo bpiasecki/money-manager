@@ -24,11 +24,11 @@ export class TransactionsComponent implements OnInit, OnDestroy {
   dialogRef: MatDialogRef<AccountsComponent>;
   isPanelOpened: boolean = false;
 
-  constructor(private db: AngularFireDatabase, private authService: AuthService, private baseService: BaseService, private dialogService: DialogService<AccountsComponent>) {
+  constructor(private db: AngularFireDatabase, private authService: AuthService, private baseService: BaseService, private dialogService: DialogService) {
     this.authService.user.then((user) => this.userId = user?.uid);
 
     this.subscriptions.add(this.baseService.$addNewItem.subscribe(() => {
-      this.dialogRef = this.dialogService.open(AccountsComponent)
+      this.dialogService.open(AccountsComponent)
     }));
   }
 

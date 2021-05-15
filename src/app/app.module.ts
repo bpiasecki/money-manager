@@ -2,7 +2,6 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { NgModule } from '@angular/core';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from '@core/core.module';
@@ -13,6 +12,7 @@ import { RegisterComponent } from '@features/auth/register/register.component';
 import { OverviewModule } from '@features/overview/overview.module';
 import { TransactionsModule } from '@features/transactions/transactions.module';
 import { MaterialModule } from '@shared/material.module';
+import { SharedModule } from '@shared/shared.module';
 import { NgScrollbarModule } from 'ngx-scrollbar';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -34,9 +34,8 @@ import { AppComponent } from './app.component';
     AppRoutingModule,
     AngularFireAuthModule,
     BrowserAnimationsModule,
-    FormsModule,
     LayoutModule,
-    ReactiveFormsModule,
+    SharedModule,
     MaterialModule,
     NgScrollbarModule.withConfig({
       appearance: 'compact'

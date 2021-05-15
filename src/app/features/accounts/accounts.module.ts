@@ -1,16 +1,20 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MaterialModule } from '@shared/material.module';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { SharedModule } from '@shared/shared.module';
+import { AccountAddComponent } from './components/account-add/account-add.component';
 import { AccountsComponent } from './components/accounts-page/accounts.component';
 
 
 @NgModule({
   declarations: [
-    AccountsComponent
+    AccountsComponent,
+    AccountAddComponent
   ],
   imports: [
     CommonModule,
-    MaterialModule
+    SharedModule,
+    FlexLayoutModule,
   ],
   exports: [],
   providers: [],

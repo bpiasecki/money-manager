@@ -55,10 +55,11 @@
 }
 
 .sidenav-content {
-  background: darkgray;
+  // background: darkgray;
   // background: mat-color($primary);
   // display: flex;
   // justify-content: center;
+  backdrop-filter: blur(5px);
   align-items: center;
   color: white;
   font-size: x-large;

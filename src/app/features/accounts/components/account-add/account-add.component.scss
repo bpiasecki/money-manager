@@ -1,0 +1,33 @@
+.login-form {
+    padding: 8%;
+}
+
+.header-text {
+    font-weight: 400;
+    font-size: 30px;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.account-add-form {
+    mat-form-field {
+        width: 100%;
+    }
+    max-width: 600px;
+}
+
+.addition-text {
+    text-align: center;
+    margin-top: 20px;
+    display: block;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    button {
+        flex-basis: 100px;
+        margin: 0px 10px;
+    }
+}

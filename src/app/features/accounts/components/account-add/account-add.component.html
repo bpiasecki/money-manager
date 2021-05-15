@@ -1,0 +1,53 @@
+<form class="account-add-form" (submit)="addAccount()" #accountAddForm="ngForm">
+    <span class="header-text">Dodaj konto</span>
+
+    <mat-form-field>
+        <mat-label>Typ</mat-label>
+        <mat-select [(ngModel)]="account.type" name="accountType">
+            <mat-option *ngFor="let item of walletItemTypes" [value]="item.type">
+              {{item.name}}
+            </mat-option>
+          </mat-select>
+      </mat-form-field>
+
+
+    <mat-form-field>
+        <mat-label>Nazwa</mat-label>
+        <input type="text" [(ngModel)]="account.name" name="accountName" matInput required>
+        <!-- <mat-icon matSuffix style="margin-right: 4px;">email</mat-icon> -->
+        <!-- <mat-error *ngIf="!name.valid">
+            {{getErrorMessage()}}
+        </mat-error> -->
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Saldo</mat-label>
+        <input type="number" [(ngModel)]="account.balance" name="accountBalance" matInput required>
+        <!-- <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" tabindex="-1" [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hidePassword">
+            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button> -->
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Ikona</mat-label>
+        <input type="text" [(ngModel)]="account.icon" name="icon" matInput required>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Kolor</mat-label>
+        <input type="text" [(ngModel)]="account.color" name="color" matInput required>
+    </mat-form-field>
+
+
+    <mat-checkbox name="isDefault" [(ngModel)]="account.isDefault">Domyślny środek płatności</mat-checkbox>
+    <mat-checkbox name="isCalculatedInSummary" [(ngModel)]="account.isCalculatedInSummary">Uwzględniony do obliczania całościowego salda</mat-checkbox>
+
+
+    <div class="modal-buttons">
+        <button mat-raised-button color="primary" type="submit">Dodaj</button>
+        <button mat-raised-button color="error" type="button" (click)="closePanel()">Anuluj</button>
+    </div>
+
+    <!-- <button mat-raised-button color="primary" type="submit" style="width: 100%!important;">Zaloguj</button>
+    <span class="addition-text">Nie masz konta? <a [routerLink]="['/signup']">Zarejestruj się</a>
+    </span> -->
+</form>

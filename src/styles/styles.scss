@@ -57,12 +57,18 @@ ng-scrollbar {
   }
 }
 
-.mat-dialog-container {
-  .modal-center-page {
-    margin-left: 200px;
-  }
+.modal-center-page {
+  margin-left: 200px;
+}
 
-  .modal-center-body {
-    margin-left: 0px;
-  }
+.modal-center-body {
+  margin-left: 0px;
+}
+
+.mat-checkbox {
+  display: block!important;
+}
+
+.mat-dialog-container {
+  border-radius: 15px!important;
 }

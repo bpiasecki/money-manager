@@ -1,21 +1,50 @@
-<!-- <mat-card>CARDS</mat-card> -->
-<div *ngIf="items$ | async; let items; else loading" style="height:100%;" gdAreas="header header | side content | footer footer" gdGap="16px" gdRows="auto auto auto"
-gdAreas.lt-md="header | side | content | footer" gdRows.lt-md="auto auto auto auto">
-    <mat-card *ngFor="let item of items">
-      <p >
-        {{ 'balance: ' + item.payload.val()?.balance }}
-      </p>
-      <p >
-        {{ 'name: ' + item.payload.val()?.name }}
-      </p>
-      <p >
-        {{ 'type: ' + item.payload.val()?.type }}
-      </p>
-      <p>
-        {{ 'key: ' + item.payload.key }}
-      </p>
-      <button mat-raised-button color="primary" type="button" (click)="removeAccount(item.payload.key)">Remove</button>
-    </mat-card>
-    <div *ngIf="items.length === 0">No results, try clearing filters</div>
+<ng-scrollbar>
+  <div *ngIf="items$ | async; let items" class="accounts-view">
+    <div class="all-accounts-balance">
+      {{ items | sumValue | currency:'PLN':'symbol-narrow'}}
+    </div>
+
+    <div>
+      <div class="items">
+        <div *ngFor="let item of items" class="item" [ngStyle]="{'background': item.payload.val()?.color}">
+          <div>
+            <div class="account-name">
+              {{ item.payload.val()?.name }}
+            </div>
+            <div class="account-type">
+              {{item.payload.val()?.type | accountType | uppercase}}
+            </div>
+          </div>
+          <div class="account-balance">
+            {{ item.payload.val()?.balance | currency:'PLN':'symbol-narrow'}}
+          </div>
+          <div class="action-buttons">
+            <button mat-raised-button color="primary" type="button" title="Usuń konto"
+              (click)="removeAccount(item.payload.key)">
+              <mat-icon>delete</mat-icon>
+            </button>
+            <button mat-raised-button color="primary" type="button" title="Edytuj konto"
+              (click)="editAccount(item.payload.key)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-raised-button color="primary" type="button" title="Dodaj transakcję">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div *ngIf="items.length === 0">No results, try clearing filters</div>
+      </div>
+
+      <div class="manage-accounts-buttons">
+        <button mat-raised-button color="primary" type="button" title="Dodaj konto" (click)="addAccount()">
+          <mat-icon>add</mat-icon>
+        </button>
+        <button mat-raised-button color="primary" type="button" title="Przenieś środki" (click)="addAccount()">
+          <mat-icon>sync_alt</mat-icon>
+        </button>
+      </div>
+
+    </div>
+    <div style="text-align: center;color: white; margin-top: 30px;">MENU - tabs picker</div>
   </div>
-  <ng-template #loading>Loading&hellip;</ng-template>
+</ng-scrollbar>

@@ -25,7 +25,6 @@ body {
 router-outlet + * {
   width: 100%;
   height: 100%;
-  overflow: auto;
 }
 
 //replace autofilled form-field style
@@ -66,9 +65,17 @@ ng-scrollbar {
 }
 
 .mat-checkbox {
-  display: block!important;
+  display: block !important;
 }
 
 .mat-dialog-container {
-  border-radius: 15px!important;
+  border-radius: 15px !important;
+}
+
+.center-page {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

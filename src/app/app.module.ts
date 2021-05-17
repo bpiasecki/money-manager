@@ -1,5 +1,7 @@
 import { LayoutModule } from '@angular/cdk/layout';
-import { NgModule } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localePl from '@angular/common/locales/pl';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { BrowserModule } from '@angular/platform-browser';
@@ -17,6 +19,7 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+registerLocaleData(localePl);
 
 @NgModule({
   declarations: [
@@ -41,7 +44,10 @@ import { AppComponent } from './app.component';
       appearance: 'compact'
     }),
   ],
-  providers: [],
+  providers: [{
+    provide: LOCALE_ID,
+    useValue: 'pl'
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

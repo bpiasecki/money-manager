@@ -27,7 +27,7 @@
 }
 
 .active {
-  background-color: mat-color($primary)!important;
+  background-color: mat-color($primary) !important;
   color: white;
 }
 
@@ -55,16 +55,11 @@
 }
 
 .sidenav-content {
-  // background: darkgray;
-  // background: mat-color($primary);
-  // display: flex;
-  // justify-content: center;
   backdrop-filter: blur(5px);
   align-items: center;
   color: white;
   font-size: x-large;
   height: calc(100% - 55px);
-  // padding: 20px;
   overflow: auto;
 }
 
@@ -93,12 +88,9 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  z-index: 2;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
+  right: 0;
+  left: 0;
+  overflow: auto;
 }
 
 .overview-panel-container {

@@ -8,7 +8,7 @@ export class WalletItem {
     isDefault: boolean;
     isCalculatedInSummary: boolean;
     icon: string;
-    color: string;
+    color: string = 'rgba(0, 0, 0, 0.35)';
     startDate: Date;
     endDate: Date;
     targetValue: number;

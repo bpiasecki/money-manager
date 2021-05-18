@@ -1,13 +1,13 @@
 <div class="center-page">
     <form *ngIf="showPage && ($account | async) as account" class="account-add-form" (submit)="addEditAccount(account)"
-        #accountAddForm="ngForm" [@enterIn]>
-        <div [@preventInitialChildAnimations] >
+        #accountAddForm="ngForm" [@showHideEditPage]>
+        <div [@preventInitialChildAnimations]>
             
             <span class="header-text">{{!!itemKey ? 'Edytuj konto' : 'Dodaj konto'}}</span>
     
             <mat-form-field appearance="outline">
                 <mat-label>Typ</mat-label>
-                <mat-select [(ngModel)]="account.type" name="accountType">
+                <mat-select [(ngModel)]="account.type" name="accountType" required>
                     <mat-option *ngFor="let item of walletItemTypesList" [value]="item.type">
                         {{item.name}}
                     </mat-option>
@@ -47,7 +47,7 @@
     
             <div class="modal-buttons">
                 <button mat-raised-button color="primary" type="button" (click)="closePanel()">Anuluj</button>
-                <button mat-raised-button color="primary" type="submit">{{!!itemKey ? 'Zapisz' : 'Dodaj'}}</button>
+                <button mat-raised-button color="primary" type="submit" [disabled]="accountAddForm.invalid || (account.type == AccountTypes.Debt && account.debtType === undefined)">{{!!itemKey ? 'Zapisz' : 'Dodaj'}}</button>
             </div>
         </div>
         

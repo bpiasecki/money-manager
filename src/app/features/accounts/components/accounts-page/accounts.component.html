@@ -1,31 +1,30 @@
 <ng-scrollbar>
-  <div *ngIf="showPage && (items$ | async); let items" class="accounts-view" [@enterIn]>
+  <div *ngIf="showPage && (items$ | async); let items" class="accounts-view" [@showHideMainPage]>
     <div class="all-accounts-balance">
       {{ items | sumValue | currency:'PLN':'symbol-narrow'}}
     </div>
 
     <div>
       <div class="items">
-        <div *ngFor="let item of items" class="item" [ngStyle]="{'background': item.payload.val()?.color}">
+        <div *ngFor="let item of items" class="item" [ngStyle]="{'background': item.data.color}">
           <div>
             <div class="account-name">
-              {{ item.payload.val()?.name }}
+              {{ item.data.name }}
             </div>
             <div class="account-type">
-              {{item.payload.val()?.type | accountType | uppercase}}
+              {{item.data.type | accountType | uppercase}}
             </div>
           </div>
           <div class="account-balance">
-            <!-- {{ 0 | currency:'PLN':'symbol-narrow'}} -->
-            {{ (item.payload.val()?.debtType === DebtTypes.BorrowedFromSomeone ? '-' : "") + (item.payload.val()?.balance | currency:'PLN':'symbol-narrow')}}
+            {{ (item.data.debtType === DebtTypes.BorrowedFromSomeone ? '-' : "") + (item.data.balance | currency:'PLN':'symbol-narrow')}}
           </div>
           <div class="action-buttons">
             <button mat-raised-button color="primary" type="button" title="Usuń konto"
-              (click)="removeAccount(item.payload.key)">
+              (click)="removeAccount(item.key)">
               <mat-icon>delete</mat-icon>
             </button>
             <button mat-raised-button color="primary" type="button" title="Edytuj konto"
-              (click)="editAccount(item.payload.key)">
+              (click)="editAccount(item.key)">
               <mat-icon>edit</mat-icon>
             </button>
             <button mat-raised-button color="primary" type="button" title="Dodaj transakcję">

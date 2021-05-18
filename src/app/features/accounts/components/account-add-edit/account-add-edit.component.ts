@@ -1,4 +1,3 @@
-import { animate, style, transition, trigger } from '@angular/animations';
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { AngularFireDatabase, AngularFireObject } from '@angular/fire/database';
@@ -11,6 +10,7 @@ import { DialogService } from '@core/services/dialog.service';
 import { PreventInitialChildAnimations } from '@shared/animations/preventInitialChildAnimations.animation';
 import { ShowHideButtonAnimation } from '@shared/animations/showHideButton.animation';
 import { ShowHideCheckboxAnimation } from '@shared/animations/showHideCheckbox.animation';
+import { ShowHideEditPage } from '@shared/animations/showHideEditPage.animation';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
@@ -22,16 +22,7 @@ import { map, tap } from 'rxjs/operators';
     ShowHideButtonAnimation,
     ShowHideCheckboxAnimation,
     PreventInitialChildAnimations,
-    trigger('enterIn', [
-      transition(':enter', [
-          style({ transform: 'scale(1.3)', opacity: 0 }),
-          animate('.2s ease-out', style({ transform: 'scale(1)',  opacity: 0.9 }))
-      ]),
-      transition(':leave', [
-          style({ transform: 'scale(1)', opacity: 0.9 }),
-          animate('.2s ease-out', style({ transform: 'scale(1.3)', opacity: 0 }))
-      ])
-  ])
+    ShowHideEditPage
   ]
 })
 export class AccountAddEditComponent implements OnInit {

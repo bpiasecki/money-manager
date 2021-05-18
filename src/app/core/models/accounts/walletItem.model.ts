@@ -3,7 +3,7 @@ import { WalletItemType } from "./walletItemType.model";
 
 export class WalletItem {
     name: string;
-    balance: number;
+    balance: number = 0;
     type: WalletItemType;
     description: string;
     isDefault: boolean;

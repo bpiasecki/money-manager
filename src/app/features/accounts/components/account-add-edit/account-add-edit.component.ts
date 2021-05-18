@@ -1,22 +1,45 @@
+import { animate, style, transition, trigger } from '@angular/animations';
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { AngularFireDatabase, AngularFireObject } from '@angular/fire/database';
 import { ActivatedRoute } from '@angular/router';
+import { DebtType } from '@core/models/accounts/debtType.model';
 import { WalletItem } from '@core/models/accounts/walletItem.model';
-import { WalletItemTypesList } from '@core/models/accounts/walletItemType.model';
+import { WalletItemType, WalletItemTypesList } from '@core/models/accounts/walletItemType.model';
 import { AuthService } from '@core/services/auth.service';
 import { DialogService } from '@core/services/dialog.service';
+import { PreventInitialChildAnimations } from '@shared/animations/preventInitialChildAnimations.animation';
+import { ShowHideButtonAnimation } from '@shared/animations/showHideButton.animation';
+import { ShowHideCheckboxAnimation } from '@shared/animations/showHideCheckbox.animation';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'mm-account-add-edit',
   templateUrl: './account-add-edit.component.html',
-  styleUrls: ['./account-add-edit.component.scss']
+  styleUrls: ['./account-add-edit.component.scss'],
+  animations: [
+    ShowHideButtonAnimation,
+    ShowHideCheckboxAnimation,
+    PreventInitialChildAnimations,
+    trigger('enterIn', [
+      transition(':enter', [
+          style({ transform: 'scale(1.3)', opacity: 0 }),
+          animate('.2s ease-out', style({ transform: 'scale(1)',  opacity: 0.9 }))
+      ]),
+      transition(':leave', [
+          style({ transform: 'scale(1)', opacity: 0.9 }),
+          animate('.2s ease-out', style({ transform: 'scale(1.3)', opacity: 0 }))
+      ])
+  ])
+  ]
 })
 export class AccountAddEditComponent implements OnInit {
 
-  public walletItemTypes = WalletItemTypesList;
+  public walletItemTypesList = WalletItemTypesList;
+
+  public AccountTypes = WalletItemType;
+  public DebtTypes = DebtType;
 
   public colors = [
     { color: 'rgba(0, 0, 0, 0.35)', checked: false },
@@ -31,6 +54,8 @@ export class AccountAddEditComponent implements OnInit {
   private dbItem: AngularFireObject<WalletItem>;
   public itemKey: string | undefined;
   public $account: Observable<WalletItem>;
+  public dataLoaded: boolean = false;
+  public showPage: boolean = true;
 
   constructor(private location: Location, private route: ActivatedRoute, private db: AngularFireDatabase, private authService: AuthService, private dialogService: DialogService) {
     this.authService.user.then((user) => {
@@ -38,7 +63,7 @@ export class AccountAddEditComponent implements OnInit {
       this.route.params.subscribe((params) => {
         this.itemKey = params['id'];
         this.dbItem = this.db.object<WalletItem>(`accounts/${this.userId}/${this.itemKey}`);
-        this.$account = this.dbItem.valueChanges().pipe(map(res => res ?? new WalletItem()));
+        this.$account = this.dbItem.valueChanges().pipe(tap(() => this.dataLoaded = true), map(res => res ?? new WalletItem()));
       })
     });
 
@@ -59,6 +84,10 @@ export class AccountAddEditComponent implements OnInit {
   }
 
   public closePanel(): void {
-    this.location.back()
+    this.showPage = false;
+    setTimeout(() => {
+      this.location.back()
+    }, 200);
+
   }
 }

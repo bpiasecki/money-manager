@@ -1,3 +1,4 @@
+import { DebtType } from "./debtType.model";
 import { WalletItemType } from "./walletItemType.model";
 
 export class WalletItem {
@@ -6,7 +7,7 @@ export class WalletItem {
     type: WalletItemType;
     description: string;
     isDefault: boolean;
-    isCalculatedInSummary: boolean;
+    isCalculatedInSummary: boolean = true;
     icon: string;
     color: string = 'rgba(0, 0, 0, 0.35)';
     startDate: Date;
@@ -14,4 +15,5 @@ export class WalletItem {
     targetValue: number;
     targetName: string;
     targetDescription: string;
+    debtType: DebtType;
 }

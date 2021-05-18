@@ -1,5 +1,5 @@
 <ng-scrollbar>
-  <div *ngIf="items$ | async; let items" class="accounts-view">
+  <div *ngIf="showPage && (items$ | async); let items" class="accounts-view" [@enterIn]>
     <div class="all-accounts-balance">
       {{ items | sumValue | currency:'PLN':'symbol-narrow'}}
     </div>
@@ -16,7 +16,8 @@
             </div>
           </div>
           <div class="account-balance">
-            {{ item.payload.val()?.balance | currency:'PLN':'symbol-narrow'}}
+            <!-- {{ 0 | currency:'PLN':'symbol-narrow'}} -->
+            {{ (item.payload.val()?.debtType === DebtTypes.BorrowedFromSomeone ? '-' : "") + (item.payload.val()?.balance | currency:'PLN':'symbol-narrow')}}
           </div>
           <div class="action-buttons">
             <button mat-raised-button color="primary" type="button" title="Usuń konto"

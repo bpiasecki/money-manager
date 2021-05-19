@@ -13,8 +13,8 @@ const routes: Routes = [
   { path: 'signup', component: RegisterComponent },
   { path: 'overview', component: OverviewComponent },
   { path: 'accounts', component: AccountsComponent },
-  { path: 'accountAdd', component: AccountAddEditComponent },
-  { path: 'accountAdd/:id', component: AccountAddEditComponent },
+  { path: 'accountAddEdit', component: AccountAddEditComponent },
+  { path: 'accountAddEdit/:id', component: AccountAddEditComponent },
   { path: 'transactions', component: TransactionsComponent },
 ];
 

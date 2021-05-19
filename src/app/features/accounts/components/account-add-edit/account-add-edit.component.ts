@@ -9,6 +9,7 @@ import { PreventInitialChildAnimations } from '@shared/animations/preventInitial
 import { ShowHideButtonAnimation } from '@shared/animations/showHideButton.animation';
 import { ShowHideCheckboxAnimation } from '@shared/animations/showHideCheckbox.animation';
 import { ShowHideEditPage } from '@shared/animations/showHideEditPage.animation';
+import { ShowHideFormFieldAnimation } from '@shared/animations/showHideFormField.animation';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -19,7 +20,8 @@ import { Observable } from 'rxjs';
     ShowHideButtonAnimation,
     ShowHideCheckboxAnimation,
     PreventInitialChildAnimations,
-    ShowHideEditPage
+    ShowHideEditPage,
+    ShowHideFormFieldAnimation
   ]
 })
 export class AccountAddEditComponent implements OnInit {

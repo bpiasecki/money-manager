@@ -2,9 +2,9 @@
     <form *ngIf="showPage && ($account | async) as account" class="account-add-form" (submit)="addEditAccount(account)"
         #accountAddForm="ngForm" [@showHideEditPage]>
         <div [@preventInitialChildAnimations]>
-            
+
             <span class="header-text">{{!!itemKey ? 'Edytuj konto' : 'Dodaj konto'}}</span>
-    
+
             <mat-form-field appearance="outline">
                 <mat-label>Typ</mat-label>
                 <mat-select [(ngModel)]="account.type" name="accountType" required>
@@ -13,43 +13,48 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-    
+
             <div *ngIf="account.type == AccountTypes.Debt" class="debt-type-picker" [@showHideButton]>
-                <button disableRipple mat-raised-button color="primary" type="button" [ngClass]="{'active': account.debtType == DebtTypes.BorrowedFromMe}"
+                <button disableRipple mat-raised-button color="primary" type="button"
+                    [ngClass]="{'active': account.debtType == DebtTypes.BorrowedFromMe}"
                     (click)="account.debtType = DebtTypes.BorrowedFromMe">
                     Pożyczono ode mnie
                 </button>
-                <button disableRipple mat-raised-button color="primary" type="button" [ngClass]="{'active': account.debtType == DebtTypes.BorrowedFromSomeone}"
+                <button disableRipple mat-raised-button color="primary" type="button"
+                    [ngClass]="{'active': account.debtType == DebtTypes.BorrowedFromSomeone}"
                     (click)="account.debtType = DebtTypes.BorrowedFromSomeone">
                     Pożyczono od kogoś
                 </button>
             </div>
-    
+
             <mat-form-field appearance="outline">
                 <mat-label>Nazwa</mat-label>
                 <input type="text" [(ngModel)]="account.name" name="accountName" matInput required>
             </mat-form-field>
-    
+
             <mat-form-field appearance="outline">
                 <mat-label>{{account.type == AccountTypes.Debt ? 'Kwota' : 'Saldo'}}</mat-label>
                 <input type="number" [(ngModel)]="account.balance" name="accountBalance" matInput required>
             </mat-form-field>
-    
+
             <div class="color-picker">
                 <button disableRipple mat-button *ngFor="let colorItem of colors" type="button"
                     (click)="account.color = colorItem.color" [ngStyle]="{'background': colorItem.color}"
                     [ngClass]="{'active': colorItem.color == account.color}"></button>
             </div>
-    
-            <mat-checkbox *ngIf="account.type == AccountTypes.Account" [@showHideCheckbox] name="isDefault" [(ngModel)]="account.isDefault">Domyślny środek płatności</mat-checkbox>
+
+            <mat-checkbox *ngIf="account.type == AccountTypes.Account" [@showHideCheckbox] name="isDefault"
+                [(ngModel)]="account.isDefault">Domyślny środek płatności</mat-checkbox>
             <mat-checkbox name="isCalculatedInSummary" [(ngModel)]="account.isCalculatedInSummary">
                 Uwzględniony do obliczania całościowego salda</mat-checkbox>
-    
+
             <div class="modal-buttons">
                 <button mat-raised-button color="primary" type="button" (click)="closePanel()">Anuluj</button>
-                <button mat-raised-button color="primary" type="submit" [disabled]="accountAddForm.invalid || (account.type == AccountTypes.Debt && account.debtType === undefined)">{{!!itemKey ? 'Zapisz' : 'Dodaj'}}</button>
+                <button mat-raised-button color="primary" type="submit"
+                    [disabled]="accountAddForm.invalid || (account.type == AccountTypes.Debt && account.debtType === undefined)">
+                    {{!!itemKey ? 'Zapisz' : 'Dodaj'}}</button>
             </div>
         </div>
-        
+
     </form>
 </div>

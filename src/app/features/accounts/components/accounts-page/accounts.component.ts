@@ -1,13 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AngularFireDatabase } from '@angular/fire/database';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DebtType } from '@core/models/accounts/debtType.model';
 import { WalletItem } from '@core/models/accounts/walletItem.model';
 import { ItemKeyWithData } from '@core/models/itemKeyWithData.model';
-import { AuthService } from '@core/services/auth.service';
+import { AccountsService } from '@features/accounts/services/accounts.service';
 import { ShowHideMainPage } from '@shared/animations/showHideMainPage.animation';
-import { Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'mm-accounts',
@@ -15,56 +13,37 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./accounts.component.scss'],
   animations: [ShowHideMainPage]
 })
-export class AccountsComponent implements OnInit, OnDestroy {
-  private subscriptions = new Subscription();
+export class AccountsComponent implements OnInit {
 
   public DebtTypes = DebtType;
 
-  // items$: Observable<AngularFireAction<DatabaseSnapshot<WalletItem>>[]>;
   items$: Observable<ItemKeyWithData<WalletItem>[]>;
   userId: string | undefined;
   showPage: boolean = true;
 
-  constructor(private router: Router, private authService: AuthService, private db: AngularFireDatabase) {
-
-
-  }
+  constructor(private router: Router, private accountsService: AccountsService) { }
 
 
   ngOnInit(): void {
-    this.authService.authState$.subscribe((user) => {
-      this.userId = user?.uid;
-      this.items$ =
-        this.db.list<WalletItem>('accounts/' + this.userId
-          // , ref => value ? ref.orderByChild('value').equalTo(value) : ref
-        ).snapshotChanges().pipe(map((result) => {
-          const data = result.map(item => new ItemKeyWithData(<string>item.key, <WalletItem>item.payload.val()));
-          return data;
-        }))
-    });
+    this.items$ = this.accountsService.getAccountsList();
   }
 
-  public removeAccount(key: string | null): void {
-    if (key)
-      this.db.list<WalletItem>('accounts/' + this.userId).remove(key);
+  public removeAccount(key: string): void {
+    this.accountsService.removeAccount(key);
   }
 
   public addAccount() {
     this.showPage = false;
     setTimeout(() => {
-      this.router.navigate(['/accountAdd'])
+      this.router.navigate(['/accountAddEdit'])
     }, 200);
   }
 
-  public editAccount(key: string | null) {
+  public editAccount(key: string) {
     this.showPage = false;
     setTimeout(() => {
-      this.router.navigate(['/accountAdd/' + key])
+      this.router.navigate(['/accountAddEdit/' + key])
     }, 200);
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
   }
 
 }

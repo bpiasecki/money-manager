@@ -1,11 +1,25 @@
 
+.account-form-wrapper {
+    margin: auto;
+    width: 600px;
+    display: flex;
+}
 
 .account-add-form {
     mat-form-field {
         width: 100%;
         display: block;
+        height: 70px;
+        &.date-picker {
+            cursor: pointer;
+            input {
+                cursor: pointer;
+            }
+        }
     }
-    min-width: 500px;
+
+    width: 100%;
+    margin: 20px;
     padding: 35px;
     border-radius: 20px;
     background: white;

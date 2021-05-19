@@ -3,7 +3,7 @@ import { WalletItemType } from "./walletItemType.model";
 
 export class WalletItem {
     name: string;
-    balance: number = 0;
+    balance: number;
     type: WalletItemType;
     description: string;
     isDefault: boolean;
@@ -16,4 +16,5 @@ export class WalletItem {
     targetName: string;
     targetDescription: string;
     debtType: DebtType;
+    debtInitialValue: number;
 }

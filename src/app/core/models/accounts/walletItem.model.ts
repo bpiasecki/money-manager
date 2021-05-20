@@ -17,4 +17,5 @@ export class WalletItem {
     targetDescription: string;
     debtType: DebtType;
     debtInitialValue: number;
+    isSavingTargetSet: boolean;
 }

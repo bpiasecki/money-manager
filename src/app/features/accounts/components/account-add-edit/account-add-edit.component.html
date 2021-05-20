@@ -4,9 +4,9 @@
             <form *ngIf="showPage && ($account | async) as account" class="account-add-form"
                 (submit)="addEditAccount(account)" #accountAddForm="ngForm" [@showHideEditPage]>
                 <div [@preventInitialChildAnimations]>
-    
+
                     <span class="header-text">{{!!itemKey ? 'Edytuj konto' : 'Dodaj konto'}}</span>
-    
+
                     <mat-form-field appearance="outline">
                         <mat-label>Typ</mat-label>
                         <mat-select [(ngModel)]="account.type" name="accountType" required>
@@ -15,7 +15,7 @@
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
-    
+
                     <div *ngIf="account.type == AccountTypes.Debt" class="debt-type-picker" [@showHideButton]>
                         <button disableRipple mat-raised-button color="primary" type="button"
                             [ngClass]="{'active': account.debtType == DebtTypes.BorrowedFromMe}"
@@ -28,12 +28,12 @@
                             Pożyczono od kogoś
                         </button>
                     </div>
-    
+
                     <mat-form-field appearance="outline">
                         <mat-label>Nazwa</mat-label>
                         <input type="text" [(ngModel)]="account.name" name="accountName" matInput required>
                     </mat-form-field>
-    
+
                     <div *ngIf="account.type == AccountTypes.Debt" [@showHideFormField]>
                         <mat-form-field appearance="outline">
                             <mat-label>Całościowa wartość długu</mat-label>
@@ -41,42 +41,60 @@
                                 required>
                         </mat-form-field>
                     </div>
-    
+
                     <mat-form-field appearance="outline">
-                        <mat-label>{{account.type == AccountTypes.Debt ? 'Kwota pozostała do spłaty' : 'Saldo'}}</mat-label>
+                        <mat-label>{{account.type == AccountTypes.Debt ? 'Kwota pozostała do spłaty' : 'Saldo'}}
+                        </mat-label>
                         <input type="number" [(ngModel)]="account.balance" name="accountBalance" matInput required>
                     </mat-form-field>
-    
-                    <div *ngIf="account.type == AccountTypes.Debt" [@showHideFormField]>
+
+
+                    <mat-checkbox *ngIf="account.type == AccountTypes.Savings" name="isSavingTargetSet"
+                        class="checkbox-margin" [(ngModel)]="account.isSavingTargetSet" [@showHideCheckboxWithMargin]>
+                        Ustal cel oszczędnościowy</mat-checkbox>
+
+
+                    <div *ngIf="account.type == AccountTypes.Savings && account.isSavingTargetSet" [@showHideFormField]>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Wartość docelowa</mat-label>
+                            <input type="number" [(ngModel)]="account.targetValue" name="targetValue" matInput required>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="date-picker-field" *ngIf="account.type == AccountTypes.Debt" [@showHideFormField] (click)="startDatePicker.open()">
                         <mat-form-field appearance="outline">
                             <mat-label>Data zaciągnięcia długu</mat-label>
                             <input matInput [matDatepicker]="startDatePicker" name="startDate"
-                                [(ngModel)]="account.startDate">
+                                [(ngModel)]="account.startDate" readonly>
                             <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
                             <mat-datepicker touchUi #startDatePicker></mat-datepicker>
                         </mat-form-field>
                     </div>
-    
-                    <div *ngIf="account.type == AccountTypes.Debt" [@showHideFormField]>
+
+                    <div class="date-picker-field" *ngIf="account.type == AccountTypes.Debt || (account.type == AccountTypes.Savings && account.isSavingTargetSet)"
+                        [@showHideFormField] (click)="endDatePicker.open()">
                         <mat-form-field appearance="outline">
-                            <mat-label>Data spłaty długu</mat-label>
-                            <input matInput [matDatepicker]="endDatePicker" name="endDate" [(ngModel)]="account.endDate">
+                            <mat-label>
+                                {{ account.type == AccountTypes.Debt ? 'Data spłaty długu' : 'Data końcowa celu'}}
+                            </mat-label>
+                            <input matInput [matDatepicker]="endDatePicker" name="endDate"
+                                [(ngModel)]="account.endDate" readonly>
                             <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
                             <mat-datepicker touchUi #endDatePicker></mat-datepicker>
                         </mat-form-field>
                     </div>
-    
+
                     <div class="color-picker">
                         <button disableRipple mat-button *ngFor="let colorItem of colors" type="button"
                             (click)="account.color = colorItem.color" [ngStyle]="{'background': colorItem.color}"
                             [ngClass]="{'active': colorItem.color == account.color}"></button>
                     </div>
-    
+
                     <mat-checkbox *ngIf="account.type == AccountTypes.Account" [@showHideCheckbox] name="isDefault"
                         [(ngModel)]="account.isDefault">Domyślny środek płatności</mat-checkbox>
                     <mat-checkbox name="isCalculatedInSummary" [(ngModel)]="account.isCalculatedInSummary">
                         Uwzględniony do obliczania całościowego salda</mat-checkbox>
-    
+
                     <div class="modal-buttons">
                         <button mat-raised-button color="primary" type="button" (click)="closePanel()">Anuluj</button>
                         <button mat-raised-button color="primary" type="submit"
@@ -84,7 +102,7 @@
                             {{!!itemKey ? 'Zapisz' : 'Dodaj'}}</button>
                     </div>
                 </div>
-    
+
             </form>
         </div>
     </ng-scrollbar>

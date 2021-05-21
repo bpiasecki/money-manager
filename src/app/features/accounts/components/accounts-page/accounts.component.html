@@ -4,7 +4,7 @@
       {{ items | sumValue | currency:'PLN':'symbol-narrow'}}
     </div>
 
-    <div>
+    <div class="items-wrapper">
       <div class="items">
         <div *ngFor="let item of items" class="item" [ngStyle]="{'background': item.data.color}">
           <div>
@@ -16,7 +16,8 @@
             </div>
           </div>
           <div class="account-balance">
-            {{ (item.data.debtType === DebtTypes.BorrowedFromSomeone ? '-' : "") + (item.data.balance | currency:'PLN':'symbol-narrow')}}
+            {{ (item.data.debtType === DebtTypes.BorrowedFromSomeone ? '-' : "") + (item.data.balance |
+            currency:'PLN':'symbol-narrow')}}
           </div>
           <div class="action-buttons">
             <button mat-raised-button color="primary" type="button" title="Usuń konto"
@@ -45,6 +46,24 @@
       </div>
 
     </div>
-    <div style="text-align: center;color: white; margin-top: 30px;">MENU - tabs picker</div>
+    <div class="tabs">
+      <a routerLink="/accounts" routerLinkActive="selected" class="tab bookmarks-tab">
+        <div class="tab-tile" [attr.data-content]="'KONTA'">
+          <mat-icon class="material-icons-outlined">credit_card</mat-icon>
+        </div>
+      </a>
+
+      <a routerLink="/transactions" routerLinkActive="selected" class="tab todos-tab">
+        <div class="tab-tile" [attr.data-content]="'TRANSAKCJE'">
+          <mat-icon class="material-icons-outlined">receipt</mat-icon>
+        </div>
+      </a>
+
+      <a routerLink="notes" routerLinkActive="selected" class="tab notes-tab">
+        <div class="tab-tile" [attr.data-content]="'BUDŻETY'">
+          <mat-icon class="material-icons-outlined">price_change</mat-icon>
+        </div>
+      </a>
+    </div>
   </div>
 </ng-scrollbar>

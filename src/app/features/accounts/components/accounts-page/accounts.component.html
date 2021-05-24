@@ -1,69 +1,54 @@
-<ng-scrollbar>
-  <div *ngIf="showPage && (items$ | async); let items" class="accounts-view" [@showHideMainPage]>
-    <div class="all-accounts-balance">
-      {{ items | sumValue | currency:'PLN':'symbol-narrow'}}
-    </div>
+<div class="center-page">
+  <ng-scrollbar>
+    <div class="account-form-wrapper">
+      <div *ngIf="showPage && (items$ | async); let items" class="accounts-page-wrapper" [@showHideMainPage]>
+        <div class="all-accounts-balance">
+          {{ items | sumValue | currency:'PLN':'symbol-narrow'}}
+        </div>
 
-    <div class="items-wrapper">
-      <div class="items">
-        <div *ngFor="let item of items" class="item" [ngStyle]="{'background': item.data.color}">
-          <div>
-            <div class="account-name">
-              {{ item.data.name }}
+        <div class="items-wrapper">
+          <div class="items">
+            <div *ngFor="let item of items" class="item" [ngStyle]="{'background': item.data.color}">
+              <div>
+                <div class="account-name">
+                  {{ item.data.name }}
+                </div>
+                <div class="account-type">
+                  {{item.data.type | accountType | uppercase}}
+                </div>
+              </div>
+              <div class="account-balance">
+                {{ (item.data.debtType === DebtTypes.BorrowedFromSomeone ? '-' : "") + (item.data.balance |
+                currency:'PLN':'symbol-narrow')}}
+              </div>
+              <div class="action-buttons">
+                <button mat-raised-button color="primary" type="button" title="Usuń konto"
+                  (click)="removeAccount(item.key)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+                <button mat-raised-button color="primary" type="button" title="Edytuj konto"
+                  (click)="editAccount(item.key)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-raised-button color="primary" type="button" title="Dodaj transakcję">
+                  <mat-icon>add</mat-icon>
+                </button>
+              </div>
             </div>
-            <div class="account-type">
-              {{item.data.type | accountType | uppercase}}
-            </div>
+            <div *ngIf="items.length === 0">No results, try clearing filters</div>
           </div>
-          <div class="account-balance">
-            {{ (item.data.debtType === DebtTypes.BorrowedFromSomeone ? '-' : "") + (item.data.balance |
-            currency:'PLN':'symbol-narrow')}}
-          </div>
-          <div class="action-buttons">
-            <button mat-raised-button color="primary" type="button" title="Usuń konto"
-              (click)="removeAccount(item.key)">
-              <mat-icon>delete</mat-icon>
-            </button>
-            <button mat-raised-button color="primary" type="button" title="Edytuj konto"
-              (click)="editAccount(item.key)">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-raised-button color="primary" type="button" title="Dodaj transakcję">
+
+          <div class="manage-accounts-buttons">
+            <button mat-raised-button color="primary" type="button" title="Dodaj konto" (click)="addAccount()">
               <mat-icon>add</mat-icon>
             </button>
+            <button mat-raised-button color="primary" type="button" title="Przenieś środki" (click)="addAccount()">
+              <mat-icon>sync_alt</mat-icon>
+            </button>
           </div>
+
         </div>
-        <div *ngIf="items.length === 0">No results, try clearing filters</div>
       </div>
-
-      <div class="manage-accounts-buttons">
-        <button mat-raised-button color="primary" type="button" title="Dodaj konto" (click)="addAccount()">
-          <mat-icon>add</mat-icon>
-        </button>
-        <button mat-raised-button color="primary" type="button" title="Przenieś środki" (click)="addAccount()">
-          <mat-icon>sync_alt</mat-icon>
-        </button>
-      </div>
-
     </div>
-    <div class="tabs">
-      <a routerLink="/accounts" routerLinkActive="selected" class="tab bookmarks-tab">
-        <div class="tab-tile" [attr.data-content]="'KONTA'">
-          <mat-icon class="material-icons-outlined">credit_card</mat-icon>
-        </div>
-      </a>
-
-      <a routerLink="/transactions" routerLinkActive="selected" class="tab todos-tab">
-        <div class="tab-tile" [attr.data-content]="'TRANSAKCJE'">
-          <mat-icon class="material-icons-outlined">receipt</mat-icon>
-        </div>
-      </a>
-
-      <a routerLink="notes" routerLinkActive="selected" class="tab notes-tab">
-        <div class="tab-tile" [attr.data-content]="'BUDŻETY'">
-          <mat-icon class="material-icons-outlined">price_change</mat-icon>
-        </div>
-      </a>
-    </div>
-  </div>
-</ng-scrollbar>
+  </ng-scrollbar>
+</div>

@@ -1,10 +1,6 @@
-.accounts-view {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: calc(100% - 100px);
-    width: 100%;
-    margin: 50px 0;
+.accounts-page-wrapper {
+    margin: 40px 0;
+    display: grid;
 }
 
 .all-accounts-balance {
@@ -72,7 +68,7 @@
 .manage-accounts-buttons {
     box-shadow: 0px 0px 10px -2px #00000061;
     background: rgba(0, 0, 0, 0.1);
-    margin: 35px auto -15px;
+    margin: 20px auto;
     width: 165px;
     height: 70px;
     border-radius: 8px;
@@ -132,155 +128,29 @@
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-//BOTTOM MENU TABS STYLE :
-
-
-.tabs {
-    display: flex;
-    gap: 45px;
-    -webkit-backdrop-filter: blur(3px);
-    backdrop-filter: blur(3px);
-    justify-content: center;
-    padding: 15px;
+.account-form-wrapper {
     margin: 0 auto;
-    margin-top: 30px;
-    border-radius: 12px;
-    background: rgba(0, 0, 0, 0.2);
-}
-
-.material-icons-outlined {
-    color: gainsboro;
-    font-size: 34px;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0.4;
 }
 
-.tab {
-    position: relative;
-
-    text-decoration: none;
-
-    z-index: 1;
-}
-
-.tab-tile {
-    display: flex;
-
-    padding: 18px;
-
-    cursor: pointer;
-
-    i {
-        color: #222;
+.account-add-form {
+    mat-form-field {
+        width: 100%;
+        display: block;
+        height: 70px;
+        &.date-picker {
+            cursor: pointer;
+            input {
+                cursor: pointer;
+            }
+        }
     }
 
-    transition: all 0.2s ease-out;
-}
-
-.tab.selected .tab-tile {
-    transform: translateY(-30%);
-
-    transition-duration: 0.4s;
-    transition-timing-function: cubic-bezier(0, 0, 0, 2);
-    .material-icons-outlined {
-        opacity: 1;
-    }
-}
-
-// STYLES FOR THE TAB TILE BACKGROUND 'SHAPE'
-
-.tab-tile::before {
-    content: "";
-
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
-    height: 100%;
     width: 100%;
-    border-radius: 10px;
-    opacity: 0.4;
-    transition: all 0.2s;
-
-    background: linear-gradient(180deg, #0f0f0f, rgba(100, 100, 100, 0.1));
-}
-
-.tab-tile:hover {
-    transform: translateY(-6px);
-    &::before {
-        opacity: 0.6;
-    }
-    .material-icons-outlined {
-        opacity: 1;
-    }
-}
-
-.tab-tile:hover::after {
-    content: attr(data-content);
-    position: absolute;
-    bottom: -20px;
-    left: 0;
-    right: 0;
-    display: flex;
-    color: rgba(255,255,255,.7);
-    transition: all 1s;
-    opacity: 0.8;
-    justify-content: center;
-}
-
-.tab.selected .tab-tile::before {
-    opacity: 1;
-    transform: scale(1.1);
-    border-radius: 25%;
-
-    box-shadow: 0px 7px 17px rgba(black, 0.12);
-
-    transition-delay: 0.2s;
-}
-
-.tab.selected::after {
-    opacity: 1;
-    transform: scaleX(1);
-    transition-delay: 0.2s;
-}
-
-.tab.selected {
-    outline: none;
-}
-
-.tab::after {
-    content: "";
-    position: absolute;
-    bottom: 0px;
-    left: 0;
-    right: 0;
-    height: 3px;
-    width: 80%;
-    margin: auto;
-    background-color: rgba(white, 0.85);
-    transition: all 0.2s;
-
-    // hide by default
-    opacity: 0;
-    transform: scaleX(0);
-}
-
-.tab.selected::after {
-    opacity: 1;
-    transform: scaleX(1);
-    transition-delay: 0.2s;
+    margin: 20px;
+    padding: 35px;
+    border-radius: 20px;
+    background: white;
+    opacity: 0.9;
+    box-shadow: black 0px 0px 21px -1px;
 }

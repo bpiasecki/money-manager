@@ -18,7 +18,7 @@ export class AppComponent {
   isUserLogged = false;
   dataLoaded = false;
 
-  isHandset$ : Observable<boolean>;
+  isHandset$: Observable<boolean>;
 
   fullScreenBreakpoint$: Observable<boolean> = this.breakpointObserver.observe(['(max-width: 1400px)', '(max-height: 800px)'])
     .pipe(
@@ -29,12 +29,12 @@ export class AppComponent {
   constructor(private breakpointObserver: BreakpointObserver, private authService: AuthService, private router: Router, private baseService: BaseService) {
     this.authService.authState$.subscribe((user) => {
       console.log(user)
-      if (user) {
-        this.isUserLogged = true;
-        this.router.navigate(['/accounts']);
-      } else {
+      if (!user) {
         this.isUserLogged = false;
         this.router.navigate(['/login']);
+      } else {
+        this.isUserLogged = true;
+        this.router.navigate(['/accounts']);
       }
       this.dataLoaded = true;
     })

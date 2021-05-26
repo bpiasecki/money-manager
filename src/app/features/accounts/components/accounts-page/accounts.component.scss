@@ -1,9 +1,5 @@
-.accounts-page-wrapper {
-    margin: 40px 0;
-    display: grid;
-}
-
 .all-accounts-balance {
+    font-variant: petite-caps;
     text-align: center;
     font-size: 90px;
     font-family: fantasy;
@@ -34,8 +30,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%),
-                0px 1px 5px 0px rgb(0 0 0 / 12%);
+            box-shadow: 0 0px 1px -2px rgb(0 0 0 / 20%), 0 0px 0px 0 rgb(0 0 0 / 14%), 0 0px 5px 0 rgb(0 0 0 / 12%);
 
             .account-name {
                 text-align: center;
@@ -60,6 +55,7 @@
                 font-weight: bold;
                 line-height: 60px;
                 margin-bottom: 28px;
+                font-variant: petite-caps;
             }
         }
     }
@@ -85,16 +81,6 @@
             background: rgba(0, 0, 0, 0.7);
         }
     }
-}
-
-.remove-button {
-    position: absolute;
-    top: 3px;
-    right: 4px;
-    min-width: auto;
-    padding: 5px;
-    background: none;
-    box-shadow: none;
 }
 
 .action-buttons {
@@ -126,31 +112,4 @@
         border-bottom-left-radius: 0px;
         border-top-left-radius: 0px;
     }
-}
-
-.account-form-wrapper {
-    margin: 0 auto;
-    display: flex;
-}
-
-.account-add-form {
-    mat-form-field {
-        width: 100%;
-        display: block;
-        height: 70px;
-        &.date-picker {
-            cursor: pointer;
-            input {
-                cursor: pointer;
-            }
-        }
-    }
-
-    width: 100%;
-    margin: 20px;
-    padding: 35px;
-    border-radius: 20px;
-    background: white;
-    opacity: 0.9;
-    box-shadow: black 0px 0px 21px -1px;
 }

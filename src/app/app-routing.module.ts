@@ -3,18 +3,21 @@ import { RouterModule, Routes } from '@angular/router';
 import { AccountAddEditComponent } from '@features/accounts/components/account-add-edit/account-add-edit.component';
 import { AccountsComponent } from '@features/accounts/components/accounts-page/accounts.component';
 import { OverviewComponent } from '@features/overview/components/overview-page/overview.component';
+import { TransactionAddEditComponent } from '@features/transactions/components/transaction-add-edit/transaction-add-edit.component';
 import { TransactionsComponent } from '@features/transactions/components/transactions-page/transactions.component';
 import { LoginComponent } from './features/auth/login/login.component';
 import { RegisterComponent } from './features/auth/register/register.component';
 
 const routes: Routes = [
-  // { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', redirectTo: 'accounts', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: RegisterComponent },
   { path: 'overview', component: OverviewComponent },
   { path: 'accounts', component: AccountsComponent },
   { path: 'accountAddEdit', component: AccountAddEditComponent },
   { path: 'accountAddEdit/:id', component: AccountAddEditComponent },
+  { path: 'transactionAddEdit', component: TransactionAddEditComponent },
+  { path: 'transactionAddEdit/:id', component: TransactionAddEditComponent },
   { path: 'transactions', component: TransactionsComponent },
 ];
 

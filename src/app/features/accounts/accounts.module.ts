@@ -17,7 +17,7 @@ import { AccountsService } from './services/accounts.service';
     CommonModule,
     SharedModule,
     FlexLayoutModule,
-    NgScrollbarModule
+    NgScrollbarModule,
   ],
   exports: [],
   providers: [AccountsService],

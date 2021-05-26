@@ -1,7 +1,7 @@
 <div class="center-page">
   <ng-scrollbar>
-    <div class="account-form-wrapper">
-      <div *ngIf="showPage && (items$ | async); let items" class="accounts-page-wrapper" [@showHideMainPage]>
+    <div class="full-screen-page-wrapper">
+      <div *ngIf="showPage && (items$ | async); let items" class="full-screen-page" [@showHideMainPage]>
         <div class="all-accounts-balance">
           {{ items | sumValue | currency:'PLN':'symbol-narrow'}}
         </div>

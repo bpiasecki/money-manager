@@ -1,7 +1,7 @@
 <div class="center-page">
     <ng-scrollbar>
-        <div class="account-form-wrapper">
-            <form *ngIf="showPage && ($account | async) as account" class="account-add-form"
+        <div class="full-screen-form-wrapper">
+            <form *ngIf="showPage && ($account | async) as account" class="full-screen-form"
                 (submit)="addEditAccount(account)" #accountAddForm="ngForm" [@showHideEditPage]>
                 <div [@preventInitialChildAnimations]>
 

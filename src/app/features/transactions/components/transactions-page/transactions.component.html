@@ -22,4 +22,56 @@
     </button>
   </div> -->
 
-  <p>transactions</p>
+<div class="center-page">
+  <div class="transactions-page-wrapper">
+    <div *ngIf="showPage && ($items | async)" class="transactions-cards-wrapper" [@showHideMainPage]>
+      <mat-form-field class="filter-input">
+        <mat-label>Filter</mat-label>
+        <input matInput (keyup)="filterDatatable($event)" placeholder="Ex. Mia" #input autocomplete="off">
+      </mat-form-field>
+
+      <div class="items-wrapper">
+        <div class="transactions-table">
+          <ngx-datatable class="material" [rows]="filteredData" [columns]="columns" columnMode="force"
+            [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'">
+
+            <ngx-datatable-column name="id" [flexGrow]="1" [resizeable]="false">
+              <ng-template let-value="value" ngx-datatable-cell-template>
+                {{ value }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="name" [flexGrow]="1" [resizeable]="false">
+              <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                {{ value }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="phone" [flexGrow]="1" [resizeable]="false">
+              <ng-template let-value="value" ngx-datatable-cell-template>
+                {{ value }}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="phone" [maxWidth]='100' [resizeable]="false">
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                <mat-icon (click)="editTransaction(row)">add</mat-icon>
+                <mat-icon>remove</mat-icon>
+              </ng-template>
+            </ngx-datatable-column>
+
+          </ngx-datatable>
+
+        </div>
+
+
+      </div>
+
+
+      <div class="manage-accounts-buttons">
+        <button mat-raised-button color="primary" type="button" title="Dodaj transakcję" (click)="addTransaction()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

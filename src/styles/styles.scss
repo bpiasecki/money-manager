@@ -117,6 +117,15 @@ ng-scrollbar {
   }
 }
 
+.date-picker-field * {
+  cursor: pointer;
+}
+
+.empty-row {
+  color: white !important;
+  text-align: center !important;
+}
+
 .mat-datepicker-content-touch .mat-datepicker-content-container {
   width: 350px !important;
   height: auto !important;
@@ -167,6 +176,7 @@ ng-scrollbar {
 .datatable-header-cell {
   flex-grow: 1 !important;
   color: white !important;
+  margin: auto 0;
 }
 
 .datatable-header-cell {
@@ -197,4 +207,14 @@ ng-scrollbar {
 .ngx-datatable.material:not(.cell-selection) .datatable-body-row:hover,
 .ngx-datatable.material:not(.cell-selection) .datatable-body-row:hover .datatable-row-group {
   background: rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+}
+
+.datatable-body-cell-label {
+  white-space: nowrap;
+}
+
+.datatable-body-row.active,
+.datatable-body-row.active .datatable-row-group {
+  background: rgba(0, 0, 0, 0.35) !important;
 }

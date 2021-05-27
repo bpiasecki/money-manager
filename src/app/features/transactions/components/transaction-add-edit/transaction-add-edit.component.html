@@ -1,1 +1,105 @@
-<p>transaction-add-edit works!</p>
+<div class="center-page">
+    <ng-scrollbar>
+        <div class="full-screen-form-wrapper">
+            <form *ngIf="showPage && ($transaction | async) as transaction" class="full-screen-form"
+                (submit)="addEditTransaction(transaction)" #transactionsAddForm="ngForm" [@showHideEditPage]>
+                <div [@preventInitialChildAnimations]>
+                    <span class="header-text">{{!!itemKey ? 'Edytuj transakcję' : 'Dodaj transakcję'}}</span>
+
+                    <div class="transaction-type-picker">
+                        <button disableRipple mat-raised-button color="primary" type="button"
+                            [ngClass]="{'active': transaction.type == TransactionTypes.Income}"
+                            (click)="transaction.type = TransactionTypes.Income">
+                            <div class="icon-with-text">
+                                <mat-icon>add</mat-icon>
+                                <span>PRZYCHÓD</span>
+                            </div>
+                        </button>
+                        <button disableRipple mat-raised-button color="primary" type="button"
+                            [ngClass]="{'active': transaction.type == TransactionTypes.Expense}"
+                            (click)="transaction.type = TransactionTypes.Expense">
+
+                            <div class="icon-with-text">
+                                <mat-icon>remove</mat-icon>
+                                <span>WYDATEK</span>
+                            </div>
+                        </button>
+                        <button disableRipple mat-raised-button color="primary" type="button"
+                            [ngClass]="{'active': transaction.type == TransactionTypes.Transfer}"
+                            (click)="transaction.type = TransactionTypes.Transfer">
+
+                            <div class="icon-with-text">
+                                <mat-icon>sync_alt</mat-icon>
+                                <span>PRZELEW</span>
+                            </div>
+                        </button>
+                    </div>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Nazwa</mat-label>
+                        <input type="text" [(ngModel)]="transaction.name" name="transactionName" matInput required>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Kwota</mat-label>
+                        <input type="number" [(ngModel)]="transaction.value" name="transactionValue" matInput required>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Opis</mat-label>
+                        <input type="text" [(ngModel)]="transaction.description" name="transactionDescription" matInput>
+                    </mat-form-field>
+
+                    <div *ngIf="transaction.type != TransactionTypes.Income" [@showHideFormField]>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Konto źródłowe</mat-label>
+                            <mat-select [(ngModel)]="transaction.sourceAccount" name="transactionSourceAccount"
+                                required>
+                                <mat-option *ngFor="let item of $accounts | async" [value]="item.key">
+                                    {{item.data.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div *ngIf="transaction.type != TransactionTypes.Expense" [@showHideFormField]>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Konto docelowe</mat-label>
+                            <mat-select [(ngModel)]="transaction.targetAccount" name="transactionTargetAccount"
+                                required>
+                                <mat-option *ngFor="let item of $accounts | async" [value]="item.key">
+                                    {{item.data.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="date-picker-field" (click)="datePicker.open()">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Data transakcji</mat-label>
+                            <input matInput [matDatepicker]="datePicker" name="transactionDate"
+                                [(ngModel)]="transaction.transactionDate" readonly required>
+                            <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+                            <mat-datepicker touchUi #datePicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+
+                    <div *ngIf="transaction.type == TransactionTypes.Expense" [@showHideFormField]>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Gwarancja (msc)</mat-label>
+                            <input matInput type="number" min="0" step="1" name="transactionWarranty"
+                                [(ngModel)]="transaction.warrantyMonthNumber">
+                        </mat-form-field>
+                    </div>
+
+                    <div class="modal-buttons">
+                        <button mat-raised-button color="primary" type="button" (click)="closePanel()">Anuluj</button>
+                        <button mat-raised-button color="primary" type="submit"
+                            [disabled]="transactionsAddForm.invalid">
+                            {{!!itemKey ? 'Zapisz' : 'Dodaj'}}</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </ng-scrollbar>
+</div>

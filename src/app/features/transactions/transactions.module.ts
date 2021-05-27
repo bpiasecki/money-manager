@@ -1,10 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { AccountsService } from '@features/accounts/services/accounts.service';
 import { MaterialModule } from '@shared/material.module';
+import { SharedModule } from '@shared/shared.module';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { NgScrollbarModule } from 'ngx-scrollbar';
-import { TransactionsComponent } from './components/transactions-page/transactions.component';
 import { TransactionAddEditComponent } from './components/transaction-add-edit/transaction-add-edit.component';
+import { TransactionsComponent } from './components/transactions-page/transactions.component';
+import { TransactionsService } from './services/transactions.service';
 
 
 @NgModule({
@@ -14,11 +17,14 @@ import { TransactionAddEditComponent } from './components/transaction-add-edit/t
   ],
   imports: [
     CommonModule,
+    SharedModule,
     MaterialModule,
     NgScrollbarModule,
     NgxDatatableModule
   ],
   exports: [],
-  providers: [],
+  providers: [
+    TransactionsService, AccountsService
+  ],
 })
 export class TransactionsModule { }

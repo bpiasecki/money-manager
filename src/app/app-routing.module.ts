@@ -13,11 +13,11 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: RegisterComponent },
   { path: 'overview', component: OverviewComponent },
-  { path: 'accounts', component: AccountsComponent },
+  { path: 'accounts', component: AccountsComponent, },
   { path: 'accountAddEdit', component: AccountAddEditComponent },
   { path: 'accountAddEdit/:id', component: AccountAddEditComponent },
   { path: 'transactionAddEdit', component: TransactionAddEditComponent },
-  { path: 'transactionAddEdit/:id', component: TransactionAddEditComponent },
+  { path: 'transactionAddEdit/:param', component: TransactionAddEditComponent },
   { path: 'transactions', component: TransactionsComponent },
 ];
 

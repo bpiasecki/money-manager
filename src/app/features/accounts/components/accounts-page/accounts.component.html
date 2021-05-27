@@ -30,7 +30,8 @@
                   (click)="editAccount(item.key)">
                   <mat-icon>edit</mat-icon>
                 </button>
-                <button mat-raised-button color="primary" type="button" title="Dodaj transakcję">
+                <button mat-raised-button color="primary" type="button" title="Dodaj transakcję"
+                  (click)="addTransaction(item.key)">
                   <mat-icon>add</mat-icon>
                 </button>
               </div>
@@ -42,7 +43,7 @@
             <button mat-raised-button color="primary" type="button" title="Dodaj konto" (click)="addAccount()">
               <mat-icon>add</mat-icon>
             </button>
-            <button mat-raised-button color="primary" type="button" title="Przenieś środki" (click)="addAccount()">
+            <button mat-raised-button color="primary" type="button" title="Przenieś środki" (click)="addTransferTransaction()">
               <mat-icon>sync_alt</mat-icon>
             </button>
           </div>

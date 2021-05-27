@@ -1,30 +1,7 @@
-<!-- <button mat-raised-button color="primary" type="button" (click)="addItem(1)">1</button>
-<button mat-raised-button color="primary" type="button" (click)="addItem(2)">2</button>
-<button mat-raised-button color="primary" type="button" (click)="addItem(3)">3</button>
-
-<div *ngIf="items$ | async; let items; else loading">
-    <ul>
-      <li *ngFor="let item of items">
-        {{ item.payload.val().text }}
-        <code>{{ item.payload.key }}</code>
-      </li>
-    </ul>
-    <div *ngIf="items.length === 0">No results, try clearing filters</div>
-  </div>
-  <ng-template #loading>Loading&hellip;</ng-template>
-  <div>
-    <h4>Filter by size</h4>
-    <button (click)="filterBy(1)">1</button>
-    <button (click)="filterBy(2)">2</button>
-    <button (click)="filterBy(3)">3</button>
-    <button (click)="filterBy(null)" *ngIf="value$?.getValue()">
-      <em>clear filter</em>
-    </button>
-  </div> -->
-
 <div class="center-page">
   <div class="transactions-page-wrapper">
-    <div *ngIf="showPage && ($items | async)" class="transactions-cards-wrapper" [@showHideMainPage]>
+    <div *ngIf="showPage && accounts && ($items | async ) as transactions" class="transactions-cards-wrapper"
+      [@showHideMainPage]>
       <mat-form-field class="filter-input">
         <mat-label>Filter</mat-label>
         <input matInput (keyup)="filterDatatable($event)" placeholder="Ex. Mia" #input autocomplete="off">
@@ -32,40 +9,62 @@
 
       <div class="items-wrapper">
         <div class="transactions-table">
-          <ngx-datatable class="material" [rows]="filteredData" [columns]="columns" columnMode="force"
-            [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'">
+          <ngx-datatable class="material" [rows]="transactions" [columnMode]="ColumnMode.flex"
+            [sortType]="SortType.multi" [sorts]="[{prop: 'data.transactionDate', dir: 'desc'}]" [headerHeight]="50"
+            [footerHeight]="50" [rowHeight]="'auto'" (activate)="editTransaction($event)">
 
-            <ngx-datatable-column name="id" [flexGrow]="1" [resizeable]="false">
-              <ng-template let-value="value" ngx-datatable-cell-template>
-                {{ value }}
+            <ngx-datatable-column name="Lp." [maxWidth]='70' [resizeable]="false" [sortable]="false">
+              <ng-template let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                {{ rowIndex + 1 }}
               </ng-template>
             </ngx-datatable-column>
 
-            <ngx-datatable-column name="name" [flexGrow]="1" [resizeable]="false">
-              <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                {{ value }}
-              </ng-template>
-            </ngx-datatable-column>
-
-            <ngx-datatable-column name="phone" [flexGrow]="1" [resizeable]="false">
-              <ng-template let-value="value" ngx-datatable-cell-template>
-                {{ value }}
-              </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column name="phone" [maxWidth]='100' [resizeable]="false">
+            <ngx-datatable-column name="Data" [flexGrow]="1" [resizeable]="false" prop="data.transactionDate">
               <ng-template let-row="row" ngx-datatable-cell-template>
-                <mat-icon (click)="editTransaction(row)">add</mat-icon>
-                <mat-icon>remove</mat-icon>
+                {{ row.data.transactionDate | date}}
               </ng-template>
             </ngx-datatable-column>
+
+            <ngx-datatable-column name="Nazwa" [flexGrow]="1" [resizeable]="false" prop="data.name">
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{ row.data.name }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Konto" [flexGrow]="1" [resizeable]="false" [sortable]="false">
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{ row.data.sourceAccount | gridAccountName:row.data.targetAccount:accounts }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Kategoria" [flexGrow]="1" [resizeable]="false" [sortable]="false">
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{ row.data.category }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Kwota" [flexGrow]="1" [resizeable]="false" prop="data.value">
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{ row.data.value }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <!-- <ngx-datatable-column name="Akcje" [maxWidth]='120' [minWidth]='95' [resizeable]="false" [sortable]="false">
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                <div class="row-action-buttons">
+                  <button mat-raised-button color="primary" type="button" (click)="editTransaction(row)">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button mat-raised-button color="primary" type="button" (click)="removeTransaction(row)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </ng-template>
+            </ngx-datatable-column> -->
 
           </ngx-datatable>
-
         </div>
-
-
       </div>
-
 
       <div class="manage-accounts-buttons">
         <button mat-raised-button color="primary" type="button" title="Dodaj transakcję" (click)="addTransaction()">

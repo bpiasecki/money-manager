@@ -50,3 +50,17 @@
         }
     }
 }
+
+.row-action-buttons {
+    display: flex;
+    gap: 4px;
+    button {
+        min-width: 32px;
+        flex-grow: 1;
+        padding: 0;
+        opacity: .5;
+        &:hover {
+            opacity: .8;
+        }
+    }
+}

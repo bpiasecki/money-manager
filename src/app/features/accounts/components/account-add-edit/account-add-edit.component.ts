@@ -49,15 +49,20 @@ export class AccountAddEditComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.itemKey = params['id'];
-      this.$account = this.accountsService.getAccount(this.itemKey);
+      this.$account = this.accountsService.getItem(this.itemKey);
     })
   }
 
   public addEditAccount(account: WalletItem): void {
+    if (account.startDate)
+      account.startDate = new Date(account.startDate)?.toISOString();
+    if (account.endDate)
+      account.endDate = new Date(account.endDate)?.toISOString();
+
     if (this.itemKey)
-      this.accountsService.updateAccount(this.itemKey, account).then(() => this.closePanel());
-    else
-      this.accountsService.addNewAccount(account).then(() => this.closePanel());
+      this.accountsService.updateItem(this.itemKey, account).then(() => this.closePanel());
+    else 
+      this.accountsService.addNewItem(account).then(() => this.closePanel());
   }
 
   public closePanel(): void {

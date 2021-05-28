@@ -30,7 +30,7 @@
     width: 100%;
 }
 
-.manage-accounts-buttons {
+.manage-transactions-buttons {
     box-shadow: 0px 0px 10px -2px #00000061;
     background: rgba(0, 0, 0, 0.1);
     margin: 20px auto;
@@ -47,20 +47,6 @@
         min-width: 150px;
         &:hover {
             background: rgba(0, 0, 0, 0.7);
-        }
-    }
-}
-
-.row-action-buttons {
-    display: flex;
-    gap: 4px;
-    button {
-        min-width: 32px;
-        flex-grow: 1;
-        padding: 0;
-        opacity: .5;
-        &:hover {
-            opacity: .8;
         }
     }
 }

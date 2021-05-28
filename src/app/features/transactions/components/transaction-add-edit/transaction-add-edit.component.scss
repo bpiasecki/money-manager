@@ -49,3 +49,16 @@
         flex-basis: 130px;
     }
 }
+
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    button {
+        height: max-content;
+        padding: 0px 10px;
+        min-width: auto;
+        margin-top: -6px;
+        background: rgba(0, 0, 0, 0.75);
+    }
+}

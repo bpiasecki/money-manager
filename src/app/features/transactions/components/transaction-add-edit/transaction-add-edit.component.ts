@@ -85,6 +85,11 @@ export class TransactionAddEditComponent implements OnInit {
     return itemToSave;
   }
 
+  public removeTransaction() {
+    if(this.itemKey)
+      this.transactionsService.removeItem(this.itemKey).then(() => this.closePanel())
+  }
+
   public closePanel(): void {
     this.showPage = false;
     setTimeout(() => {

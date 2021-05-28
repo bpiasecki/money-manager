@@ -4,7 +4,10 @@
             <form *ngIf="showPage && ($transaction | async) as transaction" class="full-screen-form"
                 (submit)="addEditTransaction(transaction)" #transactionsAddForm="ngForm" [@showHideEditPage]>
                 <div [@preventInitialChildAnimations]>
-                    <span class="header-text">{{!!itemKey ? 'Edytuj transakcję' : 'Dodaj transakcję'}}</span>
+                    <div class="top-header">
+                        <span class="header-text">{{!!itemKey ? 'Edytuj transakcję' : 'Dodaj transakcję'}}</span>
+                        <button *ngIf="!!itemKey" type="button" mat-raised-button color="primary" (click)="removeTransaction()"><mat-icon>delete</mat-icon></button>
+                    </div>
 
                     <div class="transaction-type-picker">
                         <button disableRipple mat-raised-button color="primary" type="button"

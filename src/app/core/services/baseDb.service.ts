@@ -1,4 +1,4 @@
-import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
+import { AngularFireDatabase, AngularFireList, AngularFireObject, QueryFn } from '@angular/fire/database';
 import { ItemKeyWithData } from '@core/models/itemKeyWithData.model';
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
@@ -6,9 +6,9 @@ import { AuthService } from './auth.service';
 
 export abstract class BaseDbService<T> {
 
-    private userId: string | undefined;
+    protected userId: string | undefined;
 
-    constructor(private endpoint: string, private defaultItem: T, private authService: AuthService, private db: AngularFireDatabase) { }
+    constructor(private endpoint: string, private defaultItem: T, private authService: AuthService, protected db: AngularFireDatabase) { }
 
     public getItems(): Observable<ItemKeyWithData<T>[]> {
         if (!this.userId) {
@@ -54,17 +54,17 @@ export abstract class BaseDbService<T> {
         return this.getDbItem(key).update(updatedItem);
     }
 
-    private getDbItem(itemKey: string | undefined): AngularFireObject<T> {
+    protected getDbItem(itemKey: string | undefined): AngularFireObject<T> {
         if (!this.userId)
             throw new Error("User ID is null");
 
         return this.db.object<T>(`${this.endpoint}${this.userId}/${itemKey}`);
     }
 
-    private getDbList(): AngularFireList<T> {
+    protected getDbList(queryFn?: QueryFn): AngularFireList<T> {
         if (!this.userId)
             throw new Error("User ID is null");
 
-        return this.db.list<T>(`${this.endpoint}${this.userId}`);
+        return this.db.list<T>(`${this.endpoint}${this.userId}`, queryFn);
     }
 }

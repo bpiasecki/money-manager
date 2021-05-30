@@ -59,7 +59,7 @@
                             <mat-select [(ngModel)]="transaction.sourceAccount" name="transactionSourceAccount"
                                 required>
                                 <mat-option *ngFor="let item of $accounts | async" [value]="item.key">
-                                    {{item.data.name}}
+                                    {{item.data | accountNameWithBalance:(item.data.balance | currency:'PLN':'symbol-narrow')}}
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
@@ -70,7 +70,7 @@
                             <mat-select [(ngModel)]="transaction.targetAccount" name="transactionTargetAccount"
                                 required>
                                 <mat-option *ngFor="let item of $accounts | async" [value]="item.key">
-                                    {{item.data.name}}
+                                    {{item.data | accountNameWithBalance:(item.data.balance | currency:'PLN':'symbol-narrow')}}
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>

@@ -4,12 +4,12 @@ import { ActivatedRoute } from '@angular/router';
 import { DebtType } from '@core/models/accounts/debtType.model';
 import { WalletItem } from '@core/models/accounts/walletItem.model';
 import { WalletItemType, WalletItemTypesList } from '@core/models/accounts/walletItemType.model';
-import { AccountsService } from '@features/accounts/services/accounts.service';
 import { PreventInitialChildAnimations } from '@shared/animations/preventInitialChildAnimations.animation';
 import { ShowHideButtonAnimation } from '@shared/animations/showHideButton.animation';
 import { ShowHideCheckboxAnimation } from '@shared/animations/showHideCheckbox.animation';
 import { ShowHideEditPage } from '@shared/animations/showHideEditPage.animation';
 import { ShowHideFormFieldAnimation } from '@shared/animations/showHideFormField.animation';
+import { AccountsService } from '@shared/services/accounts.service';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 

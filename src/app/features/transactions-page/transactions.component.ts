@@ -6,9 +6,9 @@ import { WalletItem } from '@core/models/accounts/walletItem.model';
 import { ItemKeyWithData } from '@core/models/itemKeyWithData.model';
 import { TransactionItem } from '@core/models/transactions/transactionItem.model';
 import { DbService } from '@core/services/db.service';
-import { AccountsComponent } from '@features/accounts/components/accounts-page/accounts.component';
-import { TransactionsService } from '@features/transactions/services/transactions.service';
+import { AccountsComponent } from '@features/accounts-page/accounts.component';
 import { ShowHideMainPage } from '@shared/animations/showHideMainPage.animation';
+import { TransactionsService } from '@shared/services/transactions.service';
 import { ColumnMode, SelectionType, SortType } from '@swimlane/ngx-datatable';
 import { Observable, Subscription } from 'rxjs';
 

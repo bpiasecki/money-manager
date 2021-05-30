@@ -5,8 +5,8 @@ import { WalletItem } from '@core/models/accounts/walletItem.model';
 import { ItemKeyWithData } from '@core/models/itemKeyWithData.model';
 import { TransactionType } from '@core/models/transactions/transactionType.model';
 import { DbService } from '@core/services/db.service';
-import { AccountsService } from '@features/accounts/services/accounts.service';
 import { ShowHideMainPage } from '@shared/animations/showHideMainPage.animation';
+import { AccountsService } from '@shared/services/accounts.service';
 import { Observable } from 'rxjs';
 
 @Component({

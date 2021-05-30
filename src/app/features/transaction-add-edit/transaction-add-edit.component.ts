@@ -6,12 +6,12 @@ import { ItemKeyWithData } from '@core/models/itemKeyWithData.model';
 import { TransactionItem } from '@core/models/transactions/transactionItem.model';
 import { TransactionType } from '@core/models/transactions/transactionType.model';
 import { DbService } from '@core/services/db.service';
-import { TransactionsService } from '@features/transactions/services/transactions.service';
 import { PreventInitialChildAnimations } from '@shared/animations/preventInitialChildAnimations.animation';
 import { ShowHideButtonAnimation } from '@shared/animations/showHideButton.animation';
 import { ShowHideCheckboxAnimation } from '@shared/animations/showHideCheckbox.animation';
 import { ShowHideEditPage } from '@shared/animations/showHideEditPage.animation';
 import { ShowHideFormFieldAnimation } from '@shared/animations/showHideFormField.animation';
+import { TransactionsService } from '@shared/services/transactions.service';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 

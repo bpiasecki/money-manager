@@ -1,20 +1,25 @@
 import { LayoutModule } from '@angular/cdk/layout';
-import { registerLocaleData } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import localePl from '@angular/common/locales/pl';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from '@core/core.module';
 import { environment } from '@environment/environment';
-import { AccountsModule } from '@features/accounts/accounts.module';
+import { AccountAddEditComponent } from '@features/account-add-edit/account-add-edit.component';
+import { AccountsComponent } from '@features/accounts-page/accounts.component';
 import { LoginComponent } from '@features/auth/login/login.component';
 import { RegisterComponent } from '@features/auth/register/register.component';
-import { OverviewModule } from '@features/overview/overview.module';
-import { TransactionsModule } from '@features/transactions/transactions.module';
+import { TransactionAddEditComponent } from '@features/transaction-add-edit/transaction-add-edit.component';
+import { TransactionsComponent } from '@features/transactions-page/transactions.component';
 import { MaterialModule } from '@shared/material.module';
+import { AccountsService } from '@shared/services/accounts.service';
+import { TransactionsService } from '@shared/services/transactions.service';
 import { SharedModule } from '@shared/shared.module';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { NgScrollbarModule } from 'ngx-scrollbar';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -25,13 +30,16 @@ registerLocaleData(localePl);
   declarations: [
     AppComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+
+    TransactionsComponent,
+    TransactionAddEditComponent,
+
+    AccountsComponent,
+    AccountAddEditComponent
   ],
   imports: [
     CoreModule,
-    OverviewModule,
-    AccountsModule,
-    TransactionsModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     BrowserModule,
     AppRoutingModule,
@@ -43,11 +51,16 @@ registerLocaleData(localePl);
     NgScrollbarModule.withConfig({
       appearance: 'compact'
     }),
+
+    CommonModule,
+    NgxDatatableModule,
+    FlexLayoutModule,
   ],
-  providers: [{
-    provide: LOCALE_ID,
-    useValue: 'pl'
-  }],
+  providers: [
+    { provide: LOCALE_ID, useValue: 'pl' },
+    AccountsService,
+    TransactionsService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

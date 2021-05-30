@@ -2,7 +2,7 @@
     <ng-scrollbar>
         <div class="full-screen-form-wrapper">
             <form *ngIf="showPage && ($account | async) as account" class="full-screen-form"
-                (submit)="addEditAccount(account)" #accountAddForm="ngForm" [@showHideEditPage]>
+                (submit)="saveChanges(account)" #accountAddForm="ngForm" [@showHideEditPage]>
                 <div [@preventInitialChildAnimations]>
 
                     <span class="header-text">{{!!itemKey ? 'Edytuj konto' : 'Dodaj konto'}}</span>
@@ -61,7 +61,8 @@
                         </mat-form-field>
                     </div>
 
-                    <div class="date-picker-field" *ngIf="account.type == AccountTypes.Debt" [@showHideFormField] (click)="startDatePicker.open()">
+                    <div class="date-picker-field" *ngIf="account.type == AccountTypes.Debt" [@showHideFormField]
+                        (click)="startDatePicker.open()">
                         <mat-form-field appearance="outline">
                             <mat-label>Data zaciągnięcia długu</mat-label>
                             <input matInput [matDatepicker]="startDatePicker" name="startDate"
@@ -71,14 +72,15 @@
                         </mat-form-field>
                     </div>
 
-                    <div class="date-picker-field" *ngIf="account.type == AccountTypes.Debt || (account.type == AccountTypes.Savings && account.isSavingTargetSet)"
+                    <div class="date-picker-field"
+                        *ngIf="account.type == AccountTypes.Debt || (account.type == AccountTypes.Savings && account.isSavingTargetSet)"
                         [@showHideFormField] (click)="endDatePicker.open()">
                         <mat-form-field appearance="outline">
                             <mat-label>
                                 {{ account.type == AccountTypes.Debt ? 'Data spłaty długu' : 'Data końcowa celu'}}
                             </mat-label>
-                            <input matInput [matDatepicker]="endDatePicker" name="endDate"
-                                [(ngModel)]="account.endDate" readonly>
+                            <input matInput [matDatepicker]="endDatePicker" name="endDate" [(ngModel)]="account.endDate"
+                                readonly>
                             <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
                             <mat-datepicker touchUi #endDatePicker></mat-datepicker>
                         </mat-form-field>

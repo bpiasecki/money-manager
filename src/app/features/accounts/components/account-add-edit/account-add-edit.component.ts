@@ -11,6 +11,7 @@ import { ShowHideCheckboxAnimation } from '@shared/animations/showHideCheckbox.a
 import { ShowHideEditPage } from '@shared/animations/showHideEditPage.animation';
 import { ShowHideFormFieldAnimation } from '@shared/animations/showHideFormField.animation';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'mm-account-add-edit',
@@ -43,25 +44,36 @@ export class AccountAddEditComponent implements OnInit {
   public itemKey: string | undefined;
   public $account: Observable<WalletItem>;
   public showPage: boolean = true;
+  private isAccountDefaultSource: boolean;
 
   constructor(private accountsService: AccountsService, private location: Location, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.itemKey = params['id'];
-      this.$account = this.accountsService.getItem(this.itemKey);
+      this.$account = this.accountsService.getItem(this.itemKey)
+        .pipe(tap(item => this.isAccountDefaultSource = item.isDefault));
     })
   }
 
-  public addEditAccount(account: WalletItem): void {
+  public saveChanges(account: WalletItem): void {
     if (account.startDate)
-      account.startDate = new Date(account.startDate)?.toISOString();
+      account.startDate = new Date(account.startDate).toISOString();
     if (account.endDate)
-      account.endDate = new Date(account.endDate)?.toISOString();
+      account.endDate = new Date(account.endDate).toISOString();
 
+    if (!this.isAccountDefaultSource && account.isDefault === true)
+      this.accountsService.removeExistingDefaultAccountFlag().subscribe(() =>
+        this.addEditAccount(account)
+      );
+    else
+      this.addEditAccount(account);
+  }
+
+  private addEditAccount(account: WalletItem): void {
     if (this.itemKey)
       this.accountsService.updateItem(this.itemKey, account).then(() => this.closePanel());
-    else 
+    else
       this.accountsService.addNewItem(account).then(() => this.closePanel());
   }
 

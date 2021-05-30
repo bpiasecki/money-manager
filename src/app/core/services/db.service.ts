@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { WalletItem } from '@core/models/accounts/walletItem.model';
 import { ItemKeyWithData } from '@core/models/itemKeyWithData.model';
 import { TransactionItem } from '@core/models/transactions/transactionItem.model';
-import { AccountsService } from '@features/accounts/services/accounts.service';
-import { TransactionsService } from '@features/transactions/services/transactions.service';
+import { AccountsService } from '@shared/services/accounts.service';
+import { TransactionsService } from '@shared/services/transactions.service';
 import { ReplaySubject } from 'rxjs';
 
 @Injectable({

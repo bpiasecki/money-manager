@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { CategoryPickerComponent } from './custom-components/category-picker/category-picker.component';
 import { MaterialModule } from './material.module';
 import { AccountNameWithBalancePipe } from './pipes/accountNameWithBalance.pipe';
 import { AccountTypePipe } from './pipes/accountType.pipe';
@@ -12,7 +14,8 @@ import { SumValuePipe } from './pipes/sumValue.pipe';
         AccountTypePipe,
         SumValuePipe,
         GridAccountNamePipe,
-        AccountNameWithBalancePipe
+        AccountNameWithBalancePipe,
+        CategoryPickerComponent
     ],
     exports: [
         AccountTypePipe,
@@ -22,7 +25,9 @@ import { SumValuePipe } from './pipes/sumValue.pipe';
         MaterialModule,
         RouterModule,
         ReactiveFormsModule,
-        FormsModule
+        FormsModule,
+        CategoryPickerComponent,
+        NgxDatatableModule
     ],
 })
 export class SharedModule { }

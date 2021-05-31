@@ -13,7 +13,7 @@ import { ShowHideEditPage } from '@shared/animations/showHideEditPage.animation'
 import { ShowHideFormFieldAnimation } from '@shared/animations/showHideFormField.animation';
 import { TransactionsService } from '@shared/services/transactions.service';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { first, tap } from 'rxjs/operators';
 
 
 @Component({
@@ -40,22 +40,27 @@ export class TransactionAddEditComponent implements OnInit {
   constructor(private transactionsService: TransactionsService, private dbService: DbService, private location: Location, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.$accounts = this.dbService.$accounts;
     this.route.params.subscribe((params) => {
       this.itemKey = params['id'];
       const accountKey = params['account'];
       const transactionType = params['transactionType'];
-      
-      const transaction = this.transactionsService.getItem(this.itemKey);
 
-      if (accountKey)
-        this.$transaction = transaction.pipe(tap((result) => result.sourceAccount = result.targetAccount = accountKey));
-      else if (transactionType)
-        this.$transaction = transaction.pipe(tap((result) => result.type = transactionType));
-      else
-        this.$transaction = transaction;
-
+      this.dbService.$accounts.pipe(
+        first(),
+        tap((accounts) => {
+          const defaultAccount = accounts.find(item => item.data.isDefault === true);
+          this.$accounts = this.dbService.$accounts;
+          this.$transaction = this.transactionsService.getItem(this.itemKey).pipe(tap((item) => {
+            if (accountKey)
+              item.sourceAccount = item.targetAccount = accountKey;
+            else if (transactionType)
+              item.type = transactionType;
+            else if (!this.itemKey)
+              item.sourceAccount = item.targetAccount = defaultAccount?.key
+          }))
+        })).subscribe();
     })
+
   }
 
   public addEditTransaction(transaction: TransactionItem): void {
@@ -86,7 +91,7 @@ export class TransactionAddEditComponent implements OnInit {
   }
 
   public removeTransaction() {
-    if(this.itemKey)
+    if (this.itemKey)
       this.transactionsService.removeItem(this.itemKey).then(() => this.closePanel())
   }
 

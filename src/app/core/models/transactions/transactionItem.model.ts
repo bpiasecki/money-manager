@@ -1,4 +1,3 @@
-import { WalletItem } from "../accounts/walletItem.model";
 import { TransactionType } from "./transactionType.model";
 
 export class TransactionItem {
@@ -7,8 +6,8 @@ export class TransactionItem {
     transactionDate: Date | string;
     description?: string;
     type: TransactionType = TransactionType.Expense;
-    sourceAccount?: WalletItem;
-    targetAccount?: WalletItem;
+    sourceAccount?: string;
+    targetAccount?: string;
     category: string;
     warrantyMonthNumber?: number;
 }

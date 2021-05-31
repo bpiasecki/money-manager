@@ -4,8 +4,8 @@ import { AccountAddEditComponent } from '@features/account-add-edit/account-add-
 import { AccountsComponent } from '@features/accounts-page/accounts.component';
 import { TransactionAddEditComponent } from '@features/transaction-add-edit/transaction-add-edit.component';
 import { TransactionsComponent } from '@features/transactions-page/transactions.component';
-import { LoginComponent } from './features/auth/login/login.component';
-import { RegisterComponent } from './features/auth/register/register.component';
+import { LoginComponent } from './features/login/login.component';
+import { RegisterComponent } from './features/register-user/register.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'accounts', pathMatch: 'full' },

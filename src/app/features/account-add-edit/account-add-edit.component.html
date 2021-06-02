@@ -61,7 +61,7 @@
                         </mat-form-field>
                     </div>
 
-                    <div class="date-picker-field" *ngIf="account.type == AccountTypes.Debt" [@showHideFormField]
+                    <div class="cursor-pointer" *ngIf="account.type == AccountTypes.Debt" [@showHideFormField]
                         (click)="startDatePicker.open()">
                         <mat-form-field appearance="outline">
                             <mat-label>Data zaciągnięcia długu</mat-label>
@@ -72,7 +72,7 @@
                         </mat-form-field>
                     </div>
 
-                    <div class="date-picker-field"
+                    <div class="cursor-pointer"
                         *ngIf="account.type == AccountTypes.Debt || (account.type == AccountTypes.Savings && account.isSavingTargetSet)"
                         [@showHideFormField] (click)="endDatePicker.open()">
                         <mat-form-field appearance="outline">

@@ -8,7 +8,7 @@ export abstract class BaseDbService<T> {
 
     protected userId: string | undefined;
 
-    constructor(private endpoint: string, private defaultItem: T, private authService: AuthService, protected db: AngularFireDatabase) { }
+    constructor(protected endpoint: string, private defaultItem: T, private authService: AuthService, protected db: AngularFireDatabase) { }
 
     public getItems(): Observable<ItemKeyWithData<T>[]> {
         if (!this.userId) {
@@ -36,7 +36,7 @@ export abstract class BaseDbService<T> {
             return this.getItemFromDb(key);
     }
 
-    private getItemFromDb(key: string | undefined): Observable<T> {
+    protected getItemFromDb(key: string | undefined): Observable<T> {
         return this.getDbItem(key).valueChanges().pipe(map(res => {
             return res ?? { ...this.defaultItem };
         }));

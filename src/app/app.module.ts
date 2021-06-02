@@ -14,7 +14,9 @@ import { LoginComponent } from '@features/login/login.component';
 import { RegisterComponent } from '@features/register-user/register.component';
 import { TransactionAddEditComponent } from '@features/transaction-add-edit/transaction-add-edit.component';
 import { TransactionsComponent } from '@features/transactions-page/transactions.component';
+import { MaterialModule } from '@shared/material.module';
 import { AccountsService } from '@shared/services/accounts.service';
+import { CategoriesService } from '@shared/services/categories.service';
 import { TransactionsService } from '@shared/services/transactions.service';
 import { SharedModule } from '@shared/shared.module';
 import { NgScrollbarModule } from 'ngx-scrollbar';
@@ -28,32 +30,29 @@ registerLocaleData(localePl);
     AppComponent,
     LoginComponent,
     RegisterComponent,
-
     TransactionsComponent,
     TransactionAddEditComponent,
-
     AccountsComponent,
     AccountAddEditComponent
   ],
   imports: [
     CoreModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig),
+    CommonModule,
     BrowserModule,
     AppRoutingModule,
     AngularFireAuthModule,
     BrowserAnimationsModule,
     LayoutModule,
     SharedModule,
-    NgScrollbarModule.withConfig({
-      appearance: 'compact'
-    }),
-
-    CommonModule,
+    MaterialModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    NgScrollbarModule.withConfig({ appearance: 'compact' }),
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'pl' },
     AccountsService,
-    TransactionsService
+    TransactionsService,
+    CategoriesService
   ],
   bootstrap: [AppComponent]
 })

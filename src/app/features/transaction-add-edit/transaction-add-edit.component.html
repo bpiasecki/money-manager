@@ -48,6 +48,11 @@
                         <input type="number" [(ngModel)]="transaction.value" name="transactionValue" matInput required>
                     </mat-form-field>
 
+                    <mat-form-field class="cursor-pointer" appearance="outline" (click)="pickCategory(transaction)">
+                        <mat-label>Kategoria</mat-label>
+                        <input type="text" [value]="$categoryName | async" name="categoryName" matInput required readonly>
+                    </mat-form-field>
+
                     <mat-form-field appearance="outline">
                         <mat-label>Opis</mat-label>
                         <input type="text" [(ngModel)]="transaction.description" name="transactionDescription" matInput>
@@ -76,7 +81,7 @@
                         </mat-form-field>
                     </div>
 
-                    <div class="date-picker-field" (click)="datePicker.open()">
+                    <div class="cursor-pointer" (click)="datePicker.open()">
                         <mat-form-field appearance="outline">
                             <mat-label>Data transakcji</mat-label>
                             <input matInput [matDatepicker]="datePicker" name="transactionDate"

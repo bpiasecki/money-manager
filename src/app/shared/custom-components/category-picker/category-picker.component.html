@@ -1,1 +1,27 @@
-<p>category-picker works!</p>
+<h1 mat-dialog-title>Wybierz kategorię</h1>
+<div mat-dialog-content>
+    <div *ngIf="!selectedParent || selectedParent?.data?.children?.length == 0; else subcategories"
+        class="categories-wrapper">
+        <div *ngFor="let category of $categories | async" (click)="onParentCategorySelect(category)"
+            [ngStyle]="{'color': category.key == itemKey ? 'red' : 'black'}">
+            <div>
+                <mat-icon>{{category.data.icon}}</mat-icon>{{category.data.name}}
+            </div>
+        </div>
+    </div>
+
+    <ng-template #subcategories>
+        <div class="categories-wrapper">
+            <div *ngFor="let child of selectedParent?.data?.children" [mat-dialog-close]="child.key"
+                [ngStyle]="{'color': child.key == itemKey ? 'red' : 'black'}">
+                <div>
+                    <mat-icon>category</mat-icon>{{child.data.name}}
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</div>
+<div *ngIf="selectedParent" mat-dialog-actions>
+    <button *ngIf="selectedParent" mat-button type="button" color="primary"
+        (click)="selectedParent = undefined">Wróć</button>
+</div>

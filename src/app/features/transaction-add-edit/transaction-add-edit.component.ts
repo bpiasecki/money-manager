@@ -11,7 +11,10 @@ import { ShowHideButtonAnimation } from '@shared/animations/showHideButton.anima
 import { ShowHideCheckboxAnimation } from '@shared/animations/showHideCheckbox.animation';
 import { ShowHideEditPage } from '@shared/animations/showHideEditPage.animation';
 import { ShowHideFormFieldAnimation } from '@shared/animations/showHideFormField.animation';
+import { CategoryPickerComponent } from '@shared/custom-components/category-picker/category-picker.component';
+import { CategoriesService } from '@shared/services/categories.service';
 import { TransactionsService } from '@shared/services/transactions.service';
+import { NgDialogAnimationService } from 'ng-dialog-animation';
 import { Observable } from 'rxjs';
 import { first, tap } from 'rxjs/operators';
 
@@ -36,8 +39,9 @@ export class TransactionAddEditComponent implements OnInit {
   public $transaction: Observable<TransactionItem>;
   public itemKey: string | undefined;
   public $accounts: Observable<ItemKeyWithData<WalletItem>[]>;
+  public $categoryName: Observable<string | null>;
 
-  constructor(private transactionsService: TransactionsService, private dbService: DbService, private location: Location, private route: ActivatedRoute) { }
+  constructor(private transactionsService: TransactionsService, private categoriesService: CategoriesService, private dbService: DbService, private location: Location, private route: ActivatedRoute, private dialogService: NgDialogAnimationService) { }
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
@@ -51,6 +55,7 @@ export class TransactionAddEditComponent implements OnInit {
           const defaultAccount = accounts.find(item => item.data.isDefault === true);
           this.$accounts = this.dbService.$accounts;
           this.$transaction = this.transactionsService.getItem(this.itemKey).pipe(tap((item) => {
+            this.$categoryName = this.categoriesService.getCategoryNameWithParent(item.category);
             if (accountKey)
               item.sourceAccount = item.targetAccount = accountKey;
             else if (transactionType)
@@ -93,6 +98,41 @@ export class TransactionAddEditComponent implements OnInit {
   public removeTransaction() {
     if (this.itemKey)
       this.transactionsService.removeItem(this.itemKey).then(() => this.closePanel())
+  }
+
+  public pickCategory(transaction: TransactionItem) {
+    const dialogRef = this.dialogService.open(CategoryPickerComponent, {
+      data: transaction.category,
+      animation: this.getDialogAnimation()
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (transaction.category != result) {
+        transaction.category = result;
+        this.$categoryName = this.categoriesService.getCategoryNameWithParent(result);
+      }
+    })
+  }
+
+  private getDialogAnimation() {
+    const animation = {
+      incomingOptions: {
+        keyframes: [
+          { opacity: '0', transform: 'scale(0.7)' },
+          { opacity: '1', transform: 'scale(1)' }
+        ],
+        keyframeAnimationOptions: { easing: 'ease-in-out', duration: 300 }
+      },
+      outgoingOptions: {
+        keyframes: [
+          { opacity: '1', transform: 'scale(1)' },
+          { opacity: '0', transform: 'scale(1.3)' }
+        ],
+        keyframeAnimationOptions: { easing: 'ease-in-out', duration: 300 }
+      }
+    }
+
+    return animation;
   }
 
   public closePanel(): void {

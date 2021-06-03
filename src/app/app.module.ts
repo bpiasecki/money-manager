@@ -19,6 +19,7 @@ import { AccountsService } from '@shared/services/accounts.service';
 import { CategoriesService } from '@shared/services/categories.service';
 import { TransactionsService } from '@shared/services/transactions.service';
 import { SharedModule } from '@shared/shared.module';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { NgScrollbarModule } from 'ngx-scrollbar';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -45,6 +46,7 @@ registerLocaleData(localePl);
     LayoutModule,
     SharedModule,
     MaterialModule,
+    NgxDatatableModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     NgScrollbarModule.withConfig({ appearance: 'compact' }),
   ],

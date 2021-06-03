@@ -12,11 +12,12 @@ import { ShowHideCheckboxAnimation } from '@shared/animations/showHideCheckbox.a
 import { ShowHideEditPage } from '@shared/animations/showHideEditPage.animation';
 import { ShowHideFormFieldAnimation } from '@shared/animations/showHideFormField.animation';
 import { CategoryPickerComponent } from '@shared/custom-components/category-picker/category-picker.component';
+import { AccountsService } from '@shared/services/accounts.service';
 import { CategoriesService } from '@shared/services/categories.service';
 import { TransactionsService } from '@shared/services/transactions.service';
 import { NgDialogAnimationService } from 'ng-dialog-animation';
-import { Observable } from 'rxjs';
-import { first, tap } from 'rxjs/operators';
+import { from, Observable, of } from 'rxjs';
+import { first, map, switchMap, switchMapTo } from 'rxjs/operators';
 
 
 @Component({
@@ -36,45 +37,109 @@ export class TransactionAddEditComponent implements OnInit {
   public TransactionTypes = TransactionType;
 
   public showPage: boolean = true;
-  public $transaction: Observable<TransactionItem>;
+  public transaction: TransactionItem;
   public itemKey: string | undefined;
-  public $accounts: Observable<ItemKeyWithData<WalletItem>[]>;
+  public accounts: ItemKeyWithData<WalletItem>[];
   public $categoryName: Observable<string | null>;
+  private itemBeforeEdit: TransactionItem;
 
-  constructor(private transactionsService: TransactionsService, private categoriesService: CategoriesService, private dbService: DbService, private location: Location, private route: ActivatedRoute, private dialogService: NgDialogAnimationService) { }
+  constructor(
+    private transactionsService: TransactionsService,
+    private accountsService: AccountsService,
+    private categoriesService: CategoriesService,
+    private dbService: DbService,
+    private location: Location,
+    private route: ActivatedRoute,
+    private dialogService: NgDialogAnimationService
+  ) { }
 
   ngOnInit(): void {
-    this.route.params.subscribe((params) => {
+    this.route.params.pipe(switchMap((params) => {
       this.itemKey = params['id'];
       const accountKey = params['account'];
       const transactionType = params['transactionType'];
 
-      this.dbService.$accounts.pipe(
-        first(),
-        tap((accounts) => {
+      return this.dbService.$accounts.pipe(
+        switchMap((accounts) => {
           const defaultAccount = accounts.find(item => item.data.isDefault === true);
-          this.$accounts = this.dbService.$accounts;
-          this.$transaction = this.transactionsService.getItem(this.itemKey).pipe(tap((item) => {
-            this.$categoryName = this.categoriesService.getCategoryNameWithParent(item.category);
-            if (accountKey)
-              item.sourceAccount = item.targetAccount = accountKey;
-            else if (transactionType)
-              item.type = transactionType;
-            else if (!this.itemKey)
-              item.sourceAccount = item.targetAccount = defaultAccount?.key
-          }))
-        })).subscribe();
-    })
+          this.accounts = accounts;
+          return this.transactionsService.getItem(this.itemKey).pipe(
+            map((item) => {
+              this.$categoryName = this.categoriesService.getCategoryNameWithParent(item.category);
+              if (accountKey)
+                item.sourceAccount = item.targetAccount = accountKey;
+              else if (transactionType)
+                item.type = transactionType;
+              else if (!this.itemKey)
+                item.sourceAccount = item.targetAccount = defaultAccount?.key
+              else if (this.itemBeforeEdit === undefined)
+                this.itemBeforeEdit = { ...item };
 
+              return item;
+            })
+          )
+        }),
+        first()
+      )
+    })).subscribe((result) =>
+      this.transaction = result
+    )
   }
 
   public addEditTransaction(transaction: TransactionItem): void {
     const itemToSave = this.getTransactionToSave(transaction);
 
     if (this.itemKey)
-      this.transactionsService.updateItem(this.itemKey, itemToSave).then(() => this.closePanel());
+      this.transactionsService.updateItem(this.itemKey, itemToSave).then(() =>
+        this.editAccountBalance(itemToSave).pipe(first()).subscribe(() => this.closePanel())
+      );
     else
-      this.transactionsService.addNewItem(itemToSave).then(() => this.closePanel());
+      this.transactionsService.addNewItem(itemToSave).then(() =>
+        this.editAccountBalance(itemToSave).pipe(first()).subscribe(() => this.closePanel())
+      );
+  }
+
+  private editAccountBalance(itemToSave: TransactionItem, revert?: boolean): Observable<void> {
+    if (!this.itemKey || revert !== undefined) {
+      switch (itemToSave.type) {
+        case TransactionType.Expense:
+          return this.handleExpenseTransaction(itemToSave, revert);
+        case TransactionType.Income:
+          return this.handleIncomeTransaction(itemToSave, revert);
+        case TransactionType.Transfer:
+          return this.handleTransferTransaction(itemToSave, revert);
+        default:
+          return of(void 0);
+      }
+    } else
+      return this.editAccountBalance(this.itemBeforeEdit, true).pipe(first(), switchMapTo(this.editAccountBalance(itemToSave, false)))
+  }
+
+  private handleExpenseTransaction(itemToSave: TransactionItem, revert?: boolean): Observable<void> {
+    const account = this.accounts.find(item => item.key == itemToSave.sourceAccount);
+    if (account) {
+      revert ? account.data.balance += itemToSave.value : account.data.balance -= itemToSave.value;
+      return from(this.accountsService.updateItem(account.key, account.data));
+    } else return of(void 0);
+  }
+
+  private handleIncomeTransaction(itemToSave: TransactionItem, revert?: boolean): Observable<void> {
+    const account = this.accounts.find(item => item.key == itemToSave.targetAccount);
+    if (account) {
+      revert ? account.data.balance -= itemToSave.value : account.data.balance += itemToSave.value;
+      return from(this.accountsService.updateItem(account.key, account.data));
+    } else return of(void 0);
+  }
+
+  private handleTransferTransaction(itemToSave: TransactionItem, revert?: boolean): Observable<void> {
+    const sourceAccount = this.accounts.find(item => item.key == itemToSave.sourceAccount);
+    const targetAccount = this.accounts.find(item => item.key == itemToSave.targetAccount);
+    if (sourceAccount && targetAccount) {
+      revert ? sourceAccount.data.balance += itemToSave.value : sourceAccount.data.balance -= itemToSave.value;
+      revert ? targetAccount.data.balance -= itemToSave.value : targetAccount.data.balance += itemToSave.value;
+      return from(this.accountsService.updateItem(sourceAccount.key, sourceAccount.data).then(() =>
+        this.accountsService.updateItem(targetAccount.key, targetAccount.data)));
+    } else return of(void 0);
   }
 
   private getTransactionToSave(transaction: TransactionItem): TransactionItem {

@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { CategoryPickerComponent } from './custom-components/category-picker/category-picker.component';
 import { MaterialModule } from './material.module';
 import { AccountNameWithBalancePipe } from './pipes/accountNameWithBalance.pipe';
@@ -31,8 +30,7 @@ import { SumValuePipe } from './pipes/sumValue.pipe';
         RouterModule,
         ReactiveFormsModule,
         FormsModule,
-        CategoryPickerComponent,
-        NgxDatatableModule
+        CategoryPickerComponent
     ],
 })
 export class SharedModule { }

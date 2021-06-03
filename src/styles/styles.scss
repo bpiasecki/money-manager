@@ -1,5 +1,5 @@
 @use '~@angular/material' as mat;
-@import "~@swimlane/ngx-datatable/themes/material.scss";
+@import "~@swimlane/ngx-datatable/src/themes/material.scss";
 @import "style-variables";
 @include mat.core();
 

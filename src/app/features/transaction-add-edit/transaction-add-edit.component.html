@@ -1,7 +1,7 @@
 <div class="center-page">
     <ng-scrollbar>
         <div class="full-screen-form-wrapper">
-            <form *ngIf="showPage && ($transaction | async) as transaction" class="full-screen-form"
+            <form *ngIf="showPage && transaction" class="full-screen-form"
                 (submit)="addEditTransaction(transaction)" #transactionsAddForm="ngForm" [@showHideEditPage]>
                 <div [@preventInitialChildAnimations]>
                     <div class="top-header">
@@ -63,7 +63,7 @@
                             <mat-label>Konto źródłowe</mat-label>
                             <mat-select [(ngModel)]="transaction.sourceAccount" name="transactionSourceAccount"
                                 required>
-                                <mat-option *ngFor="let item of $accounts | async" [value]="item.key">
+                                <mat-option *ngFor="let item of accounts" [value]="item.key">
                                     {{item.data | accountNameWithBalance:(item.data.balance | currency:'PLN':'symbol-narrow')}}
                                 </mat-option>
                             </mat-select>
@@ -74,7 +74,7 @@
                             <mat-label>Konto docelowe</mat-label>
                             <mat-select [(ngModel)]="transaction.targetAccount" name="transactionTargetAccount"
                                 required>
-                                <mat-option *ngFor="let item of $accounts | async" [value]="item.key">
+                                <mat-option *ngFor="let item of accounts" [value]="item.key">
                                     {{item.data | accountNameWithBalance:(item.data.balance | currency:'PLN':'symbol-narrow')}}
                                 </mat-option>
                             </mat-select>

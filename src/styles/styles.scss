@@ -1,8 +1,9 @@
+@use '~@angular/material' as mat;
 @import "~@swimlane/ngx-datatable/themes/material.scss";
 @import "style-variables";
-@include mat-core();
+@include mat.core();
 
-$money-manager-theme: mat-light-theme(
+$money-manager-theme: mat.define-light-theme(
   (
     color: (
       primary: $primary,
@@ -12,7 +13,7 @@ $money-manager-theme: mat-light-theme(
   )
 );
 
-@include angular-material-theme($money-manager-theme);
+@include mat.all-component-themes($money-manager-theme);
 
 html,
 body {

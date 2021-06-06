@@ -21,6 +21,7 @@ import { TransactionsService } from '@shared/services/transactions.service';
 import { SharedModule } from '@shared/shared.module';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { NgScrollbarModule } from 'ngx-scrollbar';
+import { NgxSpinnerModule } from 'ngx-spinner';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
@@ -47,6 +48,7 @@ registerLocaleData(localePl);
     SharedModule,
     MaterialModule,
     NgxDatatableModule,
+    NgxSpinnerModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     NgScrollbarModule.withConfig({ appearance: 'compact' }),
   ],

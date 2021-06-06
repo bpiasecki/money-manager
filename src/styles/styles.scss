@@ -29,8 +29,34 @@ router-outlet + * {
   top: 0;
   left: 0;
   right: 0;
-  bottom: 140px;
+  bottom: 0;
   overflow: auto;
+}
+
+router-outlet + mm-transactions, router-outlet + mm-accounts {
+  bottom: 140px!important;
+}
+
+
+@media (max-height: 650px) {
+  router-outlet + *:not(mm-accounts):not(mm-transactions) {
+    bottom: 0 !important;
+
+
+    .full-screen-form-wrapper {
+      width: 100vw !important;
+
+      .full-screen-form {
+        max-height: calc(100vh - 70px) !important;
+        height: 100vh !important;
+        width: 100vw !important;
+        border-radius: 0 !important;
+        .form-scroll-content {
+          max-height: calc(100vh - 277px) !important;
+        }
+      }
+    }
+  }
 }
 
 //ngx-scrollbar overrides
@@ -198,16 +224,16 @@ ng-scrollbar {
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.35), transparent 110%) !important;
 }
 
-.ngx-datatable {
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
-  ::-webkit-scrollbar-thumb,
-  ::-webkit-scrollbar-thumb:window-inactive {
-    border-radius: 10px;
-    background: rgba(0, 0, 0, 0.4) !important;
-  }
+// .ngx-datatable {
+::-webkit-scrollbar {
+  width: 6px;
 }
+::-webkit-scrollbar-thumb,
+::-webkit-scrollbar-thumb:window-inactive {
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.4) !important;
+}
+// }
 
 .ngx-datatable.material:not(.cell-selection) .datatable-body-row:hover,
 .ngx-datatable.material:not(.cell-selection) .datatable-body-row:hover .datatable-row-group {
@@ -222,4 +248,13 @@ ng-scrollbar {
 .datatable-body-row.active,
 .datatable-body-row.active .datatable-row-group {
   background: rgba(0, 0, 0, 0.35) !important;
+}
+
+.form-scroll-content > :last-child {
+  mat-form-field {
+    height: 55px !important;
+    .mat-form-field-wrapper {
+      padding-bottom: 0 !important;
+    }
+  }
 }

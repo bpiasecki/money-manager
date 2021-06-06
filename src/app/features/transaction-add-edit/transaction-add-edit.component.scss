@@ -62,3 +62,10 @@
         background: rgba(0, 0, 0, 0.75);
     }
 }
+
+.form-scroll-content {
+    overflow: auto;
+    max-height: calc(100vh - 450px) !important;
+    padding-right: 6px;
+}
+

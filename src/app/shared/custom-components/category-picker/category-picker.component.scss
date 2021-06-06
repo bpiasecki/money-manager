@@ -1,10 +1,23 @@
+.dialog-content {
+    max-height: calc(100vh - 200px)!important;
+}
+
+.search-categories {
+    width: 80%;
+    margin: 0 auto;
+    mat-form-field {
+        text-align: center!important;
+    }
+}
+
 .categories-wrapper {
     display: flex;
     flex-wrap: wrap;
-    max-width: 660px;
+    width: 660px;
     gap: 2px;
-    justify-content: center;
-    margin: 15px 0;
+    padding: 15px;
+    min-height: calc(100vh - 270px)!important;
+    align-content: flex-start;
 
     > div {
         display: flex;
@@ -18,7 +31,9 @@
         transition: box-shadow 1s;
         flex-grow: 1;
         min-width: 22%;
+        -webkit-user-select: none;
         user-select: none;
+        height: 110px;
 
         &:hover {
             cursor: pointer;
@@ -37,9 +52,8 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            margin: 10px 2px;
+            margin: auto;
             align-items: center;
-            height: -webkit-fill-available;
             mat-icon {
                 font-size: 44px;
                 width: 100%;

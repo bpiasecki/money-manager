@@ -38,65 +38,67 @@
                         </button>
                     </div>
 
-                    <mat-form-field appearance="outline">
-                        <mat-label>Nazwa</mat-label>
-                        <input type="text" [(ngModel)]="transaction.name" name="transactionName" matInput required>
-                    </mat-form-field>
-
-                    <mat-form-field appearance="outline">
-                        <mat-label>Kwota</mat-label>
-                        <input type="number" [(ngModel)]="transaction.value" name="transactionValue" matInput required>
-                    </mat-form-field>
-
-                    <mat-form-field class="cursor-pointer" appearance="outline" (click)="pickCategory(transaction)">
-                        <mat-label>Kategoria</mat-label>
-                        <input type="text" [value]="$categoryName | async" name="categoryName" matInput required readonly>
-                    </mat-form-field>
-
-                    <mat-form-field appearance="outline">
-                        <mat-label>Opis</mat-label>
-                        <input type="text" [(ngModel)]="transaction.description" name="transactionDescription" matInput>
-                    </mat-form-field>
-
-                    <div *ngIf="transaction.type != TransactionTypes.Income" [@showHideFormField]>
+                    <div class="form-scroll-content">
                         <mat-form-field appearance="outline">
-                            <mat-label>Konto źródłowe</mat-label>
-                            <mat-select [(ngModel)]="transaction.sourceAccount" name="transactionSourceAccount"
-                                required>
-                                <mat-option *ngFor="let item of accounts" [value]="item.key">
-                                    {{item.data | accountNameWithBalance:(item.data.balance | currency:'PLN':'symbol-narrow')}}
-                                </mat-option>
-                            </mat-select>
+                            <mat-label>Nazwa</mat-label>
+                            <input type="text" [(ngModel)]="transaction.name" name="transactionName" matInput required>
                         </mat-form-field>
-                    </div>
-                    <div *ngIf="transaction.type != TransactionTypes.Expense" [@showHideFormField]>
+    
                         <mat-form-field appearance="outline">
-                            <mat-label>Konto docelowe</mat-label>
-                            <mat-select [(ngModel)]="transaction.targetAccount" name="transactionTargetAccount"
-                                required>
-                                <mat-option *ngFor="let item of accounts" [value]="item.key">
-                                    {{item.data | accountNameWithBalance:(item.data.balance | currency:'PLN':'symbol-narrow')}}
-                                </mat-option>
-                            </mat-select>
+                            <mat-label>Kwota</mat-label>
+                            <input type="number" [(ngModel)]="transaction.value" name="transactionValue" matInput required>
                         </mat-form-field>
-                    </div>
-
-                    <div class="cursor-pointer" (click)="datePicker.open()">
+    
+                        <mat-form-field class="cursor-pointer" appearance="outline" (click)="pickCategory(transaction)">
+                            <mat-label>Kategoria</mat-label>
+                            <input type="text" [value]="$categoryName | async" name="categoryName" matInput required readonly>
+                        </mat-form-field>
+    
                         <mat-form-field appearance="outline">
-                            <mat-label>Data transakcji</mat-label>
-                            <input matInput [matDatepicker]="datePicker" name="transactionDate"
-                                [(ngModel)]="transaction.transactionDate" readonly required>
-                            <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
-                            <mat-datepicker touchUi #datePicker></mat-datepicker>
+                            <mat-label>Opis</mat-label>
+                            <input type="text" [(ngModel)]="transaction.description" name="transactionDescription" matInput>
                         </mat-form-field>
-                    </div>
-
-                    <div *ngIf="transaction.type == TransactionTypes.Expense" [@showHideFormField]>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Gwarancja (msc)</mat-label>
-                            <input matInput type="number" min="0" step="1" name="transactionWarranty"
-                                [(ngModel)]="transaction.warrantyMonthNumber">
-                        </mat-form-field>
+    
+                        <div *ngIf="transaction.type != TransactionTypes.Income" [@showHideFormField]>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Konto źródłowe</mat-label>
+                                <mat-select [(ngModel)]="transaction.sourceAccount" name="transactionSourceAccount"
+                                    required>
+                                    <mat-option *ngFor="let item of accounts" [value]="item.key">
+                                        {{item.data | accountNameWithBalance:(item.data.balance | currency:'PLN':'symbol-narrow')}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div *ngIf="transaction.type != TransactionTypes.Expense" [@showHideFormField]>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Konto docelowe</mat-label>
+                                <mat-select [(ngModel)]="transaction.targetAccount" name="transactionTargetAccount"
+                                    required>
+                                    <mat-option *ngFor="let item of accounts" [value]="item.key">
+                                        {{item.data | accountNameWithBalance:(item.data.balance | currency:'PLN':'symbol-narrow')}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+    
+                        <div class="cursor-pointer" (click)="datePicker.open()">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Data transakcji</mat-label>
+                                <input matInput [matDatepicker]="datePicker" name="transactionDate"
+                                    [(ngModel)]="transaction.transactionDate" readonly required>
+                                <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+                                <mat-datepicker touchUi #datePicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+    
+                        <div *ngIf="transaction.type == TransactionTypes.Expense" [@showHideFormField]>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Gwarancja (msc)</mat-label>
+                                <input matInput type="number" min="0" step="1" name="transactionWarranty"
+                                    [(ngModel)]="transaction.warrantyMonthNumber">
+                            </mat-form-field>
+                        </div>
                     </div>
 
                     <div class="modal-buttons">

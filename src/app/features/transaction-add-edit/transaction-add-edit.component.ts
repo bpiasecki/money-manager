@@ -172,6 +172,8 @@ export class TransactionAddEditComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+      if (!result)
+        return;
       if (transaction.category != result) {
         transaction.category = result;
         this.$categoryName = this.categoriesService.getCategoryNameWithParent(result);

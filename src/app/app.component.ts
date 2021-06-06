@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { DbService } from '@core/services/db.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { AuthService } from './core/services/auth.service';
 
@@ -10,11 +13,13 @@ import { AuthService } from './core/services/auth.service';
 })
 export class AppComponent {
 
-  public dataLoaded = false;
   private readonly mainRouterLinks = ['/accounts', '/transactions'];
+  public dataLoaded = false;
   public tabsVisible: boolean;
+  public $isLoading: Observable<boolean>;
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService, private spinner: NgxSpinnerService, private router: Router, public dbService: DbService) {
+    this.dbService.$isLoading.subscribe((isLoading) => isLoading ? this.spinner.show() : this.spinner.hide());
     this.authService.authState$.subscribe((user) => {
       if (!user)
         this.router.navigate(['/login']);

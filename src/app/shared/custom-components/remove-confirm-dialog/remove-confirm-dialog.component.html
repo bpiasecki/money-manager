@@ -1,0 +1,8 @@
+<mat-dialog-content>
+    <div [innerHTML]="confirmationText"></div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-button type="button" color="primary" [mat-dialog-close]="false">ANULUJ</button>
+    <button mat-button cdkFocusInitial type="button" color="warn" [mat-dialog-close]="true">TAK, USUŃ</button>
+</mat-dialog-actions>

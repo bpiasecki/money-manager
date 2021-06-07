@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CategoryPickerComponent } from './custom-components/category-picker/category-picker.component';
+import { RemoveConfirmDialogComponent } from './custom-components/remove-confirm-dialog/remove-confirm-dialog.component';
 import { MaterialModule } from './material.module';
 import { AccountNameWithBalancePipe } from './pipes/accountNameWithBalance.pipe';
 import { AccountTypePipe } from './pipes/accountType.pipe';
@@ -15,7 +16,8 @@ import { SumValuePipe } from './pipes/sumValue.pipe';
         SumValuePipe,
         GridAccountNamePipe,
         AccountNameWithBalancePipe,
-        CategoryPickerComponent
+        CategoryPickerComponent,
+        RemoveConfirmDialogComponent
     ],
     imports: [
         MaterialModule,
@@ -30,7 +32,8 @@ import { SumValuePipe } from './pipes/sumValue.pipe';
         RouterModule,
         ReactiveFormsModule,
         FormsModule,
-        CategoryPickerComponent
+        CategoryPickerComponent,
+        RemoveConfirmDialogComponent
     ],
 })
 export class SharedModule { }

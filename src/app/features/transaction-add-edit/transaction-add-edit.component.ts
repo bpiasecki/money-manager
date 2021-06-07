@@ -12,12 +12,13 @@ import { ShowHideCheckboxAnimation } from '@shared/animations/showHideCheckbox.a
 import { ShowHideEditPage } from '@shared/animations/showHideEditPage.animation';
 import { ShowHideFormFieldAnimation } from '@shared/animations/showHideFormField.animation';
 import { CategoryPickerComponent } from '@shared/custom-components/category-picker/category-picker.component';
+import { RemoveConfirmDialogComponent } from '@shared/custom-components/remove-confirm-dialog/remove-confirm-dialog.component';
 import { AccountsService } from '@shared/services/accounts.service';
 import { CategoriesService } from '@shared/services/categories.service';
 import { TransactionsService } from '@shared/services/transactions.service';
 import { NgDialogAnimationService } from 'ng-dialog-animation';
 import { from, Observable, of } from 'rxjs';
-import { first, map, switchMap, switchMapTo } from 'rxjs/operators';
+import { filter, first, map, switchMap, switchMapTo } from 'rxjs/operators';
 
 
 @Component({
@@ -161,8 +162,14 @@ export class TransactionAddEditComponent implements OnInit {
   }
 
   public removeTransaction() {
-    if (this.itemKey)
-      this.transactionsService.removeItem(this.itemKey).then(() => this.closePanel())
+    this.dialogService.open(RemoveConfirmDialogComponent, {
+      data: `Czy na pewno chcesz usunąć wybraną transakcję?`
+    }).afterClosed()
+      .pipe(filter(confirmed => confirmed === true))
+      .subscribe(() => {
+        if (this.itemKey) this.transactionsService.removeItem(this.itemKey)
+          .then(() => this.closePanel())
+      });
   }
 
   public pickCategory(transaction: TransactionItem) {

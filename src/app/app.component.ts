@@ -13,7 +13,7 @@ import { AuthService } from './core/services/auth.service';
 })
 export class AppComponent {
 
-  private readonly mainRouterLinks = ['/accounts', '/transactions'];
+  private readonly mainRouterLinks = ['/', '/accounts', '/transactions'];
   public dataLoaded = false;
   public tabsVisible: boolean;
   public $isLoading: Observable<boolean>;

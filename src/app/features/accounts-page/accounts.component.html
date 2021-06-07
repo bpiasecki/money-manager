@@ -23,7 +23,7 @@
               </div>
               <div class="action-buttons">
                 <button mat-raised-button color="primary" type="button" title="Usuń konto"
-                  (click)="removeAccount(item.key)">
+                  (click)="removeAccount(item.key, item.data.name)">
                   <mat-icon>delete</mat-icon>
                 </button>
                 <button mat-raised-button color="primary" type="button" title="Edytuj konto"

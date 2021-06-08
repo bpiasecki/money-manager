@@ -58,13 +58,13 @@ export abstract class BaseDbService<T> {
         if (!this.userId)
             throw new Error("User ID is null");
 
-        return this.db.object<T>(`${this.endpoint}${this.userId}/${itemKey}`);
+        return this.db.object<T>(`${this.userId}/${this.endpoint}/${itemKey}`);
     }
 
     protected getDbList(queryFn?: QueryFn): AngularFireList<T> {
         if (!this.userId)
             throw new Error("User ID is null");
 
-        return this.db.list<T>(`${this.endpoint}${this.userId}`, queryFn);
+        return this.db.list<T>(`${this.userId}/${this.endpoint}`, queryFn);
     }
 }

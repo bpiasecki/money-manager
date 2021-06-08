@@ -52,7 +52,7 @@ export class CategoriesService extends BaseDbService<CategoryItem> {
     //insert initial categories right after user registration process
     public insertInitialValues() {
         const initialCategories = this.getInitialList();
-        this.db.object(`${this.endpoint}${this.userId}`).set(initialCategories).then(() => console.log('initial categories inserted'))
+        this.db.object(`${this.userId}/${this.endpoint}`).set(initialCategories).then(() => console.log('initial categories inserted'))
     }
 
     private getInitialList(): Record<string, CategoryItem> {

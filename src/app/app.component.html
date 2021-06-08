@@ -1,6 +1,6 @@
 <div class="bg-image"></div>
 <ngx-spinner type="square-jelly-box" size="large"><p class="loading-text">ŁADOWANIE DANYCH...</p></ngx-spinner>
-<div class="center-view-wrapper" *ngIf="dataLoaded && (dbService.$isLoading | async) === false">
+<div class="center-view-wrapper" *ngIf="(dataLoaded && (dbService.$isLoading | async) === false) || currentUrl === '/login'">
   <div class="centered-content">
     <router-outlet></router-outlet>
     <div *ngIf="tabsVisible" class="tabs">

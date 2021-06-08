@@ -3,12 +3,12 @@
     <div class="search-categories">
         <mat-form-field class="form-full-width" floatLabel="never">
             <mat-label>ZNAJDŹ KATEGORIĘ...</mat-label>
-            <input matInput type="text" (keyup)="filterCategories($event)" placeholder="Ex. Mia" #searchInput autocomplete="off">
+            <input matInput type="text" (keyup)="filterCategories($event)" #searchInput autocomplete="off" autocorrect="off">
         </mat-form-field>
     </div>
     <div *ngIf="!selectedParent || selectedParent?.data?.children?.length == 0 || searchInput.value; else subcategories"
         class="categories-wrapper">
-        <div *ngFor="let category of categories" (click)="onParentCategorySelect(category)"
+        <div *ngFor="let category of visibleCategories" (click)="onParentCategorySelect(category)"
             [ngStyle]="{'color': category.key == itemKey ? 'red' : 'black'}">
             <div>
                 <mat-icon>{{category.data.icon ?? 'category'}}</mat-icon>{{category.data.name}}

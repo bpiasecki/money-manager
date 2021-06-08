@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DebtType } from '@core/models/accounts/debtType.model';
 import { WalletItem } from '@core/models/accounts/walletItem.model';
 import { WalletItemType, WalletItemTypesList } from '@core/models/accounts/walletItemType.model';
+import { DbService } from '@core/services/db.service';
 import { PreventInitialChildAnimations } from '@shared/animations/preventInitialChildAnimations.animation';
 import { ShowHideButtonAnimation } from '@shared/animations/showHideButton.animation';
 import { ShowHideCheckboxAnimation } from '@shared/animations/showHideCheckbox.animation';
@@ -46,12 +47,12 @@ export class AccountAddEditComponent implements OnInit {
   public showPage: boolean = true;
   private isAccountDefaultSource: boolean;
 
-  constructor(private accountsService: AccountsService, private location: Location, private route: ActivatedRoute) { }
+  constructor(private accountsService: AccountsService, private dbService: DbService, private location: Location, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.itemKey = params['id'];
-      this.$account = this.accountsService.getItem(this.itemKey)
+      this.$account = this.dbService.getAccount(this.itemKey)
         .pipe(tap(item => this.isAccountDefaultSource = item.isDefault));
     })
   }

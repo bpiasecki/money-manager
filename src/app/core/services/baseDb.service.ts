@@ -8,7 +8,7 @@ export abstract class BaseDbService<T> {
 
     protected userId: string | undefined;
 
-    constructor(protected endpoint: string, private defaultItem: T, private authService: AuthService, protected db: AngularFireDatabase) { }
+    constructor(protected endpoint: string, private authService: AuthService, protected db: AngularFireDatabase) { }
 
     public getItems(): Observable<ItemKeyWithData<T>[]> {
         if (!this.userId) {
@@ -24,22 +24,6 @@ export abstract class BaseDbService<T> {
         return this.getDbList().snapshotChanges().pipe(map((result) => {
             return result.map(item => new ItemKeyWithData(<string>item.key, <T>item.payload.val()));
         }))
-    }
-
-    public getItem(key: string | undefined): Observable<T> {
-        if (!this.userId) {
-            return this.authService.getUserId().pipe(switchMap((userId) => {
-                this.userId = userId;
-                return this.getItemFromDb(key);
-            }))
-        } else
-            return this.getItemFromDb(key);
-    }
-
-    protected getItemFromDb(key: string | undefined): Observable<T> {
-        return this.getDbItem(key).valueChanges().pipe(map(res => {
-            return res ?? { ...this.defaultItem };
-        }));
     }
 
     public addNewItem(item: T): firebase.default.database.ThenableReference {

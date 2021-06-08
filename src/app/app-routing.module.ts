@@ -17,6 +17,7 @@ const routes: Routes = [
   { path: 'transactionAddEdit', component: TransactionAddEditComponent },
   { path: 'transactionAddEdit/:param', component: TransactionAddEditComponent },
   { path: 'transactions', component: TransactionsComponent },
+  { path: '**', redirectTo: 'accounts'}
 ];
 
 @NgModule({

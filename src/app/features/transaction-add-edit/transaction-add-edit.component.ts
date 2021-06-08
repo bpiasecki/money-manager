@@ -64,9 +64,9 @@ export class TransactionAddEditComponent implements OnInit {
         switchMap((accounts) => {
           const defaultAccount = accounts.find(item => item.data.isDefault === true);
           this.accounts = accounts;
-          return this.transactionsService.getItem(this.itemKey).pipe(
+          return this.dbService.getTransaction(this.itemKey).pipe(
             map((item) => {
-              this.$categoryName = this.categoriesService.getCategoryNameWithParent(item.category);
+              this.$categoryName = this.dbService.getCategoryNameWithParent(item.category);
               if (accountKey)
                 item.sourceAccount = item.targetAccount = accountKey;
               else if (transactionType)
@@ -183,7 +183,7 @@ export class TransactionAddEditComponent implements OnInit {
         return;
       if (transaction.category != result) {
         transaction.category = result;
-        this.$categoryName = this.categoriesService.getCategoryNameWithParent(result);
+        this.$categoryName = this.dbService.getCategoryNameWithParent(result);
       }
     })
   }

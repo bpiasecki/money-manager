@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CategoryItem, CategoryItemView } from '@core/models/categories/categoryItem.model';
 import { ItemKeyWithData } from '@core/models/itemKeyWithData.model';
-import { CategoriesService } from '@shared/services/categories.service';
+import { DbService } from '@core/services/db.service';
 import { first, shareReplay, tap } from 'rxjs/operators';
 
 @Component({
@@ -12,28 +12,28 @@ import { first, shareReplay, tap } from 'rxjs/operators';
 })
 export class CategoryPickerComponent implements OnInit {
 
-  public categories: ItemKeyWithData<CategoryItemView | CategoryItem>[];
+  public visibleCategories: ItemKeyWithData<CategoryItemView | CategoryItem>[];
   public selectedParent: ItemKeyWithData<Partial<CategoryItemView>> | undefined;
   private groupedCategories: ItemKeyWithData<CategoryItemView>[];
-  allCategories: ItemKeyWithData<CategoryItem>[];
+  private allCategories: ItemKeyWithData<CategoryItem>[];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public itemKey: string | null,
     public dialogRef: MatDialogRef<CategoryPickerComponent>,
-    private categoriesService: CategoriesService
+    private dbService: DbService
   ) { }
 
   ngOnInit(): void {
-    this.categoriesService.getGroupedItems().pipe(
+    this.dbService.getGroupedCategories().pipe(
       first(),
       tap((result) => {
         if (!result.find(item => item.key == this.itemKey))
           this.selectedParent = result.find(item => item.data.children.some(child => child.key == this.itemKey));
       }),
       shareReplay()
-    ).subscribe((result) => this.categories = this.groupedCategories = result);
+    ).subscribe((result) => this.visibleCategories = this.groupedCategories = result);
 
-    this.categoriesService.getItems().pipe(first()).subscribe((result) => this.allCategories = result);
+    this.dbService.$categories.pipe(first()).subscribe((result) => this.allCategories = result);
   }
 
   public onParentCategorySelect(category: ItemKeyWithData<Partial<CategoryItemView>>): void {
@@ -44,15 +44,15 @@ export class CategoryPickerComponent implements OnInit {
   }
 
   public filterCategories(event: any) {
-    if (event.keyCode === 13 && this.categories.length === 1)
-      this.dialogRef.close(this.categories[0].key) 
+    if (event.keyCode === 13 && this.visibleCategories.length === 1)
+      this.dialogRef.close(this.visibleCategories[0].key) 
 
     const filterValue = (event.target as HTMLInputElement).value;
     if (filterValue)
-      this.categories = this.allCategories.filter(category =>
+      this.visibleCategories = this.allCategories.filter(category =>
         category.data.parent != null && category.data.name.toLowerCase().includes(filterValue.toLowerCase()))
     else
-      this.categories = this.groupedCategories;
+      this.visibleCategories = this.groupedCategories;
   }
 
   public onClose() {

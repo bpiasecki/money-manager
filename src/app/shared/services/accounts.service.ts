@@ -11,7 +11,7 @@ import { first, map, switchMap } from 'rxjs/operators';
 export class AccountsService extends BaseDbService<WalletItem> {
 
     constructor(authService: AuthService, protected db: AngularFireDatabase) {
-        super(Endpoints.Accounts, new WalletItem(), authService, db);
+        super(Endpoints.Accounts, authService, db);
     }
 
     public removeExistingDefaultAccountFlag(): Observable<void> {

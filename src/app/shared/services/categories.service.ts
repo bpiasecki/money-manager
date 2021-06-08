@@ -1,53 +1,19 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Endpoints } from '@core/db/endpoints.enum';
-import { CategoryItem, CategoryItemView } from '@core/models/categories/categoryItem.model';
+import { CategoryItem } from '@core/models/categories/categoryItem.model';
 import { CategoryType } from '@core/models/categories/categoryType.model';
-import { ItemKeyWithData } from '@core/models/itemKeyWithData.model';
 import { AuthService } from '@core/services/auth.service';
 import { BaseDbService } from '@core/services/baseDb.service';
-import { Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
 
 @Injectable()
 export class CategoriesService extends BaseDbService<CategoryItem> {
 
 
     constructor(protected db: AngularFireDatabase, authService: AuthService) {
-        super(Endpoints.Categories, new CategoryItem(''), authService, db);
+        super(Endpoints.Categories, authService, db);
     }
 
-    public getCategoryNameWithParent(key: string | undefined): Observable<string | null> {
-        if (key === undefined)
-            return of(null);
-        else {
-            return this.getDbItem(key).valueChanges().pipe(switchMap((categoryItem) => {
-                if (categoryItem?.parent) {
-                    return this.getDbItem(categoryItem.parent).valueChanges().pipe(switchMap((parentItem) => {
-                        const categoryWithParentName = `${parentItem ? parentItem.name + ' - ' : ''}${categoryItem.name}`;
-                        return of(categoryWithParentName);
-                    }))
-                } else {
-                    const categoryName = categoryItem?.name ?? null;
-                    return of(categoryName);
-                }
-            }));
-        }
-    }
-
-    public getGroupedItems(): Observable<ItemKeyWithData<CategoryItemView>[]> {
-        return this.getItems().pipe(map(result => {
-            const parents = result.filter(item => !item.data.parent).map(item =>
-                new ItemKeyWithData(item.key, <CategoryItemView>item.data)
-            );
-
-            parents.forEach(parent =>
-                parent.data.children = result.filter(item => item.data.parent == parent.key)
-            );
-
-            return parents;
-        }))
-    }
 
     //insert initial categories right after user registration process
     public insertInitialValues() {

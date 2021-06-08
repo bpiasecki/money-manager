@@ -17,6 +17,7 @@ export class AppComponent {
   public dataLoaded = false;
   public tabsVisible: boolean;
   public $isLoading: Observable<boolean>;
+  public currentUrl: string | undefined;
 
   constructor(private authService: AuthService, private spinner: NgxSpinnerService, private router: Router, public dbService: DbService) {
     this.dbService.$isLoading.subscribe((isLoading) => isLoading ? this.spinner.show() : this.spinner.hide());
@@ -28,8 +29,10 @@ export class AppComponent {
     })
 
     this.router.events.pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe((event: Partial<NavigationEnd>) =>
-        this.tabsVisible = this.mainRouterLinks.some(link => link === event.url)
+      .subscribe((event: Partial<NavigationEnd>) => {
+        this.tabsVisible = this.mainRouterLinks.some(link => link === event.url || link === event.urlAfterRedirects)
+        this.currentUrl = event.urlAfterRedirects;
+      }
       );
 
   }

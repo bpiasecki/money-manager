@@ -9,7 +9,7 @@ import { BaseDbService } from '@core/services/baseDb.service';
 export class TransactionsService extends BaseDbService<TransactionItem> {
 
     constructor(authService: AuthService, db: AngularFireDatabase) {
-        super(Endpoints.Transactions, new TransactionItem(), authService, db);
+        super(Endpoints.Transactions, authService, db);
     }
 
 }

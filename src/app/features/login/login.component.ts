@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { DbService } from '@core/services/db.service';
 import { AuthService } from '../../core/services/auth.service';
 
 @Component({
@@ -14,14 +15,17 @@ export class LoginComponent {
   hidePassword = true;
   showIncorrectCredentialsInfo: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private dbService: DbService, private router: Router) { }
 
   login() {
+    this.dbService.setIsLoading(true);
     this.showIncorrectCredentialsInfo = false;
     this.authService.login(this.email.value, this.password.value).then(() => {
+      this.dbService.init();
       this.router.navigate(['/accounts']);
     }).catch(() => {
       this.showIncorrectCredentialsInfo = true;
+      this.dbService.setIsLoading(false);
     })
   }
 

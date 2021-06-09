@@ -18,7 +18,7 @@ import { CategoriesService } from '@shared/services/categories.service';
 import { TransactionsService } from '@shared/services/transactions.service';
 import { NgDialogAnimationService } from 'ng-dialog-animation';
 import { from, Observable, of } from 'rxjs';
-import { filter, first, map, switchMap, switchMapTo } from 'rxjs/operators';
+import { filter, finalize, first, map, switchMap, switchMapTo } from 'rxjs/operators';
 
 
 @Component({
@@ -82,9 +82,7 @@ export class TransactionAddEditComponent implements OnInit {
         }),
         first()
       )
-    })).subscribe((result) =>
-      this.transaction = result
-    )
+    })).subscribe((result) => this.transaction = result);
   }
 
   public addEditTransaction(transaction: TransactionItem): void {
@@ -167,8 +165,12 @@ export class TransactionAddEditComponent implements OnInit {
     }).afterClosed()
       .pipe(filter(confirmed => confirmed === true))
       .subscribe(() => {
-        if (this.itemKey) this.transactionsService.removeItem(this.itemKey)
-          .then(() => this.closePanel())
+        if (this.itemKey) {
+          this.editAccountBalance(this.itemBeforeEdit, true).pipe(
+            switchMapTo(from(this.transactionsService.removeItem(this.itemKey))),
+            finalize(() => this.closePanel())
+          ).subscribe();
+        }
       });
   }
 

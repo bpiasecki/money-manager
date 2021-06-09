@@ -13,13 +13,13 @@ import { map, switchMap } from 'rxjs/operators';
 @Injectable()
 export class DbService {
 
-    private transactionsSource = new ReplaySubject<ItemKeyWithData<TransactionItem>[]>()
+    private transactionsSource = new ReplaySubject<ItemKeyWithData<TransactionItem>[]>(1)
     public $transactions = this.transactionsSource.asObservable();
 
-    private accountsSource = new ReplaySubject<ItemKeyWithData<WalletItem>[]>()
+    private accountsSource = new ReplaySubject<ItemKeyWithData<WalletItem>[]>(1)
     public $accounts = this.accountsSource.asObservable();
 
-    private categoriesSource = new ReplaySubject<ItemKeyWithData<CategoryItem>[]>()
+    private categoriesSource = new ReplaySubject<ItemKeyWithData<CategoryItem>[]>(1)
     public $categories = this.categoriesSource.asObservable();
 
     private isLoading = new Subject<boolean>();

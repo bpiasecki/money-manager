@@ -7,6 +7,7 @@ import { RemoveConfirmDialogComponent } from './custom-components/remove-confirm
 import { MaterialModule } from './material.module';
 import { AccountNameWithBalancePipe } from './pipes/accountNameWithBalance.pipe';
 import { AccountTypePipe } from './pipes/accountType.pipe';
+import { CategoryNamePipe } from './pipes/categoryName.pipe';
 import { GridAccountNamePipe } from './pipes/gridAccountName.pipe';
 import { SumValuePipe } from './pipes/sumValue.pipe';
 
@@ -17,7 +18,8 @@ import { SumValuePipe } from './pipes/sumValue.pipe';
         GridAccountNamePipe,
         AccountNameWithBalancePipe,
         CategoryPickerComponent,
-        RemoveConfirmDialogComponent
+        RemoveConfirmDialogComponent,
+        CategoryNamePipe
     ],
     imports: [
         MaterialModule,
@@ -28,6 +30,7 @@ import { SumValuePipe } from './pipes/sumValue.pipe';
         SumValuePipe,
         GridAccountNamePipe,
         AccountNameWithBalancePipe,
+        CategoryNamePipe,
         MaterialModule,
         RouterModule,
         ReactiveFormsModule,

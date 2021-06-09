@@ -3,6 +3,7 @@ import { MatDialogRef } from '@angular/material/dialog/';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { WalletItem } from '@core/models/accounts/walletItem.model';
+import { CategoryItem } from '@core/models/categories/categoryItem.model';
 import { ItemKeyWithData } from '@core/models/itemKeyWithData.model';
 import { TransactionItem } from '@core/models/transactions/transactionItem.model';
 import { DbService } from '@core/services/db.service';
@@ -36,6 +37,7 @@ export class TransactionsComponent implements OnInit, OnDestroy {
 
   public optionsBasicNoData: { emptyDataMessage: "Brak transakcji do wyświetlenia"; };
   public accounts: ItemKeyWithData<WalletItem>[];
+  public categories: ItemKeyWithData<CategoryItem>[];
 
   constructor(private router: Router, private dbService: DbService, private transactionsService: TransactionsService) { }
 
@@ -44,6 +46,8 @@ export class TransactionsComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.dbService.$accounts.subscribe((result) => {
       this.accounts = result;
     }));
+    
+    this.subscriptions.add(this.dbService.$categories.subscribe((result) => this.categories = result));
   }
 
   filterDatatable(event: any) {

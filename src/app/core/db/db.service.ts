@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { WalletItem } from '@core/models/accounts/walletItem.model';
 import { CategoryItem, CategoryItemView } from '@core/models/categories/categoryItem.model';
 import { ItemKeyWithData } from '@core/models/itemKeyWithData.model';
@@ -29,8 +28,7 @@ export class DbService {
     constructor(
         private transactionsService: TransactionsService,
         private accountsService: AccountsService,
-        private categoriesService: CategoriesService,
-        private router: Router
+        private categoriesService: CategoriesService
     ) { this.init() }
 
     public init() {
@@ -46,7 +44,6 @@ export class DbService {
             this.setIsLoading(false);
         }, (error) => {
             this.setIsLoading(false);
-            this.router.navigate(['/login'])
         })
     }
 

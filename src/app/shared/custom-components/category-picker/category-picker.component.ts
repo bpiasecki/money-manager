@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { DbService } from '@core/db/db.service';
 import { CategoryItem, CategoryItemView } from '@core/models/categories/categoryItem.model';
 import { ItemKeyWithData } from '@core/models/itemKeyWithData.model';
-import { DbService } from '@core/services/db.service';
 import { first, shareReplay, tap } from 'rxjs/operators';
 
 @Component({

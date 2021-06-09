@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DbService } from '@core/services/db.service';
-import { AuthService } from '../../core/services/auth.service';
+import { DbService } from '@core/db/db.service';
+import { AuthService } from '../../core/auth/auth.service';
 
 @Component({
   selector: 'mm-login',

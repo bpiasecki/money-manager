@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from '@core/auth/auth-guard.service';
 import { AccountAddEditComponent } from '@features/account-add-edit/account-add-edit.component';
 import { AccountsComponent } from '@features/accounts-page/accounts.component';
 import { TransactionAddEditComponent } from '@features/transaction-add-edit/transaction-add-edit.component';
@@ -11,12 +12,12 @@ const routes: Routes = [
   { path: '', redirectTo: 'accounts', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: RegisterComponent },
-  { path: 'accounts', component: AccountsComponent, },
-  { path: 'accountAddEdit', component: AccountAddEditComponent },
-  { path: 'accountAddEdit/:id', component: AccountAddEditComponent },
-  { path: 'transactionAddEdit', component: TransactionAddEditComponent },
-  { path: 'transactionAddEdit/:param', component: TransactionAddEditComponent },
-  { path: 'transactions', component: TransactionsComponent },
+  { path: 'accounts', component: AccountsComponent, canActivate: [AuthGuard]},
+  { path: 'accountAddEdit', component: AccountAddEditComponent, canActivate: [AuthGuard] },
+  { path: 'accountAddEdit/:id', component: AccountAddEditComponent, canActivate: [AuthGuard] },
+  { path: 'transactionAddEdit', component: TransactionAddEditComponent, canActivate: [AuthGuard] },
+  { path: 'transactionAddEdit/:param', component: TransactionAddEditComponent, canActivate: [AuthGuard] },
+  { path: 'transactions', component: TransactionsComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: 'accounts'}
 ];
 

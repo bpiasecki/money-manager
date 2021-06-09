@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { DbService } from '@core/db/db.service';
 import { DebtType } from '@core/models/accounts/debtType.model';
 import { WalletItem } from '@core/models/accounts/walletItem.model';
 import { ItemKeyWithData } from '@core/models/itemKeyWithData.model';
 import { TransactionType } from '@core/models/transactions/transactionType.model';
-import { DbService } from '@core/services/db.service';
 import { ShowHideMainPage } from '@shared/animations/showHideMainPage.animation';
 import { RemoveConfirmDialogComponent } from '@shared/custom-components/remove-confirm-dialog/remove-confirm-dialog.component';
 import { AccountsService } from '@shared/services/accounts.service';

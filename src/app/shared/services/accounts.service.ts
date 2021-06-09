@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
+import { AuthService } from '@core/auth/auth.service';
+import { BaseDbService } from '@core/db/baseDb.service';
 import { Endpoints } from '@core/db/endpoints.enum';
 import { WalletItem } from '@core/models/accounts/walletItem.model';
-import { AuthService } from '@core/services/auth.service';
-import { BaseDbService } from '@core/services/baseDb.service';
 import { Observable, of } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
 

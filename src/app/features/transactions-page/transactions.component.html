@@ -4,14 +4,15 @@
       [@showHideMainPage]>
       <mat-form-field class="filter-input">
         <mat-label>Filter</mat-label>
-        <input matInput (keyup)="filterDatatable($event)" placeholder="Ex. Mia" #input autocomplete="off">
+        <input matInput (keyup)="filterDatatable($event)" placeholder="Ex. Mia" #input autocomplete="off" autocorrect="off">
       </mat-form-field>
 
       <div class="items-wrapper">
         <div class="transactions-table">
           <ngx-datatable class="material" [rows]="transactions" [columnMode]="ColumnMode.flex"
             [sortType]="SortType.multi" [sorts]="[{prop: 'data.transactionDate', dir: 'desc'}]" [headerHeight]="50"
-            [footerHeight]="50" [rowHeight]="'auto'" (activate)="editTransaction($event)">
+            [footerHeight]="50" [rowHeight]="'auto'" (activate)="editTransaction($event)"
+            [messages]="{emptyMessage: 'Brak transakcji do wyświetlenia...', totalMessage: 'Wszystkich'}">
 
             <ngx-datatable-column name="Lp." [maxWidth]='70' [resizeable]="false" [sortable]="false">
               <ng-template let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>

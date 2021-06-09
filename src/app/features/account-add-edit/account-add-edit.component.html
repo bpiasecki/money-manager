@@ -31,7 +31,7 @@
 
                     <mat-form-field appearance="outline">
                         <mat-label>Nazwa</mat-label>
-                        <input type="text" [(ngModel)]="account.name" name="accountName" matInput required>
+                        <input type="text" [(ngModel)]="account.name" name="accountName" autocomplete="off" autocorrect="off" matInput required>
                     </mat-form-field>
 
                     <div *ngIf="account.type == AccountTypes.Debt" [@showHideFormField]>

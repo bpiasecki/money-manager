@@ -1,22 +1,22 @@
 <div class="bg-image"></div>
 <ngx-spinner type="square-jelly-box" size="large"><p class="loading-text">ŁADOWANIE DANYCH...</p></ngx-spinner>
-<div class="center-view-wrapper" *ngIf="(dataLoaded && (dbService.$isLoading | async) === false) || currentUrl === '/login'">
+<div class="center-view-wrapper" *ngIf="(dbService.$isLoading | async) === false || currentUrl === '/login'">
   <div class="centered-content">
     <router-outlet></router-outlet>
     <div *ngIf="tabsVisible" class="tabs">
-      <a routerLink="/accounts" routerLinkActive="selected" class="tab bookmarks-tab">
+      <a routerLink="/accounts" routerLinkActive="selected" class="tab">
         <div class="tab-tile" [attr.data-content]="'KONTA'">
           <mat-icon class="material-icons-outlined">credit_card</mat-icon>
         </div>
       </a>
 
-      <a routerLink="/transactions" routerLinkActive="selected" class="tab todos-tab">
+      <a routerLink="/transactions" routerLinkActive="selected" class="tab">
         <div class="tab-tile" [attr.data-content]="'TRANSAKCJE'">
           <mat-icon class="material-icons-outlined">receipt</mat-icon>
         </div>
       </a>
 
-      <a routerLink="budgets" routerLinkActive="selected" class="tab notes-tab">
+      <a routerLink="/budgets" routerLinkActive="selected" class="tab">
         <div class="tab-tile" [attr.data-content]="'BUDŻETY'">
           <mat-icon class="material-icons-outlined">price_change</mat-icon>
         </div>

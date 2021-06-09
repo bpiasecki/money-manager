@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from '@core/auth/auth-guard.service';
 import { AccountAddEditComponent } from '@features/account-add-edit/account-add-edit.component';
 import { AccountsComponent } from '@features/accounts-page/accounts.component';
 import { TransactionAddEditComponent } from '@features/transaction-add-edit/transaction-add-edit.component';
@@ -11,7 +12,7 @@ const routes: Routes = [
   { path: '', redirectTo: 'accounts', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: RegisterComponent },
-  { path: 'accounts', component: AccountsComponent, },
+  { path: 'accounts', component: AccountsComponent, canActivate: [AuthGuard]},
   { path: 'accountAddEdit', component: AccountAddEditComponent },
   { path: 'accountAddEdit/:id', component: AccountAddEditComponent },
   { path: 'transactionAddEdit', component: TransactionAddEditComponent },

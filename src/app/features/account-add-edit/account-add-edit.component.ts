@@ -1,10 +1,10 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { DbService } from '@core/db/db.service';
 import { DebtType } from '@core/models/accounts/debtType.model';
 import { WalletItem } from '@core/models/accounts/walletItem.model';
 import { WalletItemType, WalletItemTypesList } from '@core/models/accounts/walletItemType.model';
-import { DbService } from '@core/services/db.service';
 import { PreventInitialChildAnimations } from '@shared/animations/preventInitialChildAnimations.animation';
 import { ShowHideButtonAnimation } from '@shared/animations/showHideButton.animation';
 import { ShowHideCheckboxAnimation } from '@shared/animations/showHideCheckbox.animation';

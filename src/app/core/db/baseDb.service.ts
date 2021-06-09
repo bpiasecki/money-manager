@@ -2,7 +2,7 @@ import { AngularFireDatabase, AngularFireList, AngularFireObject, QueryFn } from
 import { ItemKeyWithData } from '@core/models/itemKeyWithData.model';
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { AuthService } from './auth.service';
+import { AuthService } from '../auth/auth.service';
 
 export abstract class BaseDbService<T> {
 

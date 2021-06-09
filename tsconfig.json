@@ -19,6 +19,7 @@
       ]
     },
     "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
     "strict": true,
     "strictPropertyInitialization": false,
     "noImplicitReturns": true,

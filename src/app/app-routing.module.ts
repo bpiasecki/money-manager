@@ -13,11 +13,11 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: RegisterComponent },
   { path: 'accounts', component: AccountsComponent, canActivate: [AuthGuard]},
-  { path: 'accountAddEdit', component: AccountAddEditComponent },
-  { path: 'accountAddEdit/:id', component: AccountAddEditComponent },
-  { path: 'transactionAddEdit', component: TransactionAddEditComponent },
-  { path: 'transactionAddEdit/:param', component: TransactionAddEditComponent },
-  { path: 'transactions', component: TransactionsComponent },
+  { path: 'accountAddEdit', component: AccountAddEditComponent, canActivate: [AuthGuard] },
+  { path: 'accountAddEdit/:id', component: AccountAddEditComponent, canActivate: [AuthGuard] },
+  { path: 'transactionAddEdit', component: TransactionAddEditComponent, canActivate: [AuthGuard] },
+  { path: 'transactionAddEdit/:param', component: TransactionAddEditComponent, canActivate: [AuthGuard] },
+  { path: 'transactions', component: TransactionsComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: 'accounts'}
 ];
 

@@ -19,8 +19,9 @@ jobs:
     - run: npm run build:prod
     - uses: pocket-apps/action-update-version@v1
       with:
-        files: 'package.json, app.yaml'
+        files: 'package.json'
         version-regexp: '\d+.\d+.\d+'
+        branch-name: 'main'
         repo-token: ${{ secrets.GITHUB_TOKEN }}
     - uses: w9jds/firebase-action@master
       with:

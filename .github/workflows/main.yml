@@ -17,12 +17,6 @@ jobs:
         node-version: '12.x'
     - run: npm install
     - run: npm run build:prod
-    - uses: pocket-apps/action-update-version@v1
-      with:
-        files: 'package.json'
-        version-regexp: '\d+.\d+.\d+'
-        branch-name: 'main'
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
     - uses: w9jds/firebase-action@master
       with:
         args: deploy --only hosting

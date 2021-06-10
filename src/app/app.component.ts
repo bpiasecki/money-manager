@@ -19,6 +19,7 @@ export class AppComponent {
   public currentUrl: string | undefined;
 
   constructor(private authService: AuthService, private spinner: NgxSpinnerService, private router: Router, public dbService: DbService) {
+    this.spinner.show();
     this.dbService.$isLoading.subscribe((isLoading) => isLoading ? this.spinner.show() : this.spinner.hide());
 
     this.router.events.pipe(filter(event => event instanceof NavigationEnd))

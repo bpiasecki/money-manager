@@ -51,6 +51,13 @@ export class DbService {
         this.isLoading.next(value);
     }
 
+    public setInitialUserData(name: string, userId: string | undefined) {
+        if (userId)
+            return this.categoriesService.setInitialUserData(name, userId);
+        else
+            return Promise.resolve();
+    }
+
     public getTransaction(key: string | undefined): Observable<TransactionItem> {
         return this.$transactions.pipe(
             map(transactions => transactions.find(item => item.key === key)?.data ?? new TransactionItem())

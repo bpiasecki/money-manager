@@ -14,11 +14,14 @@ export class CategoriesService extends BaseDbService<CategoryItem> {
         super(Endpoints.Categories, authService, db);
     }
 
+    public setInitialUserData(name: string, userId: string): Promise<void> {
+        return this.db.object(`${userId}/userName`).set(name).then(() => this.insertInitialValues(userId));
+    }
 
     //insert initial categories right after user registration process
-    public insertInitialValues() {
+    public insertInitialValues(userId: string) {
         const initialCategories = this.getInitialList();
-        this.db.object(`${this.userId}/${this.endpoint}`).set(initialCategories).then(() => console.log('initial categories inserted'))
+        this.db.object(`${userId}/${this.endpoint}`).set(initialCategories).then(() => console.log('initial categories inserted'))
     }
 
     private getInitialList(): Record<string, CategoryItem> {
@@ -138,7 +141,7 @@ export class CategoriesService extends BaseDbService<CategoryItem> {
         items[this.db.createPushId()] = new CategoryItem('Konto emerytalne', categoryGroup13);
         items[this.db.createPushId()] = new CategoryItem('Nadpłata długów', categoryGroup13);
         items[this.db.createPushId()] = new CategoryItem('Inne', categoryGroup13);
-        
+
         const categoryGroup14 = this.db.createPushId();
         items[categoryGroup14] = new CategoryItem('Inne', null, 'payment');
         items[this.db.createPushId()] = new CategoryItem('Dobroczynność', categoryGroup14);

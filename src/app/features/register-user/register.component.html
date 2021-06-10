@@ -1,1 +1,29 @@
-<p>register works!</p>
+<div class="center-page">
+    <div class="full-screen-form-wrapper">
+        <form class="full-screen-form" (submit)="register()" #registerForm="ngForm">
+            <span class="header-text">Zarejestruj się</span>
+            <mat-form-field appearance="outline">
+                <mat-label>Imię</mat-label>
+                <input [formControl]="name" matInput autocorrect="off" required>
+                <mat-icon matSuffix class="email-icon">person</mat-icon>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Email</mat-label>
+                <input [formControl]="email" matInput autocorrect="off" required>
+                <mat-icon matSuffix class="email-icon">email</mat-icon>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Hasło</mat-label>
+                <input [type]="hidePassword ? 'password' : 'text'" [formControl]="password" autocomplete="off"
+                    autocorrect="off" matInput required>
+                <button mat-icon-button type="button" matSuffix (click)="hidePassword = !hidePassword" tabindex="-1"
+                    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+                    <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+            </mat-form-field>
+            <button mat-raised-button class="form-full-width" color="primary" type="submit">Zarejestruj</button>
+            <span class="addition-text">Masz już konto? <a [routerLink]="['/login']">Zaloguj się</a>
+            </span>
+        </form>
+    </div>
+</div>

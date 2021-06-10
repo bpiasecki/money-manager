@@ -11,19 +11,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@main
-    - uses: actions/setup-node@main
+    - name: Checkout main branch
+      uses: actions/checkout@main
+    - name: Set up Node
+      uses: actions/setup-node@main
       with:
         node-version: '12.x'
-    - run: npm install
-    - run: npm run build:prod
+    - name: Install packages
+      run: npm install
+    - name: Run production build
+      run: npm run build:prod
     - name: Automated Version Bump
       uses: phips28/gh-action-bump-version@v8.0.18
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         target-branch: 'main'
-    - uses: w9jds/firebase-action@master
+    - name: Deploy firebase hosting
+      uses: w9jds/firebase-action@master
       with:
         args: deploy --only hosting
       env:

@@ -5,7 +5,7 @@ import { DbService } from '@core/db/db.service';
 import { WalletItem } from '@core/models/accounts/walletItem.model';
 import { ItemKeyWithData } from '@core/models/itemKeyWithData.model';
 import { TransactionItem } from '@core/models/transactions/transactionItem.model';
-import { TransactionType } from '@core/models/transactions/transactionType.model';
+import { TransactionType, TransactionTypes, TransactionTypeViewItem } from '@core/models/transactions/transactionType.model';
 import { PreventInitialChildAnimations } from '@shared/animations/preventInitialChildAnimations.animation';
 import { ShowHideButtonAnimation } from '@shared/animations/showHideButton.animation';
 import { ShowHideCheckboxAnimation } from '@shared/animations/showHideCheckbox.animation';
@@ -36,6 +36,7 @@ import { filter, finalize, first, map, switchMap, switchMapTo } from 'rxjs/opera
 export class TransactionAddEditComponent implements OnInit {
 
   public TransactionTypes = TransactionType;
+  public transactionTypeList: TransactionTypeViewItem[] = TransactionTypes;
 
   public showPage: boolean = true;
   public transaction: TransactionItem;

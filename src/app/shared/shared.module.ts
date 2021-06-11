@@ -10,6 +10,8 @@ import { AccountTypePipe } from './pipes/accountType.pipe';
 import { CategoryNamePipe } from './pipes/categoryName.pipe';
 import { GridAccountNamePipe } from './pipes/gridAccountName.pipe';
 import { SumValuePipe } from './pipes/sumValue.pipe';
+import { TransactionTypeColorPipe } from './pipes/transactionTypeColor.pipe';
+import { TransactionTypeNamePipe } from './pipes/transactionTypeName.pipe';
 
 @NgModule({
     declarations: [
@@ -17,9 +19,12 @@ import { SumValuePipe } from './pipes/sumValue.pipe';
         SumValuePipe,
         GridAccountNamePipe,
         AccountNameWithBalancePipe,
+        CategoryNamePipe,
+        TransactionTypeColorPipe,
+        TransactionTypeNamePipe,
+
         CategoryPickerComponent,
-        RemoveConfirmDialogComponent,
-        CategoryNamePipe
+        RemoveConfirmDialogComponent
     ],
     imports: [
         MaterialModule,
@@ -31,6 +36,9 @@ import { SumValuePipe } from './pipes/sumValue.pipe';
         GridAccountNamePipe,
         AccountNameWithBalancePipe,
         CategoryNamePipe,
+        TransactionTypeColorPipe,
+        TransactionTypeNamePipe,
+
         MaterialModule,
         RouterModule,
         ReactiveFormsModule,

@@ -1,7 +1,7 @@
 import { LayoutModule } from '@angular/cdk/layout';
 import { CommonModule, registerLocaleData } from '@angular/common';
 import localePl from '@angular/common/locales/pl';
-import { LOCALE_ID, NgModule } from '@angular/core';
+import { DEFAULT_CURRENCY_CODE, LOCALE_ID, NgModule } from '@angular/core';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { BrowserModule } from '@angular/platform-browser';
@@ -54,6 +54,7 @@ registerLocaleData(localePl);
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'pl' },
+    { provide: DEFAULT_CURRENCY_CODE, useValue: 'PLN' },
     AccountsService,
     TransactionsService,
     CategoriesService

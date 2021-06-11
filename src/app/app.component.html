@@ -1,33 +1,41 @@
-<div class="bg-image"></div>
+<div class="bg-image" [ngStyle]="{'background-image': backgroundImage}"></div>
 <ngx-spinner type="square-jelly-box" size="large">
   <p class="loading-text">ŁADOWANIE DANYCH...</p>
 </ngx-spinner>
-<button class="logout-button" *ngIf="currentUrl !== '/login' && currentUrl !== '/signup'" type="button" mat-button color="primary"
-  (click)="logout()">
-  <mat-icon>logout</mat-icon>
-</button>
-<div class="center-view-wrapper"
-  *ngIf="(dbService.$isLoading | async) === false || currentUrl === '/login' || currentUrl === '/signup'">
-  <div class="centered-content">
-    <router-outlet></router-outlet>
-    <div *ngIf="tabsVisible" class="tabs">
-      <a routerLink="/accounts" routerLinkActive="selected" class="tab">
-        <div class="tab-tile" [attr.data-content]="'KONTA'">
-          <mat-icon class="material-icons-outlined">credit_card</mat-icon>
-        </div>
-      </a>
-
-      <a routerLink="/transactions" routerLinkActive="selected" class="tab">
-        <div class="tab-tile" [attr.data-content]="'TRANSAKCJE'">
-          <mat-icon class="material-icons-outlined">receipt</mat-icon>
-        </div>
-      </a>
-
-      <a routerLink="/budgets" routerLinkActive="selected" class="tab">
-        <div class="tab-tile" [attr.data-content]="'BUDŻETY'">
-          <mat-icon class="material-icons-outlined">price_change</mat-icon>
-        </div>
-      </a>
+<div [style.visibility]="!!backgroundImage">
+  <div *ngIf="currentUrl !== '/login' && currentUrl !== '/signup'" class="top-menu-buttons">
+    <button type="button" mat-button color="primary"
+      (click)="changeBackground()">
+      <mat-icon>wallpaper</mat-icon>
+    </button>
+    <button type="button" mat-button color="primary"
+      (click)="logout()">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </div>
+  <div class="center-view-wrapper"
+    *ngIf="(dbService.$isLoading | async) === false || currentUrl === '/login' || currentUrl === '/signup'">
+    <div class="centered-content">
+      <router-outlet></router-outlet>
+      <div *ngIf="tabsVisible" class="tabs">
+        <a routerLink="/accounts" routerLinkActive="selected" class="tab">
+          <div class="tab-tile" [attr.data-content]="'KONTA'">
+            <mat-icon class="material-icons-outlined">credit_card</mat-icon>
+          </div>
+        </a>
+  
+        <a routerLink="/transactions" routerLinkActive="selected" class="tab">
+          <div class="tab-tile" [attr.data-content]="'TRANSAKCJE'">
+            <mat-icon class="material-icons-outlined">receipt</mat-icon>
+          </div>
+        </a>
+  
+        <a routerLink="/budgets" routerLinkActive="selected" class="tab">
+          <div class="tab-tile" [attr.data-content]="'BUDŻETY'">
+            <mat-icon class="material-icons-outlined">price_change</mat-icon>
+          </div>
+        </a>
+      </div>
     </div>
   </div>
 </div>

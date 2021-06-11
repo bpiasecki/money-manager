@@ -22,7 +22,7 @@ export class AccountsComponent implements OnInit {
 
   public DebtTypes = DebtType;
 
-  items$: Observable<ItemKeyWithData<WalletItem>[]>;
+  $accounts: Observable<ItemKeyWithData<WalletItem>[]>;
   userId: string | undefined;
   showPage: boolean = true;
 
@@ -30,7 +30,7 @@ export class AccountsComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.items$ = this.dbService.$accounts;
+    this.$accounts = this.dbService.$accounts;
   }
 
   public removeAccount(key: string, accountName: string): void {

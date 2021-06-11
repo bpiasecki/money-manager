@@ -1,14 +1,14 @@
 <div class="center-page">
   <ng-scrollbar>
     <div class="full-screen-page-wrapper">
-      <div *ngIf="showPage && (items$ | async); let items" class="full-screen-page" [@showHideMainPage]>
+      <div *ngIf="showPage && ($accounts | async); let accounts" class="full-screen-page" [@showHideMainPage]>
         <div class="all-accounts-balance">
-          {{ items | sumValue | currency:'PLN':'symbol-narrow'}}
+          {{ accounts | sumValue | currency}}
         </div>
 
         <div class="items-wrapper">
           <div class="items">
-            <div *ngFor="let item of items" class="item" [ngStyle]="{'background': item.data.color}">
+            <div *ngFor="let item of accounts" class="item" [ngStyle]="{'background': item.data.color}">
               <div>
                 <div class="account-name">
                   {{ item.data.name }}
@@ -19,7 +19,7 @@
               </div>
               <div class="account-balance">
                 {{ (item.data.debtType === DebtTypes.BorrowedFromSomeone ? '-' : "") + (item.data.balance |
-                currency:'PLN':'symbol-narrow')}}
+                currency)}}
               </div>
               <div class="action-buttons">
                 <button mat-raised-button color="primary" type="button" title="Usuń konto"
@@ -36,7 +36,7 @@
                 </button>
               </div>
             </div>
-            <div *ngIf="items.length === 0" class="no-items-info">Brak wyników<br>dodaj pierwsze konto!</div>
+            <div *ngIf="accounts.length === 0" class="no-items-info">Brak wyników<br>dodaj pierwsze konto!</div>
           </div>
 
           <div class="manage-accounts-buttons">

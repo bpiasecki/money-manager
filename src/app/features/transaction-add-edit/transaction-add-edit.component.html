@@ -1,39 +1,24 @@
 <div class="center-page">
     <ng-scrollbar>
         <div class="full-screen-form-wrapper">
-            <form *ngIf="showPage && transaction" class="full-screen-form"
-                (submit)="addEditTransaction(transaction)" #transactionsAddForm="ngForm" [@showHideEditPage]>
+            <form *ngIf="showPage && transaction" class="full-screen-form" (submit)="addEditTransaction(transaction)"
+                #transactionsAddForm="ngForm" [@showHideEditPage]>
                 <div [@preventInitialChildAnimations]>
                     <div class="top-header">
                         <span class="header-text">{{!!itemKey ? 'Edytuj transakcję' : 'Dodaj transakcję'}}</span>
-                        <button *ngIf="!!itemKey" type="button" mat-button color="primary" (click)="removeTransaction()"><mat-icon>delete</mat-icon></button>
+                        <button *ngIf="!!itemKey" type="button" mat-button color="primary"
+                            (click)="removeTransaction()">
+                            <mat-icon>delete</mat-icon>
+                        </button>
                     </div>
 
                     <div class="transaction-type-picker">
-                        <button disableRipple mat-raised-button color="primary" type="button"
-                            [ngClass]="{'active': transaction.type == TransactionTypes.Income}"
-                            (click)="transaction.type = TransactionTypes.Income">
+                        <button *ngFor="let transactionType of transactionTypeList" disableRipple mat-raised-button
+                            color="primary" type="button" (click)="transaction.type = transactionType.type"
+                            [ngClass]="{'active': transaction.type == transactionType.type}">
                             <div class="icon-with-text">
-                                <mat-icon>add</mat-icon>
-                                <span>PRZYCHÓD</span>
-                            </div>
-                        </button>
-                        <button disableRipple mat-raised-button color="primary" type="button"
-                            [ngClass]="{'active': transaction.type == TransactionTypes.Expense}"
-                            (click)="transaction.type = TransactionTypes.Expense">
-
-                            <div class="icon-with-text">
-                                <mat-icon>remove</mat-icon>
-                                <span>WYDATEK</span>
-                            </div>
-                        </button>
-                        <button disableRipple mat-raised-button color="primary" type="button"
-                            [ngClass]="{'active': transaction.type == TransactionTypes.Transfer}"
-                            (click)="transaction.type = TransactionTypes.Transfer">
-
-                            <div class="icon-with-text">
-                                <mat-icon>sync_alt</mat-icon>
-                                <span>PRZELEW</span>
+                                <mat-icon>{{transactionType.icon}}</mat-icon>
+                                <span>{{transactionType.name}}</span>
                             </div>
                         </button>
                     </div>
@@ -41,31 +26,35 @@
                     <div class="form-scroll-content">
                         <mat-form-field appearance="outline">
                             <mat-label>Nazwa</mat-label>
-                            <input type="text" [(ngModel)]="transaction.name" name="transactionName" autocomplete="off" autocorrect="off" matInput required>
+                            <input type="text" [(ngModel)]="transaction.name" name="transactionName" autocomplete="off"
+                                autocorrect="off" matInput required>
                         </mat-form-field>
-    
+
                         <mat-form-field appearance="outline">
                             <mat-label>Kwota</mat-label>
-                            <input type="number" [(ngModel)]="transaction.value" name="transactionValue" matInput required>
+                            <input type="number" [(ngModel)]="transaction.value" name="transactionValue" matInput
+                                required>
                         </mat-form-field>
-    
+
                         <mat-form-field class="cursor-pointer" appearance="outline" (click)="pickCategory(transaction)">
                             <mat-label>Kategoria</mat-label>
-                            <input type="text" [value]="$categoryName | async" name="categoryName" autocomplete="off" autocorrect="off" matInput required readonly>
+                            <input type="text" [value]="$categoryName | async" name="categoryName" autocomplete="off"
+                                autocorrect="off" matInput required readonly>
                         </mat-form-field>
-    
+
                         <mat-form-field appearance="outline">
                             <mat-label>Opis</mat-label>
-                            <input type="text" [(ngModel)]="transaction.description" name="transactionDescription" autocomplete="off" autocorrect="off" matInput>
+                            <input type="text" [(ngModel)]="transaction.description" name="transactionDescription"
+                                autocomplete="off" autocorrect="off" matInput>
                         </mat-form-field>
-    
+
                         <div *ngIf="transaction.type != TransactionTypes.Income" [@showHideFormField]>
                             <mat-form-field appearance="outline">
                                 <mat-label>Konto źródłowe</mat-label>
                                 <mat-select [(ngModel)]="transaction.sourceAccount" name="transactionSourceAccount"
                                     required>
                                     <mat-option *ngFor="let item of accounts" [value]="item.key">
-                                        {{item.data | accountNameWithBalance:(item.data.balance | currency:'PLN':'symbol-narrow')}}
+                                        {{item.data | accountNameWithBalance:(item.data.balance | currency)}}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -76,12 +65,12 @@
                                 <mat-select [(ngModel)]="transaction.targetAccount" name="transactionTargetAccount"
                                     required>
                                     <mat-option *ngFor="let item of accounts" [value]="item.key">
-                                        {{item.data | accountNameWithBalance:(item.data.balance | currency:'PLN':'symbol-narrow')}}
+                                        {{item.data | accountNameWithBalance:(item.data.balance | currency)}}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
-    
+
                         <div class="cursor-pointer" (click)="datePicker.open()">
                             <mat-form-field appearance="outline">
                                 <mat-label>Data transakcji</mat-label>
@@ -91,7 +80,7 @@
                                 <mat-datepicker touchUi #datePicker></mat-datepicker>
                             </mat-form-field>
                         </div>
-    
+
                         <div *ngIf="transaction.type == TransactionTypes.Expense" [@showHideFormField]>
                             <mat-form-field appearance="outline">
                                 <mat-label>Gwarancja (msc)</mat-label>

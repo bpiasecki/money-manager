@@ -7,6 +7,7 @@ import { WalletItem } from '@core/models/accounts/walletItem.model';
 import { CategoryItem } from '@core/models/categories/categoryItem.model';
 import { ItemKeyWithData } from '@core/models/itemKeyWithData.model';
 import { TransactionItem } from '@core/models/transactions/transactionItem.model';
+import { TransactionType } from '@core/models/transactions/transactionType.model';
 import { AccountsComponent } from '@features/accounts-page/accounts.component';
 import { ShowHideMainPage } from '@shared/animations/showHideMainPage.animation';
 import { TransactionsService } from '@shared/services/transactions.service';
@@ -30,6 +31,7 @@ export class TransactionsComponent implements OnInit, OnDestroy {
   SortType = SortType;
   SelectionType = SelectionType;
   ColumnMode = ColumnMode;
+  TransactionType = TransactionType;
 
   $items: Observable<ItemKeyWithData<TransactionItem>[]>;
   dataSource = new MatTableDataSource<ItemKeyWithData<TransactionItem>>();

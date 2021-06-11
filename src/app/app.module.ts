@@ -18,6 +18,7 @@ import { MaterialModule } from '@shared/material.module';
 import { AccountsService } from '@shared/services/accounts.service';
 import { CategoriesService } from '@shared/services/categories.service';
 import { TransactionsService } from '@shared/services/transactions.service';
+import { UserDataService } from '@shared/services/userData.service';
 import { SharedModule } from '@shared/shared.module';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { NgScrollbarModule } from 'ngx-scrollbar';
@@ -57,7 +58,8 @@ registerLocaleData(localePl);
     { provide: DEFAULT_CURRENCY_CODE, useValue: 'PLN' },
     AccountsService,
     TransactionsService,
-    CategoriesService
+    CategoriesService,
+    UserDataService
   ],
   bootstrap: [AppComponent]
 })

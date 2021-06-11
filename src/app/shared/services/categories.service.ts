@@ -14,14 +14,13 @@ export class CategoriesService extends BaseDbService<CategoryItem> {
         super(Endpoints.Categories, authService, db);
     }
 
-    public setInitialUserData(name: string, userId: string): Promise<void> {
-        return this.db.object(`${userId}/userName`).set(name).then(() => this.insertInitialValues(userId));
-    }
-
     //insert initial categories right after user registration process
-    public insertInitialValues(userId: string) {
+    public setInitialCategories(userId: string | undefined) {
+        if(!userId)
+            return Promise.resolve();
+
         const initialCategories = this.getInitialList();
-        this.db.object(`${userId}/${this.endpoint}`).set(initialCategories).then(() => console.log('initial categories inserted'))
+        return this.db.object(`${userId}/${this.endpoint}`).set(initialCategories).then(() => console.log('initial categories inserted'))
     }
 
     private getInitialList(): Record<string, CategoryItem> {

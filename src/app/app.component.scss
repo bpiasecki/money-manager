@@ -1,16 +1,29 @@
 @import "style-variables";
 
-.logout-button {
+.top-menu-buttons {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 12px;
+  right: 14px;
   z-index: 1;
-  min-width: auto;
-  padding: 2px 13px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 7px;
+  display: flex;
+  gap: 5px;
+
+  button {
+    margin: 2px;
+    min-width: auto;
+    padding: 2px 13px;
+    color: lightgray;
+    &:hover {
+      background: dimgray;
+      color: white;
+    }
+  }
 }
 
 .bg-image {
-  background-image: url(../assets/images/bg-image-small.jpg);
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;

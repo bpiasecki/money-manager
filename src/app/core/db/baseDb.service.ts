@@ -11,18 +11,11 @@ export abstract class BaseDbService<T> {
     constructor(protected endpoint: string, private authService: AuthService, protected db: AngularFireDatabase) { }
 
     public getItems(): Observable<ItemKeyWithData<T>[]> {
-        if (!this.userId) {
-            return this.authService.getUserId().pipe(switchMap((userId) => {
-                this.userId = userId;
-                return this.getItemsFromDb();
+        return this.authService.getUserId().pipe(switchMap((userId) => {
+            this.userId = userId;
+            return this.getDbList().snapshotChanges().pipe(map((result) => {
+                return result.map(item => new ItemKeyWithData(<string>item.key, <T>item.payload.val()));
             }))
-        } else
-            return this.getItemsFromDb();
-    }
-
-    private getItemsFromDb(): Observable<ItemKeyWithData<T>[]> {
-        return this.getDbList().snapshotChanges().pipe(map((result) => {
-            return result.map(item => new ItemKeyWithData(<string>item.key, <T>item.payload.val()));
         }))
     }
 

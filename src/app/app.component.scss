@@ -1,5 +1,14 @@
 @import "style-variables";
 
+.logout-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1;
+  min-width: auto;
+  padding: 2px 13px;
+}
+
 .bg-image {
   background-image: url(../assets/images/bg-image-small.jpg);
   background-repeat: no-repeat;
@@ -11,7 +20,7 @@
 }
 
 .loading-text {
-  font-size: 15px; 
+  font-size: 15px;
   color: white;
 }
 
@@ -115,7 +124,6 @@
 
           &::before {
             content: "";
-
             position: absolute;
             top: 0;
             left: 0;
@@ -125,8 +133,7 @@
             border-radius: 10px;
             opacity: 0.4;
             transition: all 0.2s;
-
-            background: linear-gradient(180deg, #0f0f0f, rgba(100, 100, 100, 0.1));
+            background: linear-gradient(180deg, #0f0f0f, rgba(0, 0, 0, 0));
           }
         }
 
@@ -172,9 +179,7 @@
               opacity: 1;
               transform: scale(1.1);
               border-radius: 25%;
-
               box-shadow: 0px 7px 17px rgba(black, 0.12);
-
               transition-delay: 0.2s;
             }
           }

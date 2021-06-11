@@ -1,6 +1,13 @@
 <div class="bg-image"></div>
-<ngx-spinner type="square-jelly-box" size="large"><p class="loading-text">ŁADOWANIE DANYCH...</p></ngx-spinner>
-<div class="center-view-wrapper" *ngIf="(dbService.$isLoading | async) === false || currentUrl === '/login'">
+<ngx-spinner type="square-jelly-box" size="large">
+  <p class="loading-text">ŁADOWANIE DANYCH...</p>
+</ngx-spinner>
+<button class="logout-button" *ngIf="currentUrl !== '/login' && currentUrl !== '/signup'" type="button" mat-button color="primary"
+  (click)="logout()">
+  <mat-icon>logout</mat-icon>
+</button>
+<div class="center-view-wrapper"
+  *ngIf="(dbService.$isLoading | async) === false || currentUrl === '/login' || currentUrl === '/signup'">
   <div class="centered-content">
     <router-outlet></router-outlet>
     <div *ngIf="tabsVisible" class="tabs">

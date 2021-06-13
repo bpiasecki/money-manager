@@ -17,6 +17,7 @@ export class AppComponent {
   private readonly mainRouterLinks = ['/', '/accounts', '/transactions'];
   public tabsVisible: boolean;
   public $isLoading: Observable<boolean>;
+  public bgLoading = false;
   public currentUrl: string | undefined;
   public backgroundImage: string;
   private backgroundIndex = 0;
@@ -44,22 +45,24 @@ export class AppComponent {
       });
 
     this.userDataService.getBackgroudImage().subscribe((url) => {
-      if (url)
+      if (url) {
+        localStorage.setItem('bgUrl', url);
         this.backgroundIndex = this.backgroundImages.findIndex(imgUrl => imgUrl == url)
+      }
 
-      this.setBackground(url ?? this.backgroundImages[0]);
+      this.setBackground(url ?? localStorage.getItem('bgUrl') ?? this.backgroundImages[0]);
     })
 
   }
 
   logout() {
-    this.authService.logout().then(() => {
+    this.authService.logout().then(() => 
       this.router.navigate(['login'])
-    });
+    );
   }
 
   public changeBackground(): void {
-    this.spinner.show()
+    this.bgLoading = true;
     this.backgroundIndex = this.backgroundImages.length - 1 == this.backgroundIndex ? 0 : this.backgroundIndex + 1;
     const url = this.backgroundImages[this.backgroundIndex];
     this.userDataService.setBackgroundImage(url).pipe(first()).subscribe();
@@ -69,8 +72,8 @@ export class AppComponent {
     const img = new Image();
 
     img.onload = () => {
-      this.backgroundImage = `url(${url})`;
-      this.spinner.hide();
+        this.backgroundImage = `url(${url})`;
+        this.bgLoading = false;
     };
 
     img.src = url;

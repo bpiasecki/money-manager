@@ -1,12 +1,12 @@
-<div class="bg-image" [ngStyle]="{'background-image': backgroundImage}"></div>
+<div class="bg-image" [ngClass]="{'bg-transition': !!backgroundImage}" [ngStyle]="{'background-image': backgroundImage}"></div>
 <ngx-spinner type="square-jelly-box" size="large">
   <p class="loading-text">ŁADOWANIE DANYCH...</p>
 </ngx-spinner>
-<div [style.visibility]="!!backgroundImage">
+<div [style.visibility]="backgroundImage ? 'visible' : 'hidden'">
   <div *ngIf="currentUrl !== '/login' && currentUrl !== '/signup'" class="top-menu-buttons">
-    <button type="button" mat-button color="primary"
+    <button type="button" mat-button color="primary" [ngClass]="{'spinner': bgLoading}"
       (click)="changeBackground()">
-      <mat-icon>wallpaper</mat-icon>
+      <mat-icon *ngIf="!bgLoading">wallpaper</mat-icon>
     </button>
     <button type="button" mat-button color="primary"
       (click)="logout()">

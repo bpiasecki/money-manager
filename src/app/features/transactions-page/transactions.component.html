@@ -1,11 +1,17 @@
 <div class="center-page">
   <div class="transactions-page-wrapper">
-    <div *ngIf="showPage && accounts && ($items | async ) as transactions" class="transactions-cards-wrapper"
-      [@showHideMainPage]>
-      <mat-form-field class="filter-input">
-        <mat-label>Filter</mat-label>
-        <input matInput (keyup)="filterDatatable($event)" placeholder="Ex. Mia" #input autocomplete="off" autocorrect="off">
-      </mat-form-field>
+    <div *ngIf="showPage && accounts && transactions" class="transactions-cards-wrapper" [@showHideMainPage]>
+      <div class="filter-items">
+        <div mat-raised-button class="filter-item" *ngFor="let filterItem of transactionFilters">
+          <button mat-button class="filter-button" [ngStyle]="{'border-top-right-radius': filterItem.visibleName ? 0 : '4px',
+          'border-bottom-right-radius': filterItem.visibleName ? 0 : '4px'}" color="primary" type="button"
+            (click)="openFilterDialog(filterItem)">
+            {{filterItem.visibleName ?? filterItem.name}}</button>
+          <button *ngIf="filterItem.visibleName" mat-button class="clear-button">
+            <mat-icon (click)="filterItem.visibleName = filterItem.filterFn = undefined; filterItems()">clear</mat-icon>
+          </button>
+        </div>
+      </div>
 
       <div class="items-wrapper">
         <div class="transactions-table">
@@ -14,9 +20,11 @@
             [footerHeight]="50" [rowHeight]="'auto'" (activate)="editTransaction($event)"
             [messages]="{emptyMessage: 'Brak transakcji do wyświetlenia...', totalMessage: 'wszystkich'}">
 
-            <ngx-datatable-column name="Typ" [maxWidth]='100' [minWidth]="40" [flexGrow]='1' [resizeable]="false" [sortable]="false">
+            <ngx-datatable-column name="Typ" [maxWidth]='100' [minWidth]="40" [flexGrow]='1' [resizeable]="false"
+              [sortable]="false">
               <ng-template let-row="row" ngx-datatable-cell-template>
-                <div class="transfer-type-icon" [title]="row.data.type | transactionTypeName" [style.backgroundColor]="row.data.type | transactionTypeColor"></div>
+                <div class="transfer-type-icon" [title]="row.data.type | transactionTypeName"
+                  [style.backgroundColor]="row.data.type | transactionTypeColor"></div>
               </ng-template>
             </ngx-datatable-column>
 
@@ -44,7 +52,8 @@
               </ng-template>
             </ngx-datatable-column>
 
-            <ngx-datatable-column name="Kwota" [headerClass]="'align-right'" [minWidth]="125" [maxWidth]="125" [resizeable]="false" prop="data.value">
+            <ngx-datatable-column name="Kwota" [headerClass]="'align-right'" [minWidth]="125" [maxWidth]="125"
+              [resizeable]="false" prop="data.value">
               <ng-template let-row="row" ngx-datatable-cell-template>
                 <div class="align-right">{{ row.data.value | currency}}</div>
               </ng-template>

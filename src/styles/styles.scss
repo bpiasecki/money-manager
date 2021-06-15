@@ -33,15 +33,14 @@ router-outlet + * {
   overflow: auto;
 }
 
-router-outlet + mm-transactions, router-outlet + mm-accounts {
-  bottom: 140px!important;
+router-outlet + mm-transactions,
+router-outlet + mm-accounts {
+  bottom: 140px !important;
 }
-
 
 @media (max-height: 650px) {
   router-outlet + *:not(mm-accounts):not(mm-transactions) {
     bottom: 0 !important;
-
 
     .full-screen-form-wrapper {
       width: 100vw !important;
@@ -260,5 +259,14 @@ ng-scrollbar {
 }
 
 .align-right {
-  text-align: right!important;
+  text-align: right !important;
+}
+
+.dialog-content mat-checkbox {
+  margin: 4px;
+
+  .mat-checkbox-inner-container {
+    width: 24px;
+    height: 24px;
+  }
 }

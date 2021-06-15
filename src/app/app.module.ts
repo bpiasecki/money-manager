@@ -25,6 +25,7 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { TransactionFilterComponent } from './features/transaction-filter/transaction-filter.component';
 
 registerLocaleData(localePl);
 
@@ -36,7 +37,8 @@ registerLocaleData(localePl);
     TransactionsComponent,
     TransactionAddEditComponent,
     AccountsComponent,
-    AccountAddEditComponent
+    AccountAddEditComponent,
+    TransactionFilterComponent
   ],
   imports: [
     CoreModule,

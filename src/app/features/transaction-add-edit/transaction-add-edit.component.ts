@@ -9,12 +9,12 @@ import { TransactionType, TransactionTypes, TransactionTypeViewItem } from '@cor
 import { PreventInitialChildAnimations } from '@shared/animations/preventInitialChildAnimations.animation';
 import { ShowHideButtonAnimation } from '@shared/animations/showHideButton.animation';
 import { ShowHideCheckboxAnimation } from '@shared/animations/showHideCheckbox.animation';
+import { ShowHideDialogAnimation } from '@shared/animations/showHideDialog.animation';
 import { ShowHideEditPage } from '@shared/animations/showHideEditPage.animation';
 import { ShowHideFormFieldAnimation } from '@shared/animations/showHideFormField.animation';
 import { CategoryPickerComponent } from '@shared/custom-components/category-picker/category-picker.component';
 import { RemoveConfirmDialogComponent } from '@shared/custom-components/remove-confirm-dialog/remove-confirm-dialog.component';
 import { AccountsService } from '@shared/services/accounts.service';
-import { CategoriesService } from '@shared/services/categories.service';
 import { TransactionsService } from '@shared/services/transactions.service';
 import { NgDialogAnimationService } from 'ng-dialog-animation';
 import { from, Observable, of } from 'rxjs';
@@ -48,7 +48,6 @@ export class TransactionAddEditComponent implements OnInit {
   constructor(
     private transactionsService: TransactionsService,
     private accountsService: AccountsService,
-    private categoriesService: CategoriesService,
     private dbService: DbService,
     private location: Location,
     private route: ActivatedRoute,
@@ -178,7 +177,7 @@ export class TransactionAddEditComponent implements OnInit {
   public pickCategory(transaction: TransactionItem) {
     const dialogRef = this.dialogService.open(CategoryPickerComponent, {
       data: transaction.category,
-      animation: this.getDialogAnimation()
+      animation: ShowHideDialogAnimation
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -189,27 +188,6 @@ export class TransactionAddEditComponent implements OnInit {
         this.$categoryName = this.dbService.getCategoryNameWithParent(result);
       }
     })
-  }
-
-  private getDialogAnimation() {
-    const animation = {
-      incomingOptions: {
-        keyframes: [
-          { opacity: '0', transform: 'scale(0.7)' },
-          { opacity: '1', transform: 'scale(1)' }
-        ],
-        keyframeAnimationOptions: { easing: 'ease-in-out', duration: 300 }
-      },
-      outgoingOptions: {
-        keyframes: [
-          { opacity: '1', transform: 'scale(1)' },
-          { opacity: '0', transform: 'scale(1.3)' }
-        ],
-        keyframeAnimationOptions: { easing: 'ease-in-out', duration: 300 }
-      }
-    }
-
-    return animation;
   }
 
   public closePanel(): void {

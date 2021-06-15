@@ -1,0 +1,16 @@
+.dialog-content {
+    min-width: 400px;
+    section {
+        margin: 15px 0px;
+        min-width: 250px;
+    }
+}
+.categories-list {
+    overflow: auto;
+    height: calc(57vh - 120px);
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: space-between;
+}

@@ -1,0 +1,85 @@
+<h1 mat-dialog-title>{{filterItem.name}}</h1>
+<div mat-dialog-content class="dialog-content">
+    <ng-container [ngSwitch]="filterItem.type">
+        <section *ngSwitchCase="FilterTypes.Account">
+            <mat-checkbox [checked]="allChecked" [color]="'primary'" [indeterminate]="someComplete()"
+                (change)="setAll($event.checked)">
+                Zaznacz/odznacz wszystkie
+            </mat-checkbox>
+            <hr>
+            <mat-checkbox *ngFor="let account of filterItem.listItems" [(ngModel)]="account.checked" [color]="'primary'"
+                (ngModelChange)="updateAllChecked()">
+                {{account.data.name}}
+            </mat-checkbox>
+        </section>
+        <section *ngSwitchCase="FilterTypes.TransactionType">
+            <mat-checkbox [checked]="allChecked" [color]="'primary'" [indeterminate]="someComplete()"
+                (change)="setAll($event.checked)">
+                Zaznacz/odznacz wszystkie
+            </mat-checkbox>
+            <hr>
+            <mat-checkbox *ngFor="let transactionType of filterItem.listItems" [(ngModel)]="transactionType.checked"
+                [color]="'primary'" (ngModelChange)="updateAllChecked()">
+                {{transactionType.name}}
+            </mat-checkbox>
+        </section>
+        <section *ngSwitchCase="FilterTypes.Date">
+            <div class="cursor-pointer" (click)="startDatePicker.open()">
+                <mat-form-field class="form-full-width" appearance="outline">
+                    <mat-label>Data początkowa</mat-label>
+                    <input matInput [matDatepicker]="startDatePicker" name="startDate" [(ngModel)]="startDate" readonly>
+                    <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker touchUi #startDatePicker></mat-datepicker>
+                </mat-form-field>
+            </div>
+
+            <div class="cursor-pointer" (click)="endDatePicker.open()">
+                <mat-form-field class="form-full-width" appearance="outline">
+                    <mat-label>Data końcowa</mat-label>
+                    <input matInput [matDatepicker]="endDatePicker" name="endDate" [(ngModel)]="endDate" readonly>
+                    <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker touchUi #endDatePicker></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </section>
+        <section *ngSwitchCase="FilterTypes.TransactionValue">
+            <mat-form-field class="form-full-width" appearance="outline">
+                <mat-label>Kwota większa niż</mat-label>
+                <input type="number" [(ngModel)]="startValue" name="startValue" matInput>
+            </mat-form-field>
+
+            <mat-form-field class="form-full-width" appearance="outline">
+                <mat-label>Kwota mniejsza niż</mat-label>
+                <input type="number" [(ngModel)]="endValue" name="endValue" matInput>
+            </mat-form-field>
+        </section>
+        <section *ngSwitchCase="FilterTypes.Name">
+            <mat-form-field class="form-full-width" appearance="outline">
+                <mat-label>Zawiera tekst</mat-label>
+                <input matInput type="text" [(ngModel)]="nameValue" #searchInput autocomplete="off" autocorrect="off">
+            </mat-form-field>
+        </section>
+        <section *ngSwitchCase="FilterTypes.Category">
+            <mat-form-field class="form-full-width">
+                <mat-label>Znajdź kategorię...</mat-label>
+                <input matInput (keyup)="filterItems($event)" #input autocomplete="off" autocorrect="off">
+            </mat-form-field>
+            <mat-checkbox [checked]="allChecked" [color]="'primary'" [indeterminate]="someComplete()"
+                (change)="setAll($event.checked)">
+                Zaznacz/odznacz wszystkie
+            </mat-checkbox>
+            <div class="categories-list">
+                <hr>
+                <mat-checkbox *ngFor="let category of visibleCategories" [(ngModel)]="category.checked"
+                    (change)="onCategoryChange(category)" [color]="'primary'" (ngModelChange)="updateAllChecked()">
+                    {{ (category.data.parent | categoryName:categoriesParents) + ' - ' + category.data.name}}
+                </mat-checkbox>
+
+            </div>
+        </section>
+    </ng-container>
+</div>
+<div mat-dialog-actions class="action-buttons">
+    <button mat-button type="button" color="primary" [mat-dialog-close]>Anuluj</button>
+    <button mat-button type="button" color="primary" (click)="applyFilter()">Zastosuj</button>
+</div>

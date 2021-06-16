@@ -29,6 +29,7 @@ export class TransactionFilterComponent implements OnInit {
   public categoriesParents: any[];
 
   public allChecked: boolean;
+  private filterValue: string;
 
   constructor(@Inject(MAT_DIALOG_DATA) public filterItem: TransactionFilterItem, public dialogRef: MatDialogRef<TransactionFilterComponent>) { }
 
@@ -55,14 +56,15 @@ export class TransactionFilterComponent implements OnInit {
     }
 
     if (this.filterItem.listItems) {
-      this.categoriesParents = this.filterItem.listItems.filter(item => !item.data.parent)
-      this.allCategories = [...this.filterItem.listItems.filter(item => item.data.parent)];
-      this.visibleCategories = this.filterItem.listItems.filter(item => item.data.parent);
+      this.categoriesParents = this.filterItem.listItems.filter(item => !item?.data?.parent)
+      this.allCategories = [...this.filterItem.listItems.filter(item => item?.data?.parent)];
+      this.visibleCategories = this.filterItem.listItems.filter(item => item?.data?.parent);
     }
   }
 
   public filterItems(event: any) {
     const filterValue = (event.target as HTMLInputElement).value;
+    this.filterValue = filterValue;
     if (filterValue)
       this.visibleCategories = this.allCategories.filter(category => {
         const parentName = this.categoriesParents.find(item => item.key == category.data.parent)?.data?.name;
@@ -92,9 +94,9 @@ export class TransactionFilterComponent implements OnInit {
 
   public setAll(checked: boolean) {
     this.allChecked = checked;
-    if (this.filterItem.listItems == null) {
+    if (this.filterItem.listItems == null)
       return;
-    }
+
     this.filterItem.listItems.forEach(t => t.checked = checked);
   }
 
@@ -129,16 +131,16 @@ export class TransactionFilterComponent implements OnInit {
   }
 
   private setFilterForTransactionType() {
-    const checkedTypeItems = this.filterItem.listItems?.filter(s => s.checked);
+    const checkedTypeItems = this.filterItem.listItems?.filter(s => s.checked) ?? [];
     this.filterItem.value = checkedTypeItems;
-    this.filterItem.visibleName = `${this.filterItem.name} = ${checkedTypeItems?.map(s => s.name)?.join(', ')}`;
+    this.filterItem.visibleName = `${this.filterItem.name} = ${checkedTypeItems.length === 0 ? 'brak' : checkedTypeItems?.map(s => s.name)?.join(', ')}`;
     this.filterItem.filterFn = (item, items: TransactionTypeViewItem[] | undefined) => items ? items.map(s => s.type).includes(item.type) : true;
   }
 
   private setFilterForAccount() {
-    const checkedAccounts: ItemKeyWithData<WalletItem>[] | undefined = this.filterItem.listItems?.filter(s => s.checked);
+    const checkedAccounts: ItemKeyWithData<WalletItem>[] = this.filterItem.listItems?.filter(s => s.checked) ?? [];
     this.filterItem.value = checkedAccounts;
-    this.filterItem.visibleName = `${this.filterItem.name} = ${checkedAccounts?.map(s => s.data.name)?.join(', ')}`;
+    this.filterItem.visibleName = `${this.filterItem.name} = ${checkedAccounts.length === 0 ? 'brak' : checkedAccounts?.map(s => s.data.name)?.join(', ')}`;
     this.filterItem.filterFn = (item, accounts: ItemKeyWithData<WalletItem>[] | undefined) => {
       if (accounts) {
         const accountsKeys = accounts.map(item => item.key);
@@ -157,7 +159,7 @@ export class TransactionFilterComponent implements OnInit {
     const datePipe = new DatePipe('pl');
     this.filterItem.value = this.startDate;
     this.filterItem.addictionalValue = this.endDate;
-    this.filterItem.visibleName = `${this.filterItem.name}${this.startDate ? ' od ' + datePipe.transform(this.startDate) : ''}${this.endDate ? ' do ' + datePipe.transform(this.endDate) : ''}`;
+    this.filterItem.visibleName = `${this.filterItem.name}${!this.startDate && !this.endDate ? ' brak' : this.startDate ? ' od ' + datePipe.transform(this.startDate) : ''}${this.endDate ? ' do ' + datePipe.transform(this.endDate) : ''}`;
     this.filterItem.filterFn = (item, startDate: Date | undefined, endDate: Date | undefined) => {
       const transactionDateTime = new Date(item.transactionDate).getTime();
       if (startDate && endDate)
@@ -174,7 +176,7 @@ export class TransactionFilterComponent implements OnInit {
     const currencyPipe = new CurrencyPipe('pl', 'PLN');
     this.filterItem.value = this.startValue;
     this.filterItem.addictionalValue = this.endValue;
-    this.filterItem.visibleName = `${this.filterItem.name}${this.startValue ? ' od ' + currencyPipe.transform(this.startValue) : ''}${this.endValue ? ' do ' + currencyPipe.transform(this.endValue) : ''}`;
+    this.filterItem.visibleName = `${this.filterItem.name}${this.startValue == null && this.endValue == null ? ' brak' : this.startValue != null ? ' od ' + currencyPipe.transform(this.startValue) : ''}${this.endValue != null ? ' do ' + currencyPipe.transform(this.endValue) : ''}`;
     this.filterItem.filterFn = (item, startValue: number | undefined, endValue: number | undefined) => {
       if (startValue !== undefined && endValue !== undefined)
         return item.value >= startValue && item.value <= endValue;
@@ -188,14 +190,22 @@ export class TransactionFilterComponent implements OnInit {
 
   private setFilterForName() {
     this.filterItem.value = this.nameValue;
-    this.filterItem.visibleName = `${this.filterItem.name} ~ ${this.nameValue}`;
+    this.filterItem.visibleName = `${this.filterItem.name} ~ ${this.nameValue ?? 'brak'}`;
     this.filterItem.filterFn = (item, result: string | undefined) => result ? item.name.includes(result) : true;
   }
 
   private setFilterForCategory() {
-    const checkedCategories: ItemKeyWithData<CategoryItem>[] | undefined = this.filterItem.listItems?.filter(s => s.checked) ?? [];
+    let checkedCategories: ItemKeyWithData<CategoryItem>[];
+    if (this.filterValue) {
+      checkedCategories = this.visibleCategories.filter(s => s.checked) ?? [];
+      const checkedKeys = checkedCategories.map(s => s.key);
+      this.filterItem.listItems?.forEach(item => item.checked = checkedKeys.includes(item.key))
+    }
+    else
+      checkedCategories = this.filterItem.listItems?.filter(s => s.checked) ?? [];
+
     this.filterItem.value = checkedCategories;
-    this.filterItem.visibleName = `${this.filterItem.name} = ${checkedCategories.length < 4 ? checkedCategories.map(s => s.data.name)?.join(', ') : '[' + checkedCategories.length + ']'}`;
+    this.filterItem.visibleName = `${this.filterItem.name} = ${checkedCategories.length === 0 ? 'brak' : checkedCategories.length < 4 ? checkedCategories.map(s => s.data.name)?.join(', ') : '[' + checkedCategories.length + ']'}`;
     this.filterItem.filterFn = (item, categories: ItemKeyWithData<CategoryItem>[] | undefined) => {
       if (categories)
         return categories.map(item => item.key).includes(item.category);

@@ -4,10 +4,11 @@ import { DbService } from '@core/db/db.service';
 import { WalletItem } from '@core/models/accounts/walletItem.model';
 import { CategoryItem } from '@core/models/categories/categoryItem.model';
 import { ItemKeyWithData } from '@core/models/itemKeyWithData.model';
-import { FilterType, TransactionFilterItem } from '@core/models/transactions/transactionFilterItem.model';
+import { TransactionFilterItem } from '@core/models/transactions/transactionFilterItem.model';
 import { TransactionItem } from '@core/models/transactions/transactionItem.model';
-import { TransactionType, TransactionTypes } from '@core/models/transactions/transactionType.model';
+import { TransactionType } from '@core/models/transactions/transactionType.model';
 import { TransactionFilterComponent } from '@features/transaction-filter/transaction-filter.component';
+import { TransactionFilterService } from '@features/transaction-filter/transaction-filter.service';
 import { ShowHideDialogAnimation } from '@shared/animations/showHideDialog.animation';
 import { ShowHideMainPage } from '@shared/animations/showHideMainPage.animation';
 import { TransactionsService } from '@shared/services/transactions.service';
@@ -32,27 +33,30 @@ export class TransactionsComponent implements OnInit, OnDestroy {
 
   public showPage: boolean = true;
 
+  public transactionFilters: TransactionFilterItem[];
+  public visibleFiltersLength: number;
+
   public accounts: ItemKeyWithData<WalletItem>[];
   public categories: ItemKeyWithData<CategoryItem>[];
-
-  public transactionFilters = [
-    new TransactionFilterItem('Typ', FilterType.TransactionType, TransactionTypes),
-    new TransactionFilterItem('Data', FilterType.Date),
-    new TransactionFilterItem('Nazwa', FilterType.Name),
-    new TransactionFilterItem('Konto', FilterType.Account),
-    new TransactionFilterItem('Kategoria', FilterType.Category),
-    new TransactionFilterItem('Kwota', FilterType.TransactionValue),
-  ]
 
   public transactions: ItemKeyWithData<TransactionItem>[];
   private transactionsSource: ItemKeyWithData<TransactionItem>[];
 
-  constructor(private router: Router, private dbService: DbService, private dialogService: NgDialogAnimationService, private transactionsService: TransactionsService) { }
+  constructor(
+    private router: Router,
+    private dbService: DbService,
+    private dialogService: NgDialogAnimationService,
+    private transactionsService: TransactionsService,
+    private transactionFilterService: TransactionFilterService
+  ) { }
 
   ngOnInit() {
+    this.transactionFilters = this.transactionFilterService.filters;
+
     this.subscriptions.add(this.dbService.$transactions.subscribe((result) => {
       this.transactionsSource = [...result];
       this.transactions = result;
+      this.filterItems();
     }));
 
     this.subscriptions.add(this.dbService.$accounts.subscribe((result) => {
@@ -77,7 +81,15 @@ export class TransactionsComponent implements OnInit, OnDestroy {
     this.transactionFilters.forEach(fItem => {
       transactions = transactions.filter(item => fItem.filterFn ? fItem.filterFn(item.data, fItem.value, fItem.addictionalValue) : () => true)
     });
+
+    this.transactionFilterService.filters = this.transactionFilters;
+    this.visibleFiltersLength = this.transactionFilters.filter(item => item.visibleName).length;
     this.transactions = transactions;
+  }
+
+  public clearFilters() {
+    this.transactionFilters.forEach(filter => filter.filterFn = filter.visibleName = undefined);
+    this.filterItems();
   }
 
   public openFilterDialog(filterItem: TransactionFilterItem) {

@@ -11,6 +11,11 @@
             <mat-icon (click)="filterItem.visibleName = filterItem.filterFn = undefined; filterItems()">clear</mat-icon>
           </button>
         </div>
+        <div *ngIf="visibleFiltersLength > 0" mat-raised-button class="filter-item">
+          <button mat-button class="filter-button" color="accent" type="button"
+            (click)="clearFilters()">
+            &lt;Wyczyść filtry&gt;</button>
+        </div>
       </div>
 
       <div class="items-wrapper">

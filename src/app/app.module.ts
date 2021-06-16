@@ -13,6 +13,7 @@ import { AccountsComponent } from '@features/accounts-page/accounts.component';
 import { LoginComponent } from '@features/login/login.component';
 import { RegisterComponent } from '@features/register-user/register.component';
 import { TransactionAddEditComponent } from '@features/transaction-add-edit/transaction-add-edit.component';
+import { TransactionFilterService } from '@features/transaction-filter/transaction-filter.service';
 import { TransactionsComponent } from '@features/transactions-page/transactions.component';
 import { MaterialModule } from '@shared/material.module';
 import { AccountsService } from '@shared/services/accounts.service';
@@ -61,7 +62,8 @@ registerLocaleData(localePl);
     AccountsService,
     TransactionsService,
     CategoriesService,
-    UserDataService
+    UserDataService,
+    TransactionFilterService
   ],
   bootstrap: [AppComponent]
 })

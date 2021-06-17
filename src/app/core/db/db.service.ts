@@ -42,7 +42,7 @@ export class DbService {
             this.accountsSource.next(accounts);
             this.categoriesSource.next(categories);
             this.setIsLoading(false);
-        }, (error) => {
+        }, () => {
             this.setIsLoading(false);
         })
     }

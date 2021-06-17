@@ -11,6 +11,8 @@ import { TransactionFilterComponent } from '@features/transaction-filter/transac
 import { TransactionFilterService } from '@features/transaction-filter/transaction-filter.service';
 import { ShowHideDialogAnimation } from '@shared/animations/showHideDialog.animation';
 import { ShowHideMainPage } from '@shared/animations/showHideMainPage.animation';
+import { CategoryNamePipe } from '@shared/pipes/categoryName.pipe';
+import { GridAccountNamePipe } from '@shared/pipes/gridAccountName.pipe';
 import { TransactionsService } from '@shared/services/transactions.service';
 import { ColumnMode, SelectionType, SortType } from '@swimlane/ngx-datatable';
 import { NgDialogAnimationService } from 'ng-dialog-animation';
@@ -24,7 +26,7 @@ import { Subscription } from 'rxjs';
 })
 export class TransactionsComponent implements OnInit, OnDestroy {
 
-  subscriptions = new Subscription();
+  private subscriptions = new Subscription();
 
   public SortType = SortType;
   public SelectionType = SelectionType;
@@ -41,7 +43,13 @@ export class TransactionsComponent implements OnInit, OnDestroy {
 
   public transactions: ItemKeyWithData<TransactionItem>[];
   private transactionsSource: ItemKeyWithData<TransactionItem>[];
+  
+  private categoryPipe = new CategoryNamePipe();
+  private accountPipe = new GridAccountNamePipe();
 
+  public categorySortingComparator = this.categoriesComparator.bind(this);
+  public accountSortingComparator = this.accountsComparator.bind(this);
+  
   constructor(
     private router: Router,
     private dbService: DbService,
@@ -69,6 +77,7 @@ export class TransactionsComponent implements OnInit, OnDestroy {
 
     this.subscriptions.add(this.dbService.$categories.subscribe((result) => {
       this.categories = result;
+
       const categoriesFilterItem = this.transactionFilters.find(item => item.name == 'Kategoria');
       if (categoriesFilterItem)
         categoriesFilterItem.listItems = result;
@@ -90,6 +99,20 @@ export class TransactionsComponent implements OnInit, OnDestroy {
   public clearFilters() {
     this.transactionFilters.forEach(filter => filter.filterFn = filter.visibleName = undefined);
     this.filterItems();
+  }
+
+  private categoriesComparator(firstKey: string, secondKey: string): -1 | 1 {
+    const firstName = this.categoryPipe.transform(firstKey, this.categories);
+    const secondName = this.categoryPipe.transform(secondKey, this.categories);
+
+    return firstName < secondName ? -1 : 1;
+  }
+
+  private accountsComparator(firstData: TransactionItem, secondData: TransactionItem): -1 | 1 {
+    const firstName = this.accountPipe.transform(firstData.sourceAccount ?? "", firstData.targetAccount ?? "", this.accounts);
+    const secondName = this.accountPipe.transform(secondData.sourceAccount ?? "", secondData.targetAccount ?? "", this.accounts);
+
+    return firstName < secondName ? -1 : 1;
   }
 
   public openFilterDialog(filterItem: TransactionFilterItem) {

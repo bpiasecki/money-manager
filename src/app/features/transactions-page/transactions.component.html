@@ -25,8 +25,7 @@
             [footerHeight]="50" [rowHeight]="'auto'" (activate)="editTransaction($event)"
             [messages]="{emptyMessage: 'Brak transakcji do wyświetlenia...', totalMessage: 'wszystkich'}">
 
-            <ngx-datatable-column name="Typ" [maxWidth]='100' [minWidth]="40" [flexGrow]='1' [resizeable]="false"
-              [sortable]="false">
+            <ngx-datatable-column name="Typ" [maxWidth]='100' [minWidth]="40" [flexGrow]='1' [resizeable]="false" prop="data.type">
               <ng-template let-row="row" ngx-datatable-cell-template>
                 <div class="transfer-type-icon" [title]="row.data.type | transactionTypeName"
                   [style.backgroundColor]="row.data.type | transactionTypeColor"></div>
@@ -45,13 +44,13 @@
               </ng-template>
             </ngx-datatable-column>
 
-            <ngx-datatable-column name="Konto" [flexGrow]="1" [resizeable]="false" [sortable]="false">
+            <ngx-datatable-column name="Konto" [flexGrow]="1" [resizeable]="false" prop="data" [comparator]="accountSortingComparator">
               <ng-template let-row="row" ngx-datatable-cell-template>
                 {{ row.data.sourceAccount | gridAccountName:row.data.targetAccount:accounts }}
               </ng-template>
             </ngx-datatable-column>
 
-            <ngx-datatable-column name="Kategoria" [flexGrow]="1" [resizeable]="false" [sortable]="false">
+            <ngx-datatable-column name="Kategoria" [flexGrow]="1" [resizeable]="false" prop="data.category" [comparator]="categorySortingComparator">
               <ng-template let-row="row" ngx-datatable-cell-template>
                 {{ row.data.category | categoryName:categories}}
               </ng-template>

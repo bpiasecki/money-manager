@@ -3,7 +3,6 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { WalletItem } from '@core/models/accounts/walletItem.model';
 import { CategoryItem } from '@core/models/categories/categoryItem.model';
-import { ItemKeyWithData } from '@core/models/itemKeyWithData.model';
 import { FilterType, TransactionFilterItem } from '@core/models/transactions/transactionFilterItem.model';
 import { TransactionTypeViewItem } from '@core/models/transactions/transactionType.model';
 
@@ -56,9 +55,9 @@ export class TransactionFilterComponent implements OnInit {
     }
 
     if (this.filterItem.listItems) {
-      this.categoriesParents = this.filterItem.listItems.filter(item => !item?.data?.parent)
-      this.allCategories = [...this.filterItem.listItems.filter(item => item?.data?.parent)];
-      this.visibleCategories = this.filterItem.listItems.filter(item => item?.data?.parent);
+      this.categoriesParents = this.filterItem.listItems.filter(item => !item?.parentId)
+      this.visibleCategories = [].concat(...this.filterItem.listItems.map(item => item.children));
+      this.allCategories = [...this.visibleCategories];
     }
   }
 
@@ -67,8 +66,8 @@ export class TransactionFilterComponent implements OnInit {
     this.filterValue = filterValue;
     if (filterValue)
       this.visibleCategories = this.allCategories.filter(category => {
-        const parentName = this.categoriesParents.find(item => item.key == category.data.parent)?.data?.name;
-        const nameToFilter = parentName + ' - ' + category.data.name;
+        const parentName = this.categoriesParents.find(item => item.id == category.parentId)?.name;
+        const nameToFilter = parentName + ' - ' + category.name;
         return nameToFilter.toLowerCase().includes(filterValue.toLowerCase());
       })
     else
@@ -76,7 +75,7 @@ export class TransactionFilterComponent implements OnInit {
   }
 
   public onCategoryChange(listItem: any) {
-    const foundItem = this.filterItem.listItems?.find(item => item.key == listItem.key);
+    const foundItem = this.filterItem.listItems?.find(item => item.id == listItem.id);
     if (foundItem)
       foundItem.checked = listItem.checked;
   }
@@ -138,18 +137,18 @@ export class TransactionFilterComponent implements OnInit {
   }
 
   private setFilterForAccount() {
-    const checkedAccounts: ItemKeyWithData<WalletItem>[] = this.filterItem.listItems?.filter(s => s.checked) ?? [];
+    const checkedAccounts: WalletItem[] = this.filterItem.listItems?.filter(s => s.checked) ?? [];
     this.filterItem.value = checkedAccounts;
-    this.filterItem.visibleName = `${this.filterItem.name} = ${checkedAccounts.length === 0 ? 'brak' : checkedAccounts?.map(s => s.data.name)?.join(', ')}`;
-    this.filterItem.filterFn = (item, accounts: ItemKeyWithData<WalletItem>[] | undefined) => {
+    this.filterItem.visibleName = `${this.filterItem.name} = ${checkedAccounts.length === 0 ? 'brak' : checkedAccounts?.map(s => s.name)?.join(', ')}`;
+    this.filterItem.filterFn = (item, accounts: WalletItem[] | undefined) => {
       if (accounts) {
-        const accountsKeys = accounts.map(item => item.key);
-        if (item.sourceAccount && item.targetAccount)
-          return accountsKeys.includes(item.sourceAccount) || accountsKeys.includes(item.targetAccount)
-        else if (item.sourceAccount)
-          return accountsKeys.includes(item.sourceAccount)
-        else if (item.targetAccount)
-          return accountsKeys.includes(item.targetAccount)
+        const accountsKeys = accounts.map(item => item.id);
+        if (item.sourceAccountId && item.targetAccountId)
+          return accountsKeys.includes(item.sourceAccountId) || accountsKeys.includes(item.targetAccountId)
+        else if (item.sourceAccountId)
+          return accountsKeys.includes(item.sourceAccountId)
+        else if (item.targetAccountId)
+          return accountsKeys.includes(item.targetAccountId)
         else return true;
       } else return true;
     }
@@ -195,20 +194,20 @@ export class TransactionFilterComponent implements OnInit {
   }
 
   private setFilterForCategory() {
-    let checkedCategories: ItemKeyWithData<CategoryItem>[];
+    let checkedCategories: CategoryItem[];
     if (this.filterValue) {
       checkedCategories = this.visibleCategories.filter(s => s.checked) ?? [];
-      const checkedKeys = checkedCategories.map(s => s.key);
+      const checkedKeys = checkedCategories.map(s => s.id);
       this.filterItem.listItems?.forEach(item => item.checked = checkedKeys.includes(item.key))
     }
     else
       checkedCategories = this.filterItem.listItems?.filter(s => s.checked) ?? [];
 
     this.filterItem.value = checkedCategories;
-    this.filterItem.visibleName = `${this.filterItem.name} = ${checkedCategories.length === 0 ? 'brak' : checkedCategories.length < 4 ? checkedCategories.map(s => s.data.name)?.join(', ') : '[' + checkedCategories.length + ']'}`;
-    this.filterItem.filterFn = (item, categories: ItemKeyWithData<CategoryItem>[] | undefined) => {
+    this.filterItem.visibleName = `${this.filterItem.name} = ${checkedCategories.length === 0 ? 'brak' : checkedCategories.length < 4 ? checkedCategories.map(s => s.name)?.join(', ') : '[' + checkedCategories.length + ']'}`;
+    this.filterItem.filterFn = (item, categories: CategoryItem[] | undefined) => {
       if (categories)
-        return categories.map(item => item.key).includes(item.category);
+        return categories.map(item => item.id).includes(item.categoryId);
       else return true;
     }
   }

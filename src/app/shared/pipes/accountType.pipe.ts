@@ -5,7 +5,7 @@ import { WalletItemTypesList } from '@core/models/accounts/walletItemType.model'
 export class AccountTypePipe implements PipeTransform {
     private walletItemTypesList = WalletItemTypesList;
 
-    transform(value: number | undefined): string {
+    transform(value: string | number | undefined): string {
         return this.walletItemTypesList.find(item => item.type == value)?.name ?? "";
     }
 }

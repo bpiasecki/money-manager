@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DbService } from '@core/db/db.service';
 import { WalletItem } from '@core/models/accounts/walletItem.model';
-import { ItemKeyWithData } from '@core/models/itemKeyWithData.model';
 import { TransactionItem } from '@core/models/transactions/transactionItem.model';
 import { TransactionType, TransactionTypes, TransactionTypeViewItem } from '@core/models/transactions/transactionType.model';
 import { PreventInitialChildAnimations } from '@shared/animations/preventInitialChildAnimations.animation';
@@ -17,7 +16,7 @@ import { RemoveConfirmDialogComponent } from '@shared/custom-components/remove-c
 import { AccountsService } from '@shared/services/accounts.service';
 import { TransactionsService } from '@shared/services/transactions.service';
 import { NgDialogAnimationService } from 'ng-dialog-animation';
-import { from, Observable, of } from 'rxjs';
+import { forkJoin, from, Observable, of } from 'rxjs';
 import { filter, finalize, first, map, switchMap, switchMapTo } from 'rxjs/operators';
 
 
@@ -40,8 +39,8 @@ export class TransactionAddEditComponent implements OnInit {
 
   public showPage: boolean = true;
   public transaction: TransactionItem;
-  public itemKey: string | undefined;
-  public accounts: ItemKeyWithData<WalletItem>[];
+  public itemKey: number | undefined;
+  public accounts: WalletItem[];
   public $categoryName: Observable<string | null>;
   private itemBeforeEdit: TransactionItem;
 
@@ -56,23 +55,23 @@ export class TransactionAddEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.pipe(switchMap((params) => {
-      this.itemKey = params['id'];
+      this.itemKey = +params['id'];
       const accountKey = params['account'];
       const transactionType = params['transactionType'];
 
       return this.dbService.$accounts.pipe(
         switchMap((accounts) => {
-          const defaultAccount = accounts.find(item => item.data.isDefault === true);
+          const defaultAccount = accounts.find(item => item.isDefault === true);
           this.accounts = accounts;
           return this.dbService.getTransaction(this.itemKey).pipe(
             map((item) => {
-              this.$categoryName = this.dbService.getCategoryNameWithParent(item.category);
+              this.$categoryName = this.dbService.getCategoryNameWithParent(item.categoryId);
               if (accountKey)
-                item.sourceAccount = item.targetAccount = accountKey;
+                item.sourceAccountId = item.targetAccountId = accountKey;
               else if (transactionType)
                 item.type = transactionType;
               else if (!this.itemKey)
-                item.sourceAccount = item.targetAccount = defaultAccount?.key
+                item.sourceAccountId = item.targetAccountId = defaultAccount?.id
               else if (this.itemBeforeEdit === undefined)
                 this.itemBeforeEdit = { ...item };
 
@@ -89,13 +88,24 @@ export class TransactionAddEditComponent implements OnInit {
     const itemToSave = this.getTransactionToSave(transaction);
 
     if (this.itemKey)
-      this.transactionsService.updateItem(this.itemKey, itemToSave).then(() =>
-        this.editAccountBalance(itemToSave).pipe(first()).subscribe(() => this.closePanel())
-      );
+      this.transactionsService.updateItem(this.itemKey, itemToSave)
+        .pipe(
+          switchMapTo(
+            this.editAccountBalance(itemToSave).pipe(
+              first(),
+              switchMapTo(forkJoin([this.dbService.refreshAccounts(), this.dbService.refreshTransactions()]))
+            )
+
+          )).subscribe(() => this.closePanel())
     else
-      this.transactionsService.addNewItem(itemToSave).then(() =>
-        this.editAccountBalance(itemToSave).pipe(first()).subscribe(() => this.closePanel())
-      );
+      this.transactionsService.addNewItem(itemToSave)
+        .pipe(
+          switchMapTo(
+            this.editAccountBalance(itemToSave).pipe(
+              first(),
+              switchMapTo(forkJoin([this.dbService.refreshAccounts(), this.dbService.refreshTransactions()]))
+            )
+          )).subscribe(() => this.closePanel());
   }
 
   private editAccountBalance(itemToSave: TransactionItem, revert?: boolean): Observable<void> {
@@ -115,42 +125,44 @@ export class TransactionAddEditComponent implements OnInit {
   }
 
   private handleExpenseTransaction(itemToSave: TransactionItem, revert?: boolean): Observable<void> {
-    const account = this.accounts.find(item => item.key == itemToSave.sourceAccount);
+    const account = this.accounts.find(item => item.id == itemToSave.sourceAccountId);
     if (account) {
-      revert ? account.data.balance += itemToSave.value : account.data.balance -= itemToSave.value;
-      return from(this.accountsService.updateItem(account.key, account.data));
+      revert ? account.balance += itemToSave.value : account.balance -= itemToSave.value;
+      return from(this.accountsService.updateItem(account.id, account));
     } else return of(void 0);
   }
 
   private handleIncomeTransaction(itemToSave: TransactionItem, revert?: boolean): Observable<void> {
-    const account = this.accounts.find(item => item.key == itemToSave.targetAccount);
+    const account = this.accounts.find(item => item.id == itemToSave.targetAccountId);
     if (account) {
-      revert ? account.data.balance -= itemToSave.value : account.data.balance += itemToSave.value;
-      return from(this.accountsService.updateItem(account.key, account.data));
+      revert ? account.balance -= itemToSave.value : account.balance += itemToSave.value;
+      return from(this.accountsService.updateItem(account.id, account));
     } else return of(void 0);
   }
 
   private handleTransferTransaction(itemToSave: TransactionItem, revert?: boolean): Observable<void> {
-    const sourceAccount = this.accounts.find(item => item.key == itemToSave.sourceAccount);
-    const targetAccount = this.accounts.find(item => item.key == itemToSave.targetAccount);
+    const sourceAccount = this.accounts.find(item => item.id == itemToSave.sourceAccountId);
+    const targetAccount = this.accounts.find(item => item.id == itemToSave.targetAccountId);
     if (sourceAccount && targetAccount) {
-      revert ? sourceAccount.data.balance += itemToSave.value : sourceAccount.data.balance -= itemToSave.value;
-      revert ? targetAccount.data.balance -= itemToSave.value : targetAccount.data.balance += itemToSave.value;
-      return from(this.accountsService.updateItem(sourceAccount.key, sourceAccount.data).then(() =>
-        this.accountsService.updateItem(targetAccount.key, targetAccount.data)));
+      revert ? sourceAccount.balance += itemToSave.value : sourceAccount.balance -= itemToSave.value;
+      revert ? targetAccount.balance -= itemToSave.value : targetAccount.balance += itemToSave.value;
+      return from(this.accountsService.updateItem(sourceAccount.id, sourceAccount).pipe(switchMapTo(
+        this.accountsService.updateItem(targetAccount.id, targetAccount))));
     } else return of(void 0);
   }
 
   private getTransactionToSave(transaction: TransactionItem): TransactionItem {
     const itemToSave: TransactionItem = { ...transaction };
-    itemToSave.transactionDate = new Date(transaction.transactionDate)?.toISOString();
+    // itemToSave.transactionDate = new Date(transaction.transactionDate)?.toISOString();
+    delete itemToSave.sourceAccount;
+    delete itemToSave.targetAccount;
 
     switch (itemToSave.type) {
       case TransactionType.Expense:
-        delete itemToSave.targetAccount;
+        delete itemToSave.targetAccountId;
         break;
       case TransactionType.Income:
-        delete itemToSave.sourceAccount;
+        delete itemToSave.sourceAccountId;
         break;
       default:
         break;
@@ -176,15 +188,15 @@ export class TransactionAddEditComponent implements OnInit {
 
   public pickCategory(transaction: TransactionItem) {
     const dialogRef = this.dialogService.open(CategoryPickerComponent, {
-      data: transaction.category,
+      data: transaction.categoryId,
       animation: ShowHideDialogAnimation
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (!result)
         return;
-      if (transaction.category != result) {
-        transaction.category = result;
+      if (transaction.categoryId != result) {
+        transaction.categoryId = result;
         this.$categoryName = this.dbService.getCategoryNameWithParent(result);
       }
     })

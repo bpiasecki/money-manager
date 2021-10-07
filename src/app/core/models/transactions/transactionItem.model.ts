@@ -1,13 +1,17 @@
+import { WalletItem } from "../accounts/walletItem.model";
 import { TransactionType } from "./transactionType.model";
 
 export class TransactionItem {
+    id: number;
     name: string;
     value: number;
-    transactionDate: Date | string;
+    transactionDate: Date;
     description?: string;
     type: TransactionType = TransactionType.Expense;
-    sourceAccount?: string;
-    targetAccount?: string;
-    category: string;
+    sourceAccountId?: number;
+    targetAccountId?: number;
+    categoryId: number;
     warrantyMonthNumber?: number;
+    sourceAccount?: WalletItem;
+    targetAccount?: WalletItem;
 }

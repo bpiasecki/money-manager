@@ -1,8 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DbService } from '@core/db/db.service';
-import { CategoryItem, CategoryItemView } from '@core/models/categories/categoryItem.model';
-import { ItemKeyWithData } from '@core/models/itemKeyWithData.model';
+import { CategoryItem } from '@core/models/categories/categoryItem.model';
 import { first, shareReplay, tap } from 'rxjs/operators';
 
 @Component({
@@ -12,23 +11,23 @@ import { first, shareReplay, tap } from 'rxjs/operators';
 })
 export class CategoryPickerComponent implements OnInit {
 
-  public visibleCategories: ItemKeyWithData<CategoryItemView | CategoryItem>[];
-  public selectedParent: ItemKeyWithData<Partial<CategoryItemView>> | undefined;
-  private groupedCategories: ItemKeyWithData<CategoryItemView>[];
-  private allCategories: ItemKeyWithData<CategoryItem>[];
+  public visibleCategories: CategoryItem[];
+  public selectedParent: Partial<CategoryItem> | undefined;
+  private groupedCategories: CategoryItem[];
+  private allCategories: CategoryItem[];
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public itemKey: string | null,
+    @Inject(MAT_DIALOG_DATA) public itemKey: number | null,
     public dialogRef: MatDialogRef<CategoryPickerComponent>,
     private dbService: DbService
   ) { }
 
   ngOnInit(): void {
-    this.dbService.getGroupedCategories().pipe(
+    this.dbService.$categories.pipe(
       first(),
       tap((result) => {
-        if (!result.find(item => item.key == this.itemKey))
-          this.selectedParent = result.find(item => item.data.children.some(child => child.key == this.itemKey));
+        if (!result.find(item => item.id == this.itemKey))
+          this.selectedParent = result.find(item => item.children.some(child => child.id == this.itemKey));
       }),
       shareReplay()
     ).subscribe((result) => this.visibleCategories = this.groupedCategories = result);
@@ -36,21 +35,21 @@ export class CategoryPickerComponent implements OnInit {
     this.dbService.$categories.pipe(first()).subscribe((result) => this.allCategories = result);
   }
 
-  public onParentCategorySelect(category: ItemKeyWithData<Partial<CategoryItemView>>): void {
-    if (category.data.children && category.data.children.length > 0)
+  public onParentCategorySelect(category: Partial<CategoryItem>): void {
+    if (category.children && category.children.length > 0)
       this.selectedParent = category;
     else
-      this.dialogRef.close(category.key)
+      this.dialogRef.close(category.id)
   }
 
   public filterCategories(event: any) {
     if (event.keyCode === 13 && this.visibleCategories.length === 1)
-      this.dialogRef.close(this.visibleCategories[0].key) 
+      this.dialogRef.close(this.visibleCategories[0].id) 
 
     const filterValue = (event.target as HTMLInputElement).value;
     if (filterValue)
       this.visibleCategories = this.allCategories.filter(category =>
-        category.data.parent != null && category.data.name.toLowerCase().includes(filterValue.toLowerCase()))
+        category.parentId != null && category.name.toLowerCase().includes(filterValue.toLowerCase()))
     else
       this.visibleCategories = this.groupedCategories;
   }

@@ -1,12 +1,11 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { WalletItem } from '@core/models/accounts/walletItem.model';
-import { ItemKeyWithData } from '@core/models/itemKeyWithData.model';
 
 @Pipe({ name: 'gridAccountName' })
 export class GridAccountNamePipe implements PipeTransform {
-    transform(sourceAccKey: string, targetAccKey: string, accounts: ItemKeyWithData<WalletItem>[]): string {
-        const sourceAccountName = accounts.find(item => item.key == sourceAccKey)?.data.name;
-        const targetAccountName = accounts.find(item => item.key == targetAccKey)?.data.name;
+    transform(sourceAccId: number, targetAccId: number, accounts: WalletItem[]): string {
+        const sourceAccountName = accounts.find(item => item.id == sourceAccId)?.name;
+        const targetAccountName = accounts.find(item => item.id == targetAccId)?.name;
 
         if (sourceAccountName && targetAccountName)
             return `${sourceAccountName} -> ${targetAccountName}`;

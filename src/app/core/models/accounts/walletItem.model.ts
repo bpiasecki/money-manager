@@ -2,10 +2,10 @@ import { DebtType } from "./debtType.model";
 import { WalletItemType } from "./walletItemType.model";
 
 export class WalletItem {
+    id: number;
     name: string;
     balance: number;
     type: WalletItemType;
-    description: string;
     isDefault: boolean;
     isCalculatedInSummary: boolean = true;
     icon: string;
@@ -14,7 +14,6 @@ export class WalletItem {
     endDate: Date | string;
     targetValue: number;
     targetName: string;
-    targetDescription: string;
     debtType: DebtType;
     debtInitialValue: number;
     isSavingTargetSet: boolean;

@@ -27,39 +27,39 @@
 
             <ngx-datatable-column name="Typ" [maxWidth]='100' [minWidth]="40" [flexGrow]='1' [resizeable]="false" prop="data.type">
               <ng-template let-row="row" ngx-datatable-cell-template>
-                <div class="transfer-type-icon" [title]="row.data.type | transactionTypeName"
-                  [style.backgroundColor]="row.data.type | transactionTypeColor"></div>
+                <div class="transfer-type-icon" [title]="row.type | transactionTypeName"
+                  [style.backgroundColor]="row.type | transactionTypeColor"></div>
               </ng-template>
             </ngx-datatable-column>
 
             <ngx-datatable-column name="Data" [flexGrow]="1" [resizeable]="false" prop="data.transactionDate">
               <ng-template let-row="row" ngx-datatable-cell-template>
-                {{ row.data.transactionDate | date}}
+                {{ row.transactionDate | date}}
               </ng-template>
             </ngx-datatable-column>
 
             <ngx-datatable-column name="Nazwa" [flexGrow]="1" [resizeable]="false" prop="data.name">
               <ng-template let-row="row" ngx-datatable-cell-template>
-                {{ row.data.name }}
+                {{ row.name }}
               </ng-template>
             </ngx-datatable-column>
 
             <ngx-datatable-column name="Konto" [flexGrow]="1" [resizeable]="false" prop="data" [comparator]="accountSortingComparator">
               <ng-template let-row="row" ngx-datatable-cell-template>
-                {{ row.data.sourceAccount | gridAccountName:row.data.targetAccount:accounts }}
+                {{ row.sourceAccountId | gridAccountName:row.targetAccountId:accounts }}
               </ng-template>
             </ngx-datatable-column>
 
             <ngx-datatable-column name="Kategoria" [flexGrow]="1" [resizeable]="false" prop="data.category" [comparator]="categorySortingComparator">
               <ng-template let-row="row" ngx-datatable-cell-template>
-                {{ row.data.category | categoryName:categories}}
+                {{ row.categoryId | categoryName:categories}}
               </ng-template>
             </ngx-datatable-column>
 
             <ngx-datatable-column name="Kwota" [headerClass]="'align-right'" [minWidth]="125" [maxWidth]="125"
               [resizeable]="false" prop="data.value">
               <ng-template let-row="row" ngx-datatable-cell-template>
-                <div class="align-right">{{ row.data.value | currency}}</div>
+                <div class="align-right">{{ row.value | currency}}</div>
               </ng-template>
             </ngx-datatable-column>
           </ngx-datatable>

@@ -2,7 +2,7 @@
     <ng-scrollbar>
         <div class="full-screen-form-wrapper">
             <form *ngIf="showPage && ($account | async) as account" class="full-screen-form"
-                (submit)="saveChanges(account)" #accountAddForm="ngForm" [@showHideEditPage]>
+                (submit)="addEditAccount(account)" #accountAddForm="ngForm" [@showHideEditPage]>
                 <div [@preventInitialChildAnimations]>
 
                     <span class="header-text">{{!!itemKey ? 'Edytuj konto' : 'Dodaj konto'}}</span>

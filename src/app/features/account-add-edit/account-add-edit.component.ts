@@ -12,7 +12,7 @@ import { ShowHideEditPage } from '@shared/animations/showHideEditPage.animation'
 import { ShowHideFormFieldAnimation } from '@shared/animations/showHideFormField.animation';
 import { AccountsService } from '@shared/services/accounts.service';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { switchMapTo } from 'rxjs/operators';
 
 @Component({
   selector: 'mm-account-add-edit',
@@ -33,7 +33,7 @@ export class AccountAddEditComponent implements OnInit {
   public AccountTypes = WalletItemType;
   public DebtTypes = DebtType;
 
-  public colors = [
+  public readonly colors = [
     { color: 'rgba(0, 0, 0, 0.35)', checked: false },
     { color: 'rgba(255,0,0,0.35)', checked: false },
     { color: 'rgba(110,0,110,.35)', checked: false },
@@ -42,40 +42,22 @@ export class AccountAddEditComponent implements OnInit {
     { color: 'rgba(110,110,0,0.35)', checked: false }
   ]
 
-  public itemKey: string | undefined;
+  public itemKey: number | undefined;
   public $account: Observable<WalletItem>;
   public showPage: boolean = true;
-  private isAccountDefaultSource: boolean;
 
   constructor(private accountsService: AccountsService, private dbService: DbService, private location: Location, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      this.itemKey = params['id'];
-      this.$account = this.dbService.getAccount(this.itemKey)
-        .pipe(tap(item => this.isAccountDefaultSource = item.isDefault));
+      this.itemKey = +params['id'];
+      this.$account = this.dbService.getAccount(this.itemKey);
     })
   }
 
-  public saveChanges(account: WalletItem): void {
-    if (account.startDate)
-      account.startDate = new Date(account.startDate).toISOString();
-    if (account.endDate)
-      account.endDate = new Date(account.endDate).toISOString();
-
-    if (!this.isAccountDefaultSource && account.isDefault === true)
-      this.accountsService.removeExistingDefaultAccountFlag().subscribe(() =>
-        this.addEditAccount(account)
-      );
-    else
-      this.addEditAccount(account);
-  }
-
-  private addEditAccount(account: WalletItem): void {
-    if (this.itemKey)
-      this.accountsService.updateItem(this.itemKey, account).then(() => this.closePanel());
-    else
-      this.accountsService.addNewItem(account).then(() => this.closePanel());
+  public addEditAccount(account: WalletItem): void {
+    const actionObservable = this.itemKey ? this.accountsService.updateItem(this.itemKey, account) : this.accountsService.addNewItem(account);
+    actionObservable.pipe(switchMapTo(this.dbService.refreshAccounts())).subscribe(() => this.closePanel());
   }
 
   public closePanel(): void {

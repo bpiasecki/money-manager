@@ -1,5 +1,5 @@
 export const enum Endpoints {
-    Accounts = 'accounts',
+    Accounts = 'money-accounts',
     Transactions = 'transactions',
     Categories = 'categories'
 }

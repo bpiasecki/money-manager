@@ -1,32 +1,37 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { Observable } from 'rxjs/index';
-import { map } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
 @Injectable()
 export class AuthService {
 
-  readonly authState$: Observable<firebase.default.User | null> = this.fireAuth.authState;
+  private BASE_URL = 'http://localhost:3000';
+  user: any;
 
-  constructor(private fireAuth: AngularFireAuth) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
-  get user(): Promise<firebase.default.User | null> {
-    return this.fireAuth.currentUser;
+
+  getUserId(): Observable<number | undefined> {
+    return of(this.user?.id ?? null)
   }
 
-  getUserId(): Observable<string | undefined> {
-    return this.authState$.pipe(map((user) => user?.uid))
+  login(username: string, password: string) {
+    return this.http.post(`${this.BASE_URL}/auth/signin`, { username, password }).pipe(tap((result: any) => {
+      console.log(result)
+      const accessToken = result.accessToken;
+      localStorage.setItem('token', accessToken)
+      this.user = result.user;
+    }));
   }
 
-  login(email: string, password: string) {
-    return this.fireAuth.signInWithEmailAndPassword(email, password);
-  }
-
-  register(email: string, password: string) {
-    return this.fireAuth.createUserWithEmailAndPassword(email, password);
+  register(username: string, password: string): Observable<number> {
+    return this.http.post(`${this.BASE_URL}/auth/signup`, { username, password }).pipe(map(res => <number>res));
   }
 
   logout() {
-    return this.fireAuth.signOut();
+    localStorage.removeItem('token');
+    this.router.navigate(['login']);
   }
 }

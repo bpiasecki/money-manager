@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { DbService } from '@core/db/db.service';
 import { WalletItem } from '@core/models/accounts/walletItem.model';
 import { CategoryItem } from '@core/models/categories/categoryItem.model';
-import { ItemKeyWithData } from '@core/models/itemKeyWithData.model';
 import { TransactionFilterItem } from '@core/models/transactions/transactionFilterItem.model';
 import { TransactionItem } from '@core/models/transactions/transactionItem.model';
 import { TransactionType } from '@core/models/transactions/transactionType.model';
@@ -38,11 +37,11 @@ export class TransactionsComponent implements OnInit, OnDestroy {
   public transactionFilters: TransactionFilterItem[];
   public visibleFiltersLength: number;
 
-  public accounts: ItemKeyWithData<WalletItem>[];
-  public categories: ItemKeyWithData<CategoryItem>[];
+  public accounts: WalletItem[];
+  public categories: CategoryItem[];
 
-  public transactions: ItemKeyWithData<TransactionItem>[];
-  private transactionsSource: ItemKeyWithData<TransactionItem>[];
+  public transactions: TransactionItem[];
+  private transactionsSource: TransactionItem[];
   
   private categoryPipe = new CategoryNamePipe();
   private accountPipe = new GridAccountNamePipe();
@@ -88,7 +87,7 @@ export class TransactionsComponent implements OnInit, OnDestroy {
   public filterItems() {
     let transactions = [...this.transactionsSource];
     this.transactionFilters.forEach(fItem => {
-      transactions = transactions.filter(item => fItem.filterFn ? fItem.filterFn(item.data, fItem.value, fItem.addictionalValue) : () => true)
+      transactions = transactions.filter(item => fItem.filterFn ? fItem.filterFn(item, fItem.value, fItem.addictionalValue) : () => true)
     });
 
     this.transactionFilterService.filters = this.transactionFilters;
@@ -101,16 +100,16 @@ export class TransactionsComponent implements OnInit, OnDestroy {
     this.filterItems();
   }
 
-  private categoriesComparator(firstKey: string, secondKey: string): -1 | 1 {
-    const firstName = this.categoryPipe.transform(firstKey, this.categories);
-    const secondName = this.categoryPipe.transform(secondKey, this.categories);
+  private categoriesComparator(firstId: number, secondId: number): -1 | 1 {
+    const firstName = this.categoryPipe.transform(firstId, this.categories);
+    const secondName = this.categoryPipe.transform(secondId, this.categories);
 
     return firstName < secondName ? -1 : 1;
   }
 
   private accountsComparator(firstData: TransactionItem, secondData: TransactionItem): -1 | 1 {
-    const firstName = this.accountPipe.transform(firstData.sourceAccount ?? "", firstData.targetAccount ?? "", this.accounts);
-    const secondName = this.accountPipe.transform(secondData.sourceAccount ?? "", secondData.targetAccount ?? "", this.accounts);
+    const firstName = this.accountPipe.transform(firstData.sourceAccountId ?? 0, firstData.targetAccountId ?? 0, this.accounts);
+    const secondName = this.accountPipe.transform(secondData.sourceAccountId ?? 0, secondData.targetAccountId ?? 0, this.accounts);
 
     return firstName < secondName ? -1 : 1;
   }
@@ -145,13 +144,13 @@ export class TransactionsComponent implements OnInit, OnDestroy {
     if (event.type == 'click') {
       this.showPage = false;
       setTimeout(() => {
-        this.router.navigate(['/transactionAddEdit/', { id: event.row.key }])
+        this.router.navigate(['/transactionAddEdit/', { id: event.row.id }])
       }, 200);
     }
   }
 
-  public removeTransaction(item: ItemKeyWithData<TransactionItem>) {
-    this.transactionsService.removeItem(item.key);
+  public removeTransaction(item: TransactionItem) {
+    this.transactionsService.removeItem(item.id);
   }
 
   ngOnDestroy(): void {

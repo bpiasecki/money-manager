@@ -1,5 +1,6 @@
 import { LayoutModule } from '@angular/cdk/layout';
 import { CommonModule, registerLocaleData } from '@angular/common';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import localePl from '@angular/common/locales/pl';
 import { DEFAULT_CURRENCY_CODE, LOCALE_ID, NgModule } from '@angular/core';
 import { AngularFireModule } from '@angular/fire';
@@ -27,6 +28,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TransactionFilterComponent } from './features/transaction-filter/transaction-filter.component';
+import { TokenInterceptor } from './token.interceptor';
 
 registerLocaleData(localePl);
 
@@ -59,6 +61,7 @@ registerLocaleData(localePl);
   providers: [
     { provide: LOCALE_ID, useValue: 'pl' },
     { provide: DEFAULT_CURRENCY_CODE, useValue: 'PLN' },
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     AccountsService,
     TransactionsService,
     CategoriesService,

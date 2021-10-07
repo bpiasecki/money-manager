@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '@core/auth/auth.service';
 import { DbService } from '@core/db/db.service';
 import { CategoriesService } from '@shared/services/categories.service';
-import { UserDataService } from '@shared/services/userData.service';
+import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'mm-register',
@@ -19,24 +19,31 @@ export class RegisterComponent {
   hidePassword = true;
   incorrectCredentialsInfo: string | null;
 
-  constructor(private authService: AuthService, private dbService: DbService, private router: Router, private categoriesService: CategoriesService, private userDataService: UserDataService) { }
+  constructor(private authService: AuthService, private dbService: DbService, private router: Router, private categoriesService: CategoriesService) { }
+
 
   register() {
     this.dbService.setIsLoading(true);
     this.incorrectCredentialsInfo = null;
 
-    this.authService.register(this.email.value, this.password.value).then((user) => {
-      this.categoriesService.setInitialCategories(user.user?.uid).then(() => {
-        this.userDataService.setUserName(this.name.value, user.user?.uid).then(() => {
+    this.authService.register(this.email.value, this.password.value).pipe(
+      tap(
+        (userId) => {
+          console.log(userId)
           this.router.navigate(['/login']);
           this.dbService.setIsLoading(false);
-        })
-      });
-    }).catch((error) => {
-      console.error(error);
-      this.incorrectCredentialsInfo = "Błąd podczas rejestracji nowego użytkownika";
-      this.dbService.setIsLoading(false);
-    })
+        },
+        (error) => {
+          console.error(error);
+          this.incorrectCredentialsInfo = "Błąd podczas rejestracji nowego użytkownika";
+          this.dbService.setIsLoading(false);
+        }),
+      switchMap((userId) =>
+        this.categoriesService.setInitialCategories(userId))).subscribe(() => {
+          this.router.navigate(['/login']);
+          this.dbService.setIsLoading(false);
+        });
+
   }
 
 }

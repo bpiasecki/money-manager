@@ -9,7 +9,7 @@
             <hr>
             <mat-checkbox *ngFor="let account of filterItem.listItems" [(ngModel)]="account.checked" [color]="'primary'"
                 (ngModelChange)="updateAllChecked()">
-                {{account.data.name}}
+                {{account.name}}
             </mat-checkbox>
         </section>
         <section *ngSwitchCase="FilterTypes.TransactionType">
@@ -72,7 +72,7 @@
                 <hr>
                 <mat-checkbox *ngFor="let category of visibleCategories" [(ngModel)]="category.checked"
                     (change)="onCategoryChange(category)" [color]="'primary'" (ngModelChange)="updateAllChecked()">
-                    {{ (category.data.parent | categoryName:categoriesParents) + ' - ' + category.data.name}}
+                    {{ (category.parentId | categoryName:categoriesParents) + ' - ' + category.name}}
                 </mat-checkbox>
 
             </div>

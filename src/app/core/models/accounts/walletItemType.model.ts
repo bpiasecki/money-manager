@@ -1,8 +1,8 @@
 
 export enum WalletItemType {
-    Account,
-    Debt,
-    Savings
+    Account = 'ACCOUNT',
+    Debt = 'DEBT',
+    Savings = 'SAVINGS'
 }
 
 export const WalletItemTypesList: {name: string; type: WalletItemType}[] = [

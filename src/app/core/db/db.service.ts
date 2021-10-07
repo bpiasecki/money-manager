@@ -1,24 +1,23 @@
 import { Injectable } from '@angular/core';
 import { WalletItem } from '@core/models/accounts/walletItem.model';
-import { CategoryItem, CategoryItemView } from '@core/models/categories/categoryItem.model';
-import { ItemKeyWithData } from '@core/models/itemKeyWithData.model';
+import { CategoryItem } from '@core/models/categories/categoryItem.model';
 import { TransactionItem } from '@core/models/transactions/transactionItem.model';
 import { AccountsService } from '@shared/services/accounts.service';
 import { CategoriesService } from '@shared/services/categories.service';
 import { TransactionsService } from '@shared/services/transactions.service';
 import { combineLatest, Observable, of, ReplaySubject, Subject } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 
 @Injectable()
 export class DbService {
 
-    private transactionsSource = new ReplaySubject<ItemKeyWithData<TransactionItem>[]>(1)
+    private transactionsSource = new ReplaySubject<TransactionItem[]>(1)
     public $transactions = this.transactionsSource.asObservable();
 
-    private accountsSource = new ReplaySubject<ItemKeyWithData<WalletItem>[]>(1)
+    private accountsSource = new ReplaySubject<WalletItem[]>(1)
     public $accounts = this.accountsSource.asObservable();
 
-    private categoriesSource = new ReplaySubject<ItemKeyWithData<CategoryItem>[]>(1)
+    private categoriesSource = new ReplaySubject<CategoryItem[]>(1)
     public $categories = this.categoriesSource.asObservable();
 
     private isLoading = new Subject<boolean>();
@@ -42,54 +41,68 @@ export class DbService {
             this.accountsSource.next(accounts);
             this.categoriesSource.next(categories);
             this.setIsLoading(false);
-        }, () => {
+        }, (_err) => {
             this.setIsLoading(false);
         })
+    }
+
+    refreshAccounts() {
+        return this.accountsService.getItems().pipe(tap(res => { this.accountsSource.next(res) }));
+    }
+
+    refreshTransactions() {
+        return this.transactionsService.getItems().pipe(tap(res => { this.transactionsSource.next(res) }));
+    }
+
+    refreshCategories() {
+        return this.categoriesService.getItems().pipe(tap(res => { this.categoriesSource.next(res) }));
     }
 
     public setIsLoading(value: boolean): void {
         this.isLoading.next(value);
     }
 
-    public getTransaction(key: string | undefined): Observable<TransactionItem> {
+    public getTransaction(id: undefined | number): Observable<TransactionItem> {
         return this.$transactions.pipe(
-            map(transactions => transactions.find(item => item.key === key)?.data ?? new TransactionItem())
+            map(transactions => transactions.find(item => item.id === id) ?? new TransactionItem())
         )
     }
 
-    public getAccount(key: string | undefined): Observable<WalletItem> {
+    public getAccount(id: undefined | number): Observable<WalletItem> {
         return this.$accounts.pipe(
-            map(accounts => accounts.find(item => item.key === key)?.data ?? new WalletItem())
+            map(accounts => accounts.find(item => item.id === id) ?? new WalletItem())
         )
     }
 
-    public getCategory(key: string | undefined): Observable<CategoryItem> {
+    public getCategory(id: number): Observable<CategoryItem> {
         return this.$categories.pipe(
-            map(categories => categories.find(item => item.key === key)?.data ?? new CategoryItem(''))
+            map(categories => {
+                let foundItem = categories.find(item => item.id === id);
+                if (!foundItem) {
+                    categories.forEach(parent => {
+                        const foundChild = parent.children.find(item => item.id === id);
+                        if (foundChild) {
+                            foundItem = foundChild
+                            return;
+                        }
+                    })
+
+                }
+                if (!foundItem)
+                    foundItem = new CategoryItem(-1, '');
+
+                return foundItem;
+            })
         )
     }
 
-    public getGroupedCategories(): Observable<ItemKeyWithData<CategoryItemView>[]> {
-        return this.$categories.pipe(map(result => {
-            const parents = result.filter(item => !item.data.parent).map(item =>
-                new ItemKeyWithData(item.key, <CategoryItemView>item.data)
-            );
-
-            parents.forEach(parent =>
-                parent.data.children = result.filter(item => item.data.parent == parent.key)
-            );
-
-            return parents;
-        }))
-    }
-
-    public getCategoryNameWithParent(key: string | undefined): Observable<string | null> {
-        if (key === undefined)
+    public getCategoryNameWithParent(id: number | undefined): Observable<string | null> {
+        if (id === undefined)
             return of(null);
         else {
-            return this.getCategory(key).pipe(switchMap((categoryItem) => {
-                if (categoryItem?.parent) {
-                    return this.getCategory(categoryItem.parent).pipe(switchMap((parentItem) => {
+            return this.getCategory(id).pipe(switchMap((categoryItem) => {
+                if (categoryItem?.parentId) {
+                    return this.getCategory(categoryItem.parentId).pipe(switchMap((parentItem) => {
                         const categoryWithParentName = `${parentItem ? parentItem.name + ' - ' : ''}${categoryItem.name}`;
                         return of(categoryWithParentName);
                     }))

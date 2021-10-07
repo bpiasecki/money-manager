@@ -56,9 +56,7 @@ export class AppComponent {
   }
 
   logout() {
-    this.authService.logout().then(() => 
-      this.router.navigate(['login'])
-    );
+    this.authService.logout()
   }
 
   public changeBackground(): void {

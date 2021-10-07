@@ -1,4 +1,4 @@
 export enum DebtType {
-    BorrowedFromMe,
-    BorrowedFromSomeone
+    BorrowedFromMe = 'BORROWED_FROM_ME',
+    BorrowedFromSomeone = 'BORROWED_FROM_SOMEONE'
 }

@@ -1,47 +1,31 @@
-import { AngularFireDatabase, AngularFireList, AngularFireObject, QueryFn } from '@angular/fire/database';
-import { ItemKeyWithData } from '@core/models/itemKeyWithData.model';
+import { HttpClient } from '@angular/common/http';
+import { AngularFireDatabase } from '@angular/fire/database';
 import { Observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
-import { AuthService } from '../auth/auth.service';
+import { map } from 'rxjs/operators';
 
 export abstract class BaseDbService<T> {
 
     protected userId: string | undefined;
+    protected api: string = 'http://localhost:3000/';
 
-    constructor(protected endpoint: string, private authService: AuthService, protected db: AngularFireDatabase) { }
+    constructor(protected endpoint: string, protected db: AngularFireDatabase, protected http: HttpClient) { }
 
-    public getItems(): Observable<ItemKeyWithData<T>[]> {
-        return this.authService.getUserId().pipe(switchMap((userId) => {
-            this.userId = userId;
-            return this.getDbList().snapshotChanges().pipe(map((result) => {
-                return result.map(item => new ItemKeyWithData(<string>item.key, <T>item.payload.val()));
-            }))
+    public getItems(): Observable<T[]> {
+        return this.http.get(this.api + this.endpoint).pipe(map(res => {
+            console.log(res)
+            return <T[]>res
         }))
     }
 
-    public addNewItem(item: T): firebase.default.database.ThenableReference {
-        return this.getDbList().push(item);
+    public addNewItem(item: T): Observable<T> {
+        return this.http.post(`${this.api}${this.endpoint}`, item).pipe(map((res) => <T>res));
     }
 
-    public removeItem(key: string): Promise<void> {
-        return this.getDbItem(key).remove();
+    public removeItem(id: number): Observable<any> {
+        return this.http.delete(`${this.api}${this.endpoint}/${id}`);
     }
 
-    public updateItem(key: string, updatedItem: T): Promise<void> {
-        return this.getDbItem(key).update(updatedItem);
-    }
-
-    protected getDbItem(itemKey: string | undefined): AngularFireObject<T> {
-        if (!this.userId)
-            throw new Error("User ID is null");
-
-        return this.db.object<T>(`${this.userId}/${this.endpoint}/${itemKey}`);
-    }
-
-    protected getDbList(queryFn?: QueryFn): AngularFireList<T> {
-        if (!this.userId)
-            throw new Error("User ID is null");
-
-        return this.db.list<T>(`${this.userId}/${this.endpoint}`, queryFn);
+    public updateItem(id: number, updatedItem: T): Observable<any> {
+        return this.http.patch(`${this.api}${this.endpoint}/${id}`, updatedItem)
     }
 }

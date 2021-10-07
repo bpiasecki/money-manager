@@ -8,30 +8,30 @@
 
         <div class="items-wrapper">
           <div class="items">
-            <div *ngFor="let item of accounts" class="item" [ngStyle]="{'background': item.data.color}">
+            <div *ngFor="let item of accounts" class="item" [ngStyle]="{'background': item.color}">
               <div>
                 <div class="account-name">
-                  {{ item.data.name }}
+                  {{ item.name }}
                 </div>
                 <div class="account-type">
-                  {{item.data.type | accountType | uppercase}}
+                  {{item.type | accountType | uppercase}}
                 </div>
               </div>
               <div class="account-balance">
-                {{ (item.data.debtType === DebtTypes.BorrowedFromSomeone ? '-' : "") + (item.data.balance |
+                {{ (item.debtType === DebtTypes.BorrowedFromSomeone ? '-' : "") + (item.balance |
                 currency)}}
               </div>
               <div class="action-buttons">
                 <button mat-raised-button color="primary" type="button" title="Usuń konto"
-                  (click)="removeAccount(item.key, item.data.name)">
+                  (click)="removeAccount(item.id, item.name)">
                   <mat-icon>delete</mat-icon>
                 </button>
                 <button mat-raised-button color="primary" type="button" title="Edytuj konto"
-                  (click)="editAccount(item.key)">
+                  (click)="editAccount(item.id)">
                   <mat-icon>edit</mat-icon>
                 </button>
                 <button mat-raised-button color="primary" type="button" title="Dodaj transakcję"
-                  (click)="addTransaction(item.key)">
+                  (click)="addTransaction(item.id)">
                   <mat-icon>add</mat-icon>
                 </button>
               </div>

@@ -20,13 +20,14 @@ export class LoginComponent {
   login() {
     this.dbService.setIsLoading(true);
     this.showIncorrectCredentialsInfo = false;
-    this.authService.login(this.email.value, this.password.value).then(() => {
+    this.authService.login(this.email.value, this.password.value).subscribe(() => {
       this.dbService.init();
       this.router.navigate(['/accounts']);
-    }).catch(() => {
-      this.showIncorrectCredentialsInfo = true;
-      this.dbService.setIsLoading(false);
-    })
+    },
+      (_err) => {
+        this.showIncorrectCredentialsInfo = true;
+        this.dbService.setIsLoading(false);
+      })
   }
 
   getErrorMessage() {

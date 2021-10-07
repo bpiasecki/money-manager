@@ -3,14 +3,13 @@ import { Router } from '@angular/router';
 import { DbService } from '@core/db/db.service';
 import { DebtType } from '@core/models/accounts/debtType.model';
 import { WalletItem } from '@core/models/accounts/walletItem.model';
-import { ItemKeyWithData } from '@core/models/itemKeyWithData.model';
 import { TransactionType } from '@core/models/transactions/transactionType.model';
 import { ShowHideMainPage } from '@shared/animations/showHideMainPage.animation';
 import { RemoveConfirmDialogComponent } from '@shared/custom-components/remove-confirm-dialog/remove-confirm-dialog.component';
 import { AccountsService } from '@shared/services/accounts.service';
 import { NgDialogAnimationService } from 'ng-dialog-animation';
 import { Observable } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter, switchMap, switchMapTo } from 'rxjs/operators';
 
 @Component({
   selector: 'mm-accounts',
@@ -22,7 +21,7 @@ export class AccountsComponent implements OnInit {
 
   public DebtTypes = DebtType;
 
-  $accounts: Observable<ItemKeyWithData<WalletItem>[]>;
+  $accounts: Observable<WalletItem[]>;
   userId: string | undefined;
   showPage: boolean = true;
 
@@ -33,12 +32,13 @@ export class AccountsComponent implements OnInit {
     this.$accounts = this.dbService.$accounts;
   }
 
-  public removeAccount(key: string, accountName: string): void {
+  public removeAccount(id: number, accountName: string): void {
     this.dialog.open(RemoveConfirmDialogComponent, {
       data: `Czy na pewno chcesz usunąć<br><u>${accountName}</u> z listy kont?`
     }).afterClosed()
-      .pipe(filter(confirmed => confirmed === true))
-      .subscribe(() => this.accountsService.removeItem(key));
+      .pipe(filter(confirmed => confirmed === true)).pipe(switchMap(() => 
+      this.accountsService.removeItem(id).pipe(switchMapTo(this.dbService.refreshAccounts()))
+      )).subscribe(() => console.log('done'))
   }
 
   public addAccount() {
@@ -48,17 +48,17 @@ export class AccountsComponent implements OnInit {
     }, 200);
   }
 
-  public editAccount(key: string) {
+  public editAccount(id: number) {
     this.showPage = false;
     setTimeout(() => {
-      this.router.navigate(['/accountAddEdit/' + key])
+      this.router.navigate(['/accountAddEdit/' + id])
     }, 200);
   }
 
-  public addTransaction(key: string) {
+  public addTransaction(id: number) {
     this.showPage = false;
     setTimeout(() => {
-      this.router.navigate(['/transactionAddEdit/', { account: key }])
+      this.router.navigate(['/transactionAddEdit/', { account: id }])
     }, 200);
   }
 

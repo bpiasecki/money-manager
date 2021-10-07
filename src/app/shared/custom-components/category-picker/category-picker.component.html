@@ -6,22 +6,22 @@
             <input matInput type="text" (keyup)="filterCategories($event)" #searchInput autocomplete="off" autocorrect="off">
         </mat-form-field>
     </div>
-    <div *ngIf="!selectedParent || selectedParent?.data?.children?.length == 0 || searchInput.value; else subcategories"
+    <div *ngIf="!selectedParent || selectedParent?.children?.length == 0 || searchInput.value; else subcategories"
         class="categories-wrapper">
         <div *ngFor="let category of visibleCategories" (click)="onParentCategorySelect(category)"
-            [ngStyle]="{'color': category.key == itemKey ? 'red' : 'black'}">
+            [ngStyle]="{'color': category.id == itemKey ? 'red' : 'black'}">
             <div>
-                <mat-icon>{{category.data.icon ?? 'category'}}</mat-icon>{{category.data.name}}
+                <mat-icon>{{category.icon ?? 'category'}}</mat-icon>{{category.name}}
             </div>
         </div>
     </div>
 
     <ng-template #subcategories>
         <div class="categories-wrapper">
-            <div class="bounceIn" *ngFor="let child of selectedParent?.data?.children" [mat-dialog-close]="child.key"
-                [ngStyle]="{'color': child.key == itemKey ? 'red' : 'black'}">
+            <div class="bounceIn" *ngFor="let child of selectedParent?.children" [mat-dialog-close]="child.id"
+                [ngStyle]="{'color': child.id == itemKey ? 'red' : 'black'}">
                 <div>
-                    <mat-icon>category</mat-icon>{{child.data.name}}
+                    <mat-icon>category</mat-icon>{{child.name}}
                 </div>
             </div>
         </div>

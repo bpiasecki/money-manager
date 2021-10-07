@@ -51,10 +51,10 @@
                         <div *ngIf="transaction.type != TransactionTypes.Income" [@showHideFormField]>
                             <mat-form-field appearance="outline">
                                 <mat-label>Konto źródłowe</mat-label>
-                                <mat-select [(ngModel)]="transaction.sourceAccount" name="transactionSourceAccount"
+                                <mat-select [(ngModel)]="transaction.sourceAccountId" name="transactionSourceAccount"
                                     required>
-                                    <mat-option *ngFor="let item of accounts" [value]="item.key">
-                                        {{item.data | accountNameWithBalance:(item.data.balance | currency)}}
+                                    <mat-option *ngFor="let item of accounts" [value]="item.id">
+                                        {{item | accountNameWithBalance:(item.balance | currency)}}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -62,10 +62,10 @@
                         <div *ngIf="transaction.type != TransactionTypes.Expense" [@showHideFormField]>
                             <mat-form-field appearance="outline">
                                 <mat-label>Konto docelowe</mat-label>
-                                <mat-select [(ngModel)]="transaction.targetAccount" name="transactionTargetAccount"
+                                <mat-select [(ngModel)]="transaction.targetAccountId" name="transactionTargetAccount"
                                     required>
-                                    <mat-option *ngFor="let item of accounts" [value]="item.key">
-                                        {{item.data | accountNameWithBalance:(item.data.balance | currency)}}
+                                    <mat-option *ngFor="let item of accounts" [value]="item.id">
+                                        {{item | accountNameWithBalance:(item.balance | currency)}}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>

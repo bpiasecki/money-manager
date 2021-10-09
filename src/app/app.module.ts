@@ -3,12 +3,9 @@ import { CommonModule, registerLocaleData } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import localePl from '@angular/common/locales/pl';
 import { DEFAULT_CURRENCY_CODE, LOCALE_ID, NgModule } from '@angular/core';
-import { AngularFireModule } from '@angular/fire';
-import { AngularFireAuthModule } from '@angular/fire/auth';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from '@core/core.module';
-import { environment } from '@environment/environment';
 import { AccountAddEditComponent } from '@features/account-add-edit/account-add-edit.component';
 import { AccountsComponent } from '@features/accounts-page/accounts.component';
 import { LoginComponent } from '@features/login/login.component';
@@ -48,14 +45,12 @@ registerLocaleData(localePl);
     CommonModule,
     BrowserModule,
     AppRoutingModule,
-    AngularFireAuthModule,
     BrowserAnimationsModule,
     LayoutModule,
     SharedModule,
     MaterialModule,
     NgxDatatableModule,
     NgxSpinnerModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig),
     NgScrollbarModule.withConfig({ appearance: 'compact' }),
   ],
   providers: [

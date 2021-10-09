@@ -21,24 +21,24 @@
       <div class="items-wrapper">
         <div class="transactions-table">
           <ngx-datatable class="material" [rows]="transactions" [columnMode]="ColumnMode.flex"
-            [sortType]="SortType.multi" [sorts]="[{prop: 'data.transactionDate', dir: 'desc'}]" [headerHeight]="50"
+            [sortType]="SortType.multi" [sorts]="[{prop: 'transactionDate', dir: 'desc'}]" [headerHeight]="50"
             [footerHeight]="50" [rowHeight]="'auto'" (activate)="editTransaction($event)"
             [messages]="{emptyMessage: 'Brak transakcji do wyświetlenia...', totalMessage: 'wszystkich'}">
 
-            <ngx-datatable-column name="Typ" [maxWidth]='100' [minWidth]="40" [flexGrow]='1' [resizeable]="false" prop="data.type">
+            <ngx-datatable-column name="Typ" [maxWidth]='100' [minWidth]="40" [flexGrow]='1' [resizeable]="false" prop="type">
               <ng-template let-row="row" ngx-datatable-cell-template>
                 <div class="transfer-type-icon" [title]="row.type | transactionTypeName"
                   [style.backgroundColor]="row.type | transactionTypeColor"></div>
               </ng-template>
             </ngx-datatable-column>
 
-            <ngx-datatable-column name="Data" [flexGrow]="1" [resizeable]="false" prop="data.transactionDate">
+            <ngx-datatable-column name="Data" [flexGrow]="1" [resizeable]="false" prop="transactionDate">
               <ng-template let-row="row" ngx-datatable-cell-template>
                 {{ row.transactionDate | date}}
               </ng-template>
             </ngx-datatable-column>
 
-            <ngx-datatable-column name="Nazwa" [flexGrow]="1" [resizeable]="false" prop="data.name">
+            <ngx-datatable-column name="Nazwa" [flexGrow]="1" [resizeable]="false" prop="name">
               <ng-template let-row="row" ngx-datatable-cell-template>
                 {{ row.name }}
               </ng-template>
@@ -50,14 +50,14 @@
               </ng-template>
             </ngx-datatable-column>
 
-            <ngx-datatable-column name="Kategoria" [flexGrow]="1" [resizeable]="false" prop="data.category" [comparator]="categorySortingComparator">
+            <ngx-datatable-column name="Kategoria" [flexGrow]="1" [resizeable]="false" prop="category" [comparator]="categorySortingComparator">
               <ng-template let-row="row" ngx-datatable-cell-template>
                 {{ row.categoryId | categoryName:categories}}
               </ng-template>
             </ngx-datatable-column>
 
             <ngx-datatable-column name="Kwota" [headerClass]="'align-right'" [minWidth]="125" [maxWidth]="125"
-              [resizeable]="false" prop="data.value">
+              [resizeable]="false" prop="value">
               <ng-template let-row="row" ngx-datatable-cell-template>
                 <div class="align-right">{{ row.value | currency}}</div>
               </ng-template>

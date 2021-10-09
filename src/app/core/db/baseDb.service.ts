@@ -1,5 +1,4 @@
 import { HttpClient } from '@angular/common/http';
-import { AngularFireDatabase } from '@angular/fire/database';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -8,7 +7,7 @@ export abstract class BaseDbService<T> {
     protected userId: string | undefined;
     protected api: string = 'http://localhost:3000/';
 
-    constructor(protected endpoint: string, protected db: AngularFireDatabase, protected http: HttpClient) { }
+    constructor(protected endpoint: string, protected http: HttpClient) { }
 
     public getItems(): Observable<T[]> {
         return this.http.get(this.api + this.endpoint).pipe(map(res => {

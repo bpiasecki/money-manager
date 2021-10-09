@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase } from '@angular/fire/database';
 import { BaseDbService } from '@core/db/baseDb.service';
 import { Endpoints } from '@core/db/endpoints.enum';
 import { CategoryItem } from '@core/models/categories/categoryItem.model';
@@ -9,8 +8,8 @@ import { CategoryItem } from '@core/models/categories/categoryItem.model';
 export class CategoriesService extends BaseDbService<CategoryItem> {
 
 
-    constructor(protected db: AngularFireDatabase, protected http: HttpClient) {
-        super(Endpoints.Categories, db, http);
+    constructor(protected http: HttpClient) {
+        super(Endpoints.Categories, http);
     }
 
     //insert initial categories right after user registration process

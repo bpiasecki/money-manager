@@ -17,7 +17,7 @@ import { AccountsService } from '@shared/services/accounts.service';
 import { TransactionsService } from '@shared/services/transactions.service';
 import { NgDialogAnimationService } from 'ng-dialog-animation';
 import { forkJoin, from, Observable, of } from 'rxjs';
-import { filter, finalize, first, map, switchMap, switchMapTo } from 'rxjs/operators';
+import { filter, first, map, switchMap, switchMapTo } from 'rxjs/operators';
 
 
 @Component({
@@ -87,25 +87,14 @@ export class TransactionAddEditComponent implements OnInit {
   public addEditTransaction(transaction: TransactionItem): void {
     const itemToSave = this.getTransactionToSave(transaction);
 
-    if (this.itemKey)
-      this.transactionsService.updateItem(this.itemKey, itemToSave)
-        .pipe(
-          switchMapTo(
-            this.editAccountBalance(itemToSave).pipe(
-              first(),
-              switchMapTo(forkJoin([this.dbService.refreshAccounts(), this.dbService.refreshTransactions()]))
-            )
-
-          )).subscribe(() => this.closePanel())
-    else
-      this.transactionsService.addNewItem(itemToSave)
-        .pipe(
-          switchMapTo(
-            this.editAccountBalance(itemToSave).pipe(
-              first(),
-              switchMapTo(forkJoin([this.dbService.refreshAccounts(), this.dbService.refreshTransactions()]))
-            )
-          )).subscribe(() => this.closePanel());
+    const action = this.itemKey ? this.transactionsService.updateItem(this.itemKey, itemToSave) : this.transactionsService.addNewItem(itemToSave);
+    action.pipe(
+      switchMap((transactionDb) =>
+        this.editAccountBalance(itemToSave).pipe(
+          switchMapTo(forkJoin([this.dbService.refreshAccounts(), this.dbService.refreshTransactions(transactionDb)]))
+        )
+      )
+    ).subscribe(() => this.closePanel())
   }
 
   private editAccountBalance(itemToSave: TransactionItem, revert?: boolean): Observable<void> {
@@ -153,7 +142,6 @@ export class TransactionAddEditComponent implements OnInit {
 
   private getTransactionToSave(transaction: TransactionItem): TransactionItem {
     const itemToSave: TransactionItem = { ...transaction };
-    // itemToSave.transactionDate = new Date(transaction.transactionDate)?.toISOString();
     delete itemToSave.sourceAccount;
     delete itemToSave.targetAccount;
 
@@ -175,15 +163,14 @@ export class TransactionAddEditComponent implements OnInit {
     this.dialogService.open(RemoveConfirmDialogComponent, {
       data: `Czy na pewno chcesz usunąć wybraną transakcję?`
     }).afterClosed()
-      .pipe(filter(confirmed => confirmed === true))
-      .subscribe(() => {
-        if (this.itemKey) {
-          this.editAccountBalance(this.itemBeforeEdit, true).pipe(
-            switchMapTo(from(this.transactionsService.removeItem(this.itemKey))),
-            finalize(() => this.closePanel())
-          ).subscribe();
-        }
-      });
+      .pipe(
+        filter(confirmed => confirmed === true),
+        switchMap(() => this.editAccountBalance(this.itemBeforeEdit, true).pipe(
+          switchMapTo(this.transactionsService.removeItem(this.itemKey ?? 0).pipe(
+            switchMapTo(forkJoin([this.dbService.refreshAccounts(), this.dbService.refreshTransactions(this.transaction, true)]))
+          ))
+        ))
+      ).subscribe(() => this.closePanel());
   }
 
   public pickCategory(transaction: TransactionItem) {
@@ -204,9 +191,7 @@ export class TransactionAddEditComponent implements OnInit {
 
   public closePanel(): void {
     this.showPage = false;
-    setTimeout(() => {
-      this.location.back()
-    }, 200);
+    setTimeout(() => this.location.back(), 200);
   }
 }
 

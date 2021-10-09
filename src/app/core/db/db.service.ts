@@ -6,7 +6,7 @@ import { AccountsService } from '@shared/services/accounts.service';
 import { CategoriesService } from '@shared/services/categories.service';
 import { TransactionsService } from '@shared/services/transactions.service';
 import { combineLatest, Observable, of, ReplaySubject, Subject } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap, take, tap } from 'rxjs/operators';
 
 @Injectable()
 export class DbService {
@@ -50,8 +50,62 @@ export class DbService {
         return this.accountsService.getItems().pipe(tap(res => { this.accountsSource.next(res) }));
     }
 
-    refreshTransactions() {
-        return this.transactionsService.getItems().pipe(tap(res => { this.transactionsSource.next(res) }));
+    refreshTransactions(item: TransactionItem, removeItem: boolean = false) {
+        // const published = this.$transactions.pipe(
+        //     publish((res) => {
+
+        //     }),
+        // )
+        // const obs = new ReplaySubject(1);
+
+        // const source = new Observable((observer) => {
+        //     observer.next(1);
+
+        //     setTimeout(() => observer.next(2), 1000);
+        //     setTimeout(() => {
+        //       observer.next(3);
+        //       observer.complete();
+        //     }, 2000);
+
+        //     return () => {
+        //       console.log('Disposed');
+        //     };
+        //   });
+
+
+
+        // this.$transactions.pipe(tap(transactions => {
+        //     const foundIndex = transactions.findIndex(transaction => transaction.id === item.id);
+        //     if (foundIndex < 0)
+        //         transactions.push(item);
+        //     else if (removeItem)
+        //         transactions.splice(foundIndex, 1);
+        //     else
+        //         transactions[foundIndex] = item;
+
+        //     obs.next(transactions);
+        //     obs.complete()
+        // })).subscribe()
+        const obs = new Observable((res) => 
+
+        this.$transactions.pipe(take(1)).subscribe(transactions => {
+            const foundIndex = transactions.findIndex(transaction => transaction.id === item.id);
+            if (foundIndex < 0)
+                transactions.push(item);
+            else if (removeItem)
+                transactions.splice(foundIndex, 1);
+            else
+                transactions[foundIndex] = item;
+
+            res.next()
+            res.complete()
+            // this.transactionsSource.next(transactions);
+            // obs.complete();
+        })
+        )
+
+        return obs
+        // return obs.asObservable();
     }
 
     refreshCategories() {

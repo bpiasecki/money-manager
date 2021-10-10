@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Git Checkout
-        uses: actions/checkout@main
+        uses: actions/checkout@v2
 
       - name: Install packages
         run: npm install

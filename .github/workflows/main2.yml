@@ -7,16 +7,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Git Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@main
 
-      - name: Yarn Cache
-        uses: c-hive/gha-yarn-cache@v1
-
-      - name: Install dependencies
-        run: yarn
-
-      - name: Build React App
-        run: yarn build
+      - name: Install packages
+        run: npm install
+      - name: Run production build
+        run: npm run build:prod
         env:
           HTTPS: 'true'
 

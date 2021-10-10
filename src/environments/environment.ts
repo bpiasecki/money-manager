@@ -5,6 +5,7 @@
 export const environment = {
   appVersion: require('package.json').version + '-dev',
   production: false,
+  BASE_URL: 'http://localhost:3000/'
   // firebaseConfig: {
   //   apiKey: "AIzaSyDmKbDAY5AWRbxLExMmnMAkGdgFU_6G2Go",
   //   authDomain: "money-manager-3ba34.firebaseapp.com",

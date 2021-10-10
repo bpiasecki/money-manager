@@ -1,6 +1,7 @@
 export const environment = {
   appVersion: require('package.json').version,
   production: true,
+  BASE_URL: 'https://money-manager-bp.herokuapp.com/'
   // firebaseConfig: {
   //   apiKey: "AIzaSyDmKbDAY5AWRbxLExMmnMAkGdgFU_6G2Go",
   //   authDomain: "money-manager-3ba34.firebaseapp.com",

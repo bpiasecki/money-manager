@@ -30,7 +30,10 @@ export class CategoryPickerComponent implements OnInit {
           this.selectedParent = result.find(item => item.children.some(child => child.id == this.itemKey));
       }),
       shareReplay()
-    ).subscribe((result) => this.visibleCategories = this.groupedCategories = result);
+    ).subscribe((result) => {
+      this.visibleCategories = this.groupedCategories = result;
+      this.allCategories = {...result};
+    });
 
     this.dbService.$categories.pipe(first()).subscribe((result) => this.allCategories = result);
   }
@@ -47,9 +50,11 @@ export class CategoryPickerComponent implements OnInit {
       this.dialogRef.close(this.visibleCategories[0].id) 
 
     const filterValue = (event.target as HTMLInputElement).value;
-    if (filterValue)
-      this.visibleCategories = this.allCategories.filter(category =>
-        category.parentId != null && category.name.toLowerCase().includes(filterValue.toLowerCase()))
+    if (filterValue) {
+      const allChildren = new Array<CategoryItem>().concat(...this.allCategories.map(item => item.children));
+      this.visibleCategories = allChildren.filter(category =>
+        category.name.toLowerCase().includes(filterValue.toLowerCase()))
+    }
     else
       this.visibleCategories = this.groupedCategories;
   }

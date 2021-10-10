@@ -50,7 +50,8 @@ export class TransactionAddEditComponent implements OnInit {
     private dbService: DbService,
     private location: Location,
     private route: ActivatedRoute,
-    private dialogService: NgDialogAnimationService
+    private dialogService: NgDialogAnimationService,
+    // private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit(): void {
@@ -188,6 +189,18 @@ export class TransactionAddEditComponent implements OnInit {
       }
     })
   }
+
+  // fileImage: any;
+  // uploadFile(e: any) {
+  //   const file = e.files.item(0)
+  //   const reader = new FileReader();
+  //   reader.onload = (e: any) => {
+  //     const bytes = e.target.result;
+  //     console.log(bytes)
+  //     this.fileImage = this.sanitizer.bypassSecurityTrustResourceUrl('data:image/png;' + bytes);
+  //   };
+  //   reader.readAsDataURL(file);
+  // }
 
   public closePanel(): void {
     this.showPage = false;

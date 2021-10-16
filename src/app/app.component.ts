@@ -4,7 +4,6 @@ import { DbService } from '@core/db/db.service';
 import { environment } from '@environment/environment';
 import { UserDataService } from '@shared/services/userData.service';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { env } from 'process';
 import { Observable, timer } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { AuthService } from './core/auth/auth.service';
@@ -40,7 +39,6 @@ export class AppComponent {
     // "https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1506&q=100",
     // "https://images.unsplash.com/photo-1563950708942-db5d9dcca7a7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1500&q=100",
     // "https://images.unsplash.com/photo-1468581264429-2548ef9eb732?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1500&q=100",
-    // "../assets/images/bg1.jpg"
   ]
   public $time: Observable<Date> = timer(0, 1000).pipe(map(() => new Date()));
 
@@ -60,7 +58,7 @@ export class AppComponent {
         this.backgroundIndex = this.backgroundImages.findIndex(imgUrl => imgUrl == url)
       }
 
-      this.setBackground(url ?? localStorage.getItem('bgUrl') ?? this.backgroundImages[0]);
+      this.setBackground(url ?? localStorage.getItem('bgUrl') ?? this.backgroundImages[4]);
     })
 
   }
@@ -78,13 +76,11 @@ export class AppComponent {
 
   private setBackground(url: string): void {
     const img = new Image();
-    console.log(env)
-    console.log(environment)
-    const changedUrl = environment.production ? url.replace('../assets/', 'money-manager/assets/') : url;
+    const changedUrl = environment.production ? url.replace('../assets/', 'assets/') : url;
 
     img.onload = () => {
-        this.backgroundImage = `url(${changedUrl})`;
-        this.bgLoading = false;
+      this.backgroundImage = `url(${changedUrl})`;
+      this.bgLoading = false;
     };
 
     localStorage.setItem('bgUrl', changedUrl);

@@ -1,0 +1,7 @@
+deploy heroku backend:
+- git add .
+- git commit -m "fixes"
+- git push -f heroku HEAD:master
+
+deploy gh-pages frontend:
+- ng deploy --base-href=/money-manager/

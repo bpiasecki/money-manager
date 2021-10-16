@@ -5,7 +5,7 @@ import { TransactionItem } from '@core/models/transactions/transactionItem.model
 import { AccountsService } from '@shared/services/accounts.service';
 import { CategoriesService } from '@shared/services/categories.service';
 import { TransactionsService } from '@shared/services/transactions.service';
-import { combineLatest, Observable, of, ReplaySubject, Subject } from 'rxjs';
+import { combineLatest, Observable, of, ReplaySubject } from 'rxjs';
 import { map, switchMap, take, tap } from 'rxjs/operators';
 
 @Injectable()
@@ -20,7 +20,7 @@ export class DbService {
     private categoriesSource = new ReplaySubject<CategoryItem[]>(1)
     public $categories = this.categoriesSource.asObservable();
 
-    private isLoading = new Subject<boolean>();
+    private isLoading = new ReplaySubject<boolean>(1);
     public $isLoading = this.isLoading.asObservable();
 
 
@@ -31,19 +31,23 @@ export class DbService {
     ) { this.init() }
 
     public init() {
-        this.setIsLoading(true);
-        combineLatest([
-            this.transactionsService.getItems(),
-            this.accountsService.getItems(),
-            this.categoriesService.getItems()
-        ]).subscribe(([transactions, accounts, categories]) => {
-            this.transactionsSource.next(transactions);
-            this.accountsSource.next(accounts);
-            this.categoriesSource.next(categories);
+        if (localStorage.getItem('token')) {
+            this.setIsLoading(true);
+            combineLatest([
+                this.transactionsService.getItems(),
+                this.accountsService.getItems(),
+                this.categoriesService.getItems()
+            ]).subscribe(([transactions, accounts, categories]) => {
+                this.transactionsSource.next(transactions);
+                this.accountsSource.next(accounts);
+                this.categoriesSource.next(categories);
+                this.setIsLoading(false);
+            }, (_err) => {
+                this.setIsLoading(false);
+            })
+        } else {
             this.setIsLoading(false);
-        }, (_err) => {
-            this.setIsLoading(false);
-        })
+        }
     }
 
     refreshAccounts() {
@@ -86,22 +90,22 @@ export class DbService {
         //     obs.next(transactions);
         //     obs.complete()
         // })).subscribe()
-        const obs = new Observable((res) => 
+        const obs = new Observable((res) =>
 
-        this.$transactions.pipe(take(1)).subscribe(transactions => {
-            const foundIndex = transactions.findIndex(transaction => transaction.id === item.id);
-            if (foundIndex < 0)
-                transactions.push(item);
-            else if (removeItem)
-                transactions.splice(foundIndex, 1);
-            else
-                transactions[foundIndex] = item;
+            this.$transactions.pipe(take(1)).subscribe(transactions => {
+                const foundIndex = transactions.findIndex(transaction => transaction.id === item.id);
+                if (foundIndex < 0)
+                    transactions.push(item);
+                else if (removeItem)
+                    transactions.splice(foundIndex, 1);
+                else
+                    transactions[foundIndex] = item;
 
-            res.next()
-            res.complete()
-            // this.transactionsSource.next(transactions);
-            // obs.complete();
-        })
+                res.next()
+                res.complete()
+                // this.transactionsSource.next(transactions);
+                // obs.complete();
+            })
         )
 
         return obs

@@ -57,7 +57,7 @@ export class TransactionAddEditComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.pipe(switchMap((params) => {
       this.itemKey = +params['id'];
-      const accountKey = params['account'];
+      const accountKey = +params['account'];
       const transactionType = params['transactionType'];
 
       return this.dbService.$accounts.pipe(

@@ -5,10 +5,10 @@
 </ngx-spinner>
 <div [style.visibility]="backgroundImage ? 'visible' : 'hidden'">
   <div *ngIf="currentUrl !== '/login' && currentUrl !== '/signup'" class="top-menu-buttons">
-    <button type="button" mat-button color="primary" [ngClass]="{'spinner': bgLoading}" (click)="changeBackground()">
+    <button type="button" mat-button color="primary" [ngClass]="{'spinner': bgLoading}" title="Zmień tło" (click)="changeBackground()">
       <mat-icon *ngIf="!bgLoading">wallpaper</mat-icon>
     </button>
-    <button type="button" mat-button color="primary" (click)="logout()">
+    <button type="button" mat-button color="primary" title="Wyloguj" (click)="logout()">
       <mat-icon>logout</mat-icon>
     </button>
   </div>

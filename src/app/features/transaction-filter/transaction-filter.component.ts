@@ -33,8 +33,6 @@ export class TransactionFilterComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public filterItem: TransactionFilterItem, public dialogRef: MatDialogRef<TransactionFilterComponent>) { }
 
   ngOnInit(): void {
-    if (this.filterItem.listItems && this.filterItem.filterFn === undefined)
-      this.setAll(true)
 
     if (this.filterItem.filterFn !== undefined) {
       switch (this.filterItem.type) {
@@ -54,11 +52,15 @@ export class TransactionFilterComponent implements OnInit {
       }
     }
 
-    if (this.filterItem.listItems) {
+    if (this.filterItem.listItems && this.filterItem.type == FilterType.Category) {
       this.categoriesParents = this.filterItem.listItems.filter(item => !item?.parentId)
       this.visibleCategories = [].concat(...this.filterItem.listItems.map(item => item.children));
       this.allCategories = [...this.visibleCategories];
+      this.updateAllChecked();
     }
+
+    if (this.filterItem.listItems && this.filterItem.filterFn === undefined)
+      this.setAll(true)
   }
 
   public filterItems(event: any) {
@@ -81,7 +83,8 @@ export class TransactionFilterComponent implements OnInit {
   }
 
   public updateAllChecked() {
-    this.allChecked = this.filterItem.listItems != null && this.filterItem.listItems.every(t => t.checked);
+    this.allChecked = this.filterItem.listItems != null && 
+      (this.filterItem.listItems.every(t => t.checked) || this.visibleCategories.every(t => t.checked));
   }
 
   public someComplete(): boolean {
@@ -93,10 +96,12 @@ export class TransactionFilterComponent implements OnInit {
 
   public setAll(checked: boolean) {
     this.allChecked = checked;
-    if (this.filterItem.listItems == null)
-      return;
-
-    this.filterItem.listItems.forEach(t => t.checked = checked);
+    if (this.visibleCategories)
+      this.visibleCategories.forEach(t => t.checked = checked);
+    else
+      this.filterItem.listItems?.forEach(t => t.checked = checked)
+    
+    this.updateAllChecked()
   }
 
   public applyFilter() {
@@ -201,13 +206,13 @@ export class TransactionFilterComponent implements OnInit {
       this.filterItem.listItems?.forEach(item => item.checked = checkedKeys.includes(item.key))
     }
     else
-      checkedCategories = this.filterItem.listItems?.filter(s => s.checked) ?? [];
+      checkedCategories = [].concat(...(this.filterItem.listItems ?? []).map((item: any) => item.children)).filter((s: any) => s.checked) ?? [];
 
     this.filterItem.value = checkedCategories;
     this.filterItem.visibleName = `${this.filterItem.name} = ${checkedCategories.length === 0 ? 'brak' : checkedCategories.length < 4 ? checkedCategories.map(s => s.name)?.join(', ') : '[' + checkedCategories.length + ']'}`;
     this.filterItem.filterFn = (item, categories: CategoryItem[] | undefined) => {
       if (categories)
-        return categories.map(item => item.id).includes(item.categoryId);
+        return categories.map((item: any) => item.id).includes(item.categoryId);
       else return true;
     }
   }

@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { DbService } from '@core/db/db.service';
+import { environment } from '@environment/environment';
 import { UserDataService } from '@shared/services/userData.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { env } from 'process';
 import { Observable, timer } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { AuthService } from './core/auth/auth.service';
@@ -76,14 +78,17 @@ export class AppComponent {
 
   private setBackground(url: string): void {
     const img = new Image();
+    console.log(env)
+    console.log(environment)
+    const changedUrl = environment.production ? url.replace('../assets/', 'money-manager/assets/') : url;
 
     img.onload = () => {
-        this.backgroundImage = `url(${url})`;
+        this.backgroundImage = `url(${changedUrl})`;
         this.bgLoading = false;
     };
 
-    localStorage.setItem('bgUrl', url);
-    img.src = url;
+    localStorage.setItem('bgUrl', changedUrl);
+    img.src = changedUrl;
   }
 
 }

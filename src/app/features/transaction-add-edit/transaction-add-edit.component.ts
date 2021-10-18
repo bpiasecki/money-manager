@@ -52,9 +52,7 @@ export class TransactionAddEditComponent implements OnInit {
     private route: ActivatedRoute,
     private dialogService: NgDialogAnimationService,
     // private sanitizer: DomSanitizer
-  ) { }
-
-  ngOnInit(): void {
+  ) {
     this.route.params.pipe(switchMap((params) => {
       this.itemKey = +params['id'];
       const accountKey = +params['account'];
@@ -83,6 +81,9 @@ export class TransactionAddEditComponent implements OnInit {
         first()
       )
     })).subscribe((result) => this.transaction = result);
+  }
+
+  ngOnInit(): void {
   }
 
   public addEditTransaction(transaction: TransactionItem): void {

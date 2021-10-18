@@ -46,13 +46,14 @@ export class AccountAddEditComponent implements OnInit {
   public $account: Observable<WalletItem>;
   public showPage: boolean = true;
 
-  constructor(private accountsService: AccountsService, private dbService: DbService, private location: Location, private route: ActivatedRoute) { }
-
-  ngOnInit(): void {
+  constructor(private accountsService: AccountsService, private dbService: DbService, private location: Location, private route: ActivatedRoute) {
     this.route.params.subscribe((params) => {
       this.itemKey = +params['id'];
       this.$account = this.dbService.getAccount(this.itemKey);
     })
+  }
+
+  ngOnInit(): void {
   }
 
   public addEditAccount(account: WalletItem): void {

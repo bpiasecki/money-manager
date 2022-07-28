@@ -67,13 +67,13 @@ export class TransactionFilterComponent implements OnInit {
     const filterValue = (event.target as HTMLInputElement).value;
     this.filterValue = filterValue;
     if (filterValue)
-      this.visibleCategories = this.allCategories.filter(category => {
+      this.visibleCategories = [...this.allCategories.filter(category => {
         const parentName = this.categoriesParents.find(item => item.id == category.parentId)?.name;
         const nameToFilter = parentName + ' - ' + category.name;
         return nameToFilter.toLowerCase().includes(filterValue.toLowerCase());
-      })
+      })]
     else
-      this.visibleCategories = this.allCategories;
+      this.visibleCategories = [...this.allCategories];
   }
 
   public onCategoryChange(listItem: any) {
@@ -84,7 +84,7 @@ export class TransactionFilterComponent implements OnInit {
 
   public updateAllChecked() {
     this.allChecked = this.filterItem.listItems != null && 
-      (this.filterItem.listItems.every(t => t.checked) || this.visibleCategories.every(t => t.checked));
+      (this.filterItem.listItems.every(t => t.checked) || (this.visibleCategories && this.visibleCategories.every(t => t.checked)));
   }
 
   public someComplete(): boolean {

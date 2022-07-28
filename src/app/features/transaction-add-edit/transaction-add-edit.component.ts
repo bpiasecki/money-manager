@@ -118,6 +118,7 @@ export class TransactionAddEditComponent implements OnInit {
   private handleExpenseTransaction(itemToSave: TransactionItem, revert?: boolean): Observable<void> {
     const account = this.accounts.find(item => item.id == itemToSave.sourceAccountId);
     if (account) {
+      delete (<any>account).checked;
       revert ? account.balance += itemToSave.value : account.balance -= itemToSave.value;
       return from(this.accountsService.updateItem(account.id, account));
     } else return of(void 0);
@@ -126,6 +127,7 @@ export class TransactionAddEditComponent implements OnInit {
   private handleIncomeTransaction(itemToSave: TransactionItem, revert?: boolean): Observable<void> {
     const account = this.accounts.find(item => item.id == itemToSave.targetAccountId);
     if (account) {
+      delete (<any>account).checked;
       revert ? account.balance -= itemToSave.value : account.balance += itemToSave.value;
       return from(this.accountsService.updateItem(account.id, account));
     } else return of(void 0);
@@ -135,6 +137,8 @@ export class TransactionAddEditComponent implements OnInit {
     const sourceAccount = this.accounts.find(item => item.id == itemToSave.sourceAccountId);
     const targetAccount = this.accounts.find(item => item.id == itemToSave.targetAccountId);
     if (sourceAccount && targetAccount) {
+      delete (<any>targetAccount).checked;
+      delete (<any>sourceAccount).checked;
       revert ? sourceAccount.balance += itemToSave.value : sourceAccount.balance -= itemToSave.value;
       revert ? targetAccount.balance -= itemToSave.value : targetAccount.balance += itemToSave.value;
       return from(this.accountsService.updateItem(sourceAccount.id, sourceAccount).pipe(switchMapTo(

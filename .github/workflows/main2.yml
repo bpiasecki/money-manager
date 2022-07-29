@@ -10,7 +10,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install packages
-        run: npm install
+        run: npm install --legacy-peer-deps
       - name: Run production build
         run: npm run build:prod
         env:

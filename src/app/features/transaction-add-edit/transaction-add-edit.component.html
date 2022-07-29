@@ -71,15 +71,8 @@
                             </mat-form-field>
                         </div>
 
-                        <div class="cursor-pointer" (click)="datePicker.open()">
-                            <mat-form-field appearance="outline">
-                                <mat-label>Data transakcji</mat-label>
-                                <input matInput [matDatepicker]="datePicker" name="transactionDate"
-                                    [(ngModel)]="transaction.transactionDate" readonly required>
-                                <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
-                                <mat-datepicker touchUi #datePicker></mat-datepicker>
-                            </mat-form-field>
-                        </div>
+                        <mm-date-picker [date]="transaction.transactionDate" (onDateChange)="onDateChange($event)">
+                        </mm-date-picker>
 
                         <div *ngIf="transaction.type == TransactionTypes.Expense" [@showHideFormField]>
                             <mat-form-field appearance="outline">
@@ -88,7 +81,7 @@
                                     [(ngModel)]="transaction.warrantyMonthNumber">
                             </mat-form-field>
                         </div>
-<!--                         
+                        <!--                         
                         <div class="form-group">
                             <label for="file">Choose File</label>
                             <input type="file" id="file" accept="image/*" (change)="uploadFile($event.target)">

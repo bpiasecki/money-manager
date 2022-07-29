@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CategoryPickerComponent } from './custom-components/category-picker/category-picker.component';
+import { DatePickerComponent } from './custom-components/date-picker/date-picker.component';
 import { RemoveConfirmDialogComponent } from './custom-components/remove-confirm-dialog/remove-confirm-dialog.component';
 import { MaterialModule } from './material.module';
 import { AccountNameWithBalancePipe } from './pipes/accountNameWithBalance.pipe';
@@ -24,7 +25,8 @@ import { TransactionTypeNamePipe } from './pipes/transactionTypeName.pipe';
         TransactionTypeNamePipe,
 
         CategoryPickerComponent,
-        RemoveConfirmDialogComponent
+        RemoveConfirmDialogComponent,
+        DatePickerComponent
     ],
     imports: [
         MaterialModule,
@@ -44,7 +46,8 @@ import { TransactionTypeNamePipe } from './pipes/transactionTypeName.pipe';
         ReactiveFormsModule,
         FormsModule,
         CategoryPickerComponent,
-        RemoveConfirmDialogComponent
+        RemoveConfirmDialogComponent,
+        DatePickerComponent
     ],
 })
 export class SharedModule { }

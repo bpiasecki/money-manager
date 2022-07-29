@@ -1,0 +1,19 @@
+.bottom-margin {
+    margin-bottom: 33px;
+}
+
+.date-group {
+    width: 100%;
+    justify-content: space-around;
+    > * {
+        flex-basis: 33%;
+        text-align: center;
+        border: none;
+        background: transparent !important;
+    }
+
+    .date-icon {
+        margin-left: 5px;
+        margin-bottom: 2px;
+    }
+}

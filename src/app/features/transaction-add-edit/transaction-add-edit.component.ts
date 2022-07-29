@@ -191,6 +191,10 @@ export class TransactionAddEditComponent implements OnInit {
     })
   }
 
+  public onDateChange(date: Date) {
+    this.transaction.transactionDate = date;
+  }
+
   // fileImage: any;
   // uploadFile(e: any) {
   //   const file = e.files.item(0)

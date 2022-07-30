@@ -11,8 +11,8 @@ jobs:
 
       - name: setup git config
         run: |
-          git config user.name "bpiasecki"
-          git config user.email "bartek0894@gmail.com"
+          git config --global user.email "bartek0894@gmail.com"
+          git config --global user.name "bpiasecki"
           
       - name: Prepare and deploy
         env:

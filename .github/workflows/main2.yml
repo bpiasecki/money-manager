@@ -9,16 +9,9 @@ jobs:
       - name: Git Checkout
         uses: actions/checkout@v2
 
-      - name: Install packages
-        run: npm install --legacy-peer-deps
-      - name: Run production build
-        run: npm run build:prod
-        env:
-          HTTPS: 'true'
-
       - name: Prepare and deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          npm install
+          npm install --legacy-peer-deps
           npm run ng -- deploy --base-href=/money-manager/ --no-silent

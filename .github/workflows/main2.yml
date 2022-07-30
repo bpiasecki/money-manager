@@ -9,9 +9,14 @@ jobs:
       - name: Git Checkout
         uses: actions/checkout@v2
 
+      - name: setup git config
+        run: |
+          git config user.name "bpiasecki"
+          git config user.email "bartek0894@gmail.com"
+          
       - name: Prepare and deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npm install --legacy-peer-deps
-          npm run ng -- deploy --base-href=/money-manager/ --name="bpiasecki" --email="bartek0894@gmail.com" --no-silent
+          npm run ng -- deploy --base-href=/money-manager/ --no-silent

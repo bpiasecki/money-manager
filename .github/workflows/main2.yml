@@ -14,4 +14,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npm install --legacy-peer-deps
-          npm run ng -- deploy --base-href=/money-manager/ --no-silent
+          npm run ng -- deploy --base-href=/money-manager/ --name="bpiasecki" --email="bartek0894@gmail.com" --no-silent

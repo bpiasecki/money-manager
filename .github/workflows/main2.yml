@@ -16,5 +16,9 @@ jobs:
         env:
           HTTPS: 'true'
 
-      - name: Deploy to GitHub Pages
-        run: npm run deploy 
+      - name: Prepare and deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npm install
+          npm run ng -- deploy --base-href=/money-manager/ --no-silent

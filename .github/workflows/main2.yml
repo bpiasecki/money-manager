@@ -11,8 +11,11 @@ jobs:
     steps:
       - name: Git Checkout
         uses: actions/checkout@v2
+
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 16.x
 
       - name: setup git config
         run: |
